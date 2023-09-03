@@ -6,8 +6,18 @@ import { useRef, useEffect } from "react";
 import type { SetStateAction, Dispatch } from "react";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { Menu, X, Sun, MoonStar } from "lucide-react";
+import { Menu, X, Sun, MoonStar, User, LogOut } from "lucide-react";
 import { Button } from "./ui/button";
+import { signOut, useSession } from "next-auth/react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+} from "./ui/dropdown-menu";
 
 const NavBar = ({
   navBarExpanded,
@@ -34,6 +44,9 @@ const NavBar = ({
 
   // Get current theme
   const { theme, setTheme } = useTheme();
+
+  // Get session
+  const { data: session } = useSession();
 
   // Get pathname
   const pathname = usePathname();
@@ -87,26 +100,73 @@ const NavBar = ({
         }`}
       >
         <div className="flex flex-row items-center justify-between">
-          {/* Toggle Light/Dark mode */}
-          <Button
-            variant="outline"
-            size="icon"
-            aria-label="Toggle Light/Dark Mode"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          >
-            {theme === "dark" ? (
-              <MoonStar size={30} className="stroke-primary" />
+          <div className="flex flex-row items-center gap-5">
+            {/* Toggle Light/Dark mode */}
+            <Button
+              variant="outline"
+              size="icon"
+              aria-label="Toggle Light/Dark Mode"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            >
+              {theme === "dark" ? (
+                <MoonStar className="h-6 w-6 stroke-primary" />
+              ) : (
+                <Sun className="h-6 w-6 stroke-primary" />
+              )}
+            </Button>
+
+            {/* Profile dropdown when there's session */}
+            {session ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  {/* Avatar */}
+                  <Avatar>
+                    <AvatarImage src="" alt="" />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {/* Title */}
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+
+                  <DropdownMenuSeparator />
+
+                  {/* My Profile */}
+                  <Link href="/profile">
+                    <DropdownMenuItem>
+                      <User className="mr-2 h-4 w-4" />
+                      Profile
+                    </DropdownMenuItem>
+                  </Link>
+
+                  {/* Log Out */}
+                  <DropdownMenuItem
+                    className="text-destructive focus:text-destructive"
+                    onClick={() => signOut()}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Log Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
-              <Sun size={30} className="stroke-primary" />
+              <Link href="/sign-in">
+                <Button
+                  variant="default"
+                  className="hidden self-center px-7 py-6 font-semibold lg:flex"
+                >
+                  Sign In
+                </Button>
+              </Link>
             )}
-          </Button>
+          </div>
 
           {/* Close Button */}
           <Button
             variant="ghost"
             size="icon"
             aria-label="Close NavBar"
-            className="xl:hidden"
+            className="lg:hidden"
             onClick={() => setNavBarExpanded(!navBarExpanded)}
           >
             <X size={36} className="stroke-foreground" />
@@ -132,21 +192,17 @@ const NavBar = ({
           })}
         </ul>
 
-        <div className="flex items-center justify-center">
-          {/* Profile */}
-          {/* {session ? (
-            <></>
-          ) : (
+        {/* Sign In button when there's no session */}
+        {!session && (
+          <Link href="/sign-in">
             <Button
               variant="default"
-              size="lg"
-              onClick={() => signIn()}
-              className="font-semibold"
+              className="self-center px-8 py-6 font-semibold lg:hidden"
             >
               Sign In
             </Button>
-          )} */}
-        </div>
+          </Link>
+        )}
       </div>
 
       {/* Side bar opaque background */}

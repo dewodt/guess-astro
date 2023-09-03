@@ -8,6 +8,7 @@ import { ThemeProvider } from "next-themes";
 import NavBar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { Toaster } from "@/components/ui/toaster";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,21 +28,23 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <html lang="en" className={`${inter.variable}`}>
-      <ThemeProvider attribute="class" defaultTheme="dark">
-        <body
-          className={`flex min-h-screen flex-col bg-background font-inter ${
-            navBarExpanded && "overflow-hidden"
-          }`}
-        >
-          <NavBar
-            navBarExpanded={navBarExpanded}
-            setNavBarExpanded={setNavBarExpanded}
-          />
-          {children}
-          <Footer />
-          <Toaster />
-        </body>
-      </ThemeProvider>
+      <SessionProvider>
+        <ThemeProvider attribute="class" defaultTheme="dark">
+          <body
+            className={`flex min-h-screen flex-col bg-background font-inter ${
+              navBarExpanded && "overflow-hidden"
+            }`}
+          >
+            <NavBar
+              navBarExpanded={navBarExpanded}
+              setNavBarExpanded={setNavBarExpanded}
+            />
+            {children}
+            <Footer />
+            <Toaster />
+          </body>
+        </ThemeProvider>
+      </SessionProvider>
     </html>
   );
 };
