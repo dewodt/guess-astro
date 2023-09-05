@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { Separator } from "@/components/ui/separator";
 import * as z from "zod";
+import { signInSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -24,14 +25,9 @@ const SignInForm = () => {
   // Toast initailization
   const { toast } = useToast();
 
-  // Form Schema Validation
-  const formSchema = z.object({
-    email: z.string().email(),
-  });
-
   // Form Hooks
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signInSchema>>({
+    resolver: zodResolver(signInSchema),
   });
   const {
     control,
@@ -40,7 +36,7 @@ const SignInForm = () => {
   } = form;
 
   // Form Submit Handler (After validated with zod)
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof signInSchema>) => {
     console.log(values);
     await signIn("email", { email: values.email });
   };
@@ -72,12 +68,12 @@ const SignInForm = () => {
           {/* Submit Button */}
           <Button
             variant="default"
-            className="flex w-full flex-row items-center gap-2"
+            className="w-full"
             size="lg"
             type="submit"
             disabled={isSubmitting}
           >
-            {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
+            {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Continue with Email
           </Button>
         </form>

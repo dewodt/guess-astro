@@ -1,10 +1,12 @@
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/drizzle";
+import { user as userSchema } from "@/db/schema";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { db } from "@/db";
 import NextAuth, { type AuthOptions } from "next-auth";
 import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 import DiscordProvider from "next-auth/providers/discord";
-import { resend } from "@/emails";
+import { resend } from "@/lib/resend";
 import SignInTemplate from "@/emails/sign-in-template";
 
 export const authOptions: AuthOptions = {
@@ -36,10 +38,55 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token }) {
+    async jwt({ token, user, trigger }) {
+      // Everything accept token is null after next refrest after sign in.
+      // account -> Email provider: Email specific data; oAuth Provider: oAuth specific data (procider, access token, ect)
+      // profile -> oAuth specific data (oAuth user data)
+      // user -> User data from database (adapter)
+
+      // Runs when user sign in
+      if (user) {
+        // Get user username (username is not available in user object)
+        const [{ username }] = await db
+          .select({ username: userSchema.username })
+          .from(userSchema)
+          .where(eq(userSchema.id, user.id));
+
+        // Update token
+        token.id = user.id;
+        token.email = user.email as string;
+        token.username = username ?? null;
+        token.name = user.name ?? null;
+        token.image = user.image ?? null;
+      }
+
+      // Trigger update session (when user changes username / fullname / avatar image)
+      if (trigger === "update") {
+        // Get new data
+        const [{ username, name, image }] = await db
+          .select({
+            username: userSchema.username,
+            name: userSchema.name,
+            image: userSchema.image,
+          })
+          .from(userSchema)
+          .where(eq(userSchema.id, user.id));
+
+        // Update token
+        token.username = username;
+        token.name = name;
+        token.image = image ?? null;
+      }
+
       return token;
     },
     async session({ session, token }) {
+      session.id = token.id;
+      session.email = token.email;
+      session.username = token.username;
+      session.name = token.name;
+      session.image = token.image;
+
       return session;
     },
   },
@@ -57,3 +104,23 @@ export const authOptions: AuthOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: string;
+    email: string;
+    username: string | null; // Username is null when first time sign in
+    name: string | null; // When using email provider, email is null in first time sign in
+    image: string | null; // When using email provider, image is null in first time sign in
+  }
+}
+
+declare module "next-auth" {
+  interface Session {
+    id: string;
+    email: string;
+    username: string | null; // Username is null when first time sign in
+    name: string | null; // When using email provider, email is null in first time sign in
+    image: string | null; // When using email provider, image is null in first time sign in
+  }
+}

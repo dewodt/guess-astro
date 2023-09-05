@@ -17,6 +17,7 @@ export const user = pgTable("user", {
   image: text("image"),
   score: integer("score").default(0),
   streak: integer("streak").default(0),
+  // add createdAt
 });
 
 export const account = pgTable(

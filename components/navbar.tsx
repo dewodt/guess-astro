@@ -6,7 +6,15 @@ import { useRef, useEffect } from "react";
 import type { SetStateAction, Dispatch } from "react";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { Menu, X, Sun, MoonStar, User, LogOut } from "lucide-react";
+import {
+  Menu,
+  X,
+  Sun,
+  MoonStar,
+  User,
+  LogOut,
+  UserCircle2,
+} from "lucide-react";
 import { Button } from "./ui/button";
 import { signOut, useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -121,8 +129,14 @@ const NavBar = ({
                 <DropdownMenuTrigger>
                   {/* Avatar */}
                   <Avatar>
-                    <AvatarImage src="" alt="" />
-                    <AvatarFallback>CN</AvatarFallback>
+                    <AvatarImage
+                      src=""
+                      alt="Avatar Upload Preview"
+                      className="object-cover object-center"
+                    />
+                    <AvatarFallback>
+                      <UserCircle2 className="h-full w-full stroke-gray-500 stroke-1" />
+                    </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
