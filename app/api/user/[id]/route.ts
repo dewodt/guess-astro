@@ -7,7 +7,7 @@ import { db } from "@/lib/drizzle";
 import { eq, ne, and } from "drizzle-orm";
 import * as z from "zod";
 import { user } from "@/db/schema";
-import { utapi } from "uploadthing/server";
+import { uploadAvatar } from "@/lib/cloudinary";
 
 // Update or Register user data
 export const PUT = async (req: NextRequest) => {
@@ -32,7 +32,6 @@ export const PUT = async (req: NextRequest) => {
 
   // Check data schema with zod
   const validationResult = registerOrUpdateUserSchema.safeParse(rawFormObject);
-
   if (!validationResult.success) {
     // Convert zod error to string
     const ArrayOfErrorMessages = validationResult.error.errors.map(
@@ -49,7 +48,7 @@ export const PUT = async (req: NextRequest) => {
     );
   }
 
-  // Find matching username thats not current user
+  // Find if username is available
   const data = await db
     .select()
     .from(user)
@@ -70,19 +69,20 @@ export const PUT = async (req: NextRequest) => {
 
   // Update user data
   if (formObject.image) {
-    const uploadRes = await utapi.uploadFiles(formObject.image);
-    console.log(formObject.image);
-    console.log(uploadRes);
-    console.log(uploadRes.data);
+    // Upload avatar to cloudinary
+    const imageUrl = await uploadAvatar(session.id, formObject.image);
+
+    // Update database
     await db
       .update(user)
       .set({
         name: formObject.name,
         username: formObject.username,
-        image: uploadRes.data?.url,
+        image: imageUrl,
       })
       .where(eq(user.id, session.id));
   } else {
+    // Update database
     await db
       .update(user)
       .set({
