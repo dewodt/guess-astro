@@ -9,7 +9,7 @@ export const objectToFormData = (obj: Object) => {
   const formData = new FormData();
 
   Object.entries(obj).forEach(([key, value]) => {
-    formData.append(key, value);
+    value !== undefined && formData.append(key, value);
   });
 
   return formData;

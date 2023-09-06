@@ -37,8 +37,7 @@ const SignInForm = () => {
 
   // Form Submit Handler (After validated with zod)
   const onSubmit = async (values: z.infer<typeof signInSchema>) => {
-    console.log(values);
-    await signIn("email", { email: values.email });
+    await signIn("email", { email: values.email, callbackUrl: "/" });
   };
 
   return (
@@ -89,7 +88,7 @@ const SignInForm = () => {
         size="lg"
         className="flex w-full flex-row items-center gap-3"
         disabled={isSubmitting}
-        onClick={() => signIn("google")}
+        onClick={() => signIn("google", { redirect: true, callbackUrl: "/" })}
       >
         <Google size={20} />
         Continue with Google
@@ -102,7 +101,7 @@ const SignInForm = () => {
         size="lg"
         className="flex w-full flex-row items-center gap-3"
         disabled={isSubmitting}
-        onClick={() => signIn("discord")}
+        onClick={() => signIn("discord", { redirect: true, callbackUrl: "/" })}
       >
         <Discord size={20} />
         Continue with Discord

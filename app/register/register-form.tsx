@@ -1,5 +1,8 @@
 "use client";
 
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { objectToFormData } from "@/lib/utils";
 import { Loader2, Trash2, UserCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,10 +20,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { objectToFormData } from "@/lib/utils";
-import { useSession } from "next-auth/react";
 
 const RegisterForm = () => {
+  // Router
+  const router = useRouter();
+
   // Session
   const { data: session, update } = useSession();
 
@@ -44,12 +48,45 @@ const RegisterForm = () => {
   const onSubmit = async (
     values: z.infer<typeof registerOrUpdateUserSchema>
   ) => {
+    // Initiate loading toast
+    toast({
+      variant: "default",
+      title: "Loading",
+      description: "Please wait...",
+      duration: Infinity,
+    });
+
+    // Create form data
     const formData = objectToFormData(values);
+
+    // Send request
     const res = await fetch(`/api/user/${session!.id}`, {
       method: "PUT",
       body: formData,
     });
+    const resJSON = await res.json();
+
+    // Error response
+    if (!res.ok) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: resJSON.message,
+        duration: 5000,
+      });
+      return;
+    }
+
+    // Success response
     await update();
+    toast({
+      variant: "success",
+      title: "Success",
+      description: resJSON.message,
+      duration: 5000,
+    });
+    router.push("/");
+    router.refresh();
   };
 
   return (
@@ -103,7 +140,11 @@ const RegisterForm = () => {
             render={({ field: { onChange }, ...field }) => {
               const uploadedAvatar = form.getValues("image");
               const uploadedAvatarUrl =
-                uploadedAvatar && URL.createObjectURL(uploadedAvatar);
+                uploadedAvatar === undefined // Initial state, taken from session
+                  ? (session?.image as string)
+                  : uploadedAvatar === "DELETE" // File is deleted
+                  ? undefined
+                  : URL.createObjectURL(uploadedAvatar); // New file is uploaded
 
               return (
                 <FormItem>
@@ -128,7 +169,6 @@ const RegisterForm = () => {
                         accept="image/*"
                         disabled={isSubmitting}
                         onChange={(e) => {
-                          console.log(e.target.files![0]);
                           onChange(e.target.files![0]);
                         }}
                         {...field}
@@ -141,8 +181,12 @@ const RegisterForm = () => {
                       variant="destructive"
                       size="icon"
                       className="flex-none"
-                      disabled={!uploadedAvatar || isSubmitting}
-                      onClick={() => setValue("image", undefined)}
+                      disabled={
+                        uploadedAvatar === "DELETE" || // Current avatar / file is deleted
+                        (uploadedAvatar === undefined && !session?.image) || // Initial state and there's no image in current session
+                        isSubmitting // Submitting form
+                      }
+                      onClick={() => setValue("image", "DELETE")}
                     >
                       <Trash2 className="h-5 w-5" />
                     </Button>

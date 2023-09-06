@@ -70,7 +70,7 @@ export const authOptions: AuthOptions = {
             image: userSchema.image,
           })
           .from(userSchema)
-          .where(eq(userSchema.id, user.id));
+          .where(eq(userSchema.id, token.id));
 
         // Update token
         token.username = username;

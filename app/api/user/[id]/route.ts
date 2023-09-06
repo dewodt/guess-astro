@@ -69,8 +69,12 @@ export const PUT = async (req: NextRequest) => {
 
   // Update user data
   if (formObject.image) {
+    // User's avatar is updated
     // Upload avatar to cloudinary
-    const imageUrl = await uploadAvatar(session.id, formObject.image);
+    const imageUrl =
+      formObject.image === "DELETE"
+        ? null
+        : await uploadAvatar(session.id, formObject.image);
 
     // Update database
     await db
@@ -82,6 +86,7 @@ export const PUT = async (req: NextRequest) => {
       })
       .where(eq(user.id, session.id));
   } else {
+    // User's avatar is not updated
     // Update database
     await db
       .update(user)

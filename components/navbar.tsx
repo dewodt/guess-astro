@@ -130,8 +130,8 @@ const NavBar = ({
                   {/* Avatar */}
                   <Avatar>
                     <AvatarImage
-                      src=""
-                      alt="Avatar Upload Preview"
+                      src={session.image!}
+                      alt="Avatar Image"
                       className="object-cover object-center"
                     />
                     <AvatarFallback>
