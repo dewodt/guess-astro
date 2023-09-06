@@ -4,7 +4,7 @@ const Footer = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="flex flex-col items-center bg-background gap-4 border-t-2 border-t-border p-5 font-inter text-base sm:flex-row-reverse sm:justify-between lg:px-16 xl:py-7 xl:text-lg">
+    <footer className="flex flex-col items-center gap-4 border-t-2 border-t-border bg-background p-5 font-inter text-base sm:flex-row-reverse sm:justify-between lg:px-16 xl:py-7 xl:text-lg">
       {/* Privacy policy */}
       <Link
         href="/privacy-policy"
