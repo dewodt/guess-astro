@@ -108,7 +108,7 @@ const NavBar = ({
         }`}
       >
         <div className="flex flex-row items-center justify-between">
-          <div className="flex flex-row items-center gap-5">
+          <div className="flex flex-row items-center gap-6">
             {/* Toggle Light/Dark mode */}
             <Button
               variant="outline"
@@ -167,7 +167,8 @@ const NavBar = ({
               <Link href="/sign-in">
                 <Button
                   variant="default"
-                  className="hidden self-center px-7 py-6 font-semibold lg:flex"
+                  size="lg"
+                  className="hidden font-semibold lg:flex"
                 >
                   Sign In
                 </Button>
@@ -208,10 +209,11 @@ const NavBar = ({
 
         {/* Sign In button when there's no session */}
         {!session && (
-          <Link href="/sign-in">
+          <Link href="/sign-in" className="self-center">
             <Button
               variant="default"
-              className="self-center px-8 py-6 font-semibold lg:hidden"
+              size="lg"
+              className="font-semibold lg:hidden"
             >
               Sign In
             </Button>
