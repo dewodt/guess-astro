@@ -28,4 +28,3 @@ jobs:
           auto_fix: true
           eslint: true
           prettier: true
-          git_email: "dewantorotriatmojo@gmail.com" # Fix Git author must have access to the project on vercel

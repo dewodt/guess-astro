@@ -6,10 +6,6 @@ export default withAuth(
   function middleware(req) {
     const reqPath = req.nextUrl.pathname;
     const token = req.nextauth.token;
-    // console.log("START--------");
-    // console.log(reqPath);
-    // console.log(token);
-    // console.log("END-------");
 
     const unAuthenticatedRoute = ["/sign-in", "/verify-request"];
     const authenticatedRoute = [
@@ -52,14 +48,8 @@ export default withAuth(
   },
   {
     callbacks: {
-      // middleware runs only if authroized returns true
+      // middleware runs only if authorized() returns true
       authorized: ({ req, token }) => true,
-    },
-    secret: process.env.NEXTAUTH_SECRET,
-    pages: {
-      signIn: "/sign-in",
-      verifyRequest: "/verify-request",
-      newUser: "/register",
     },
   }
 );

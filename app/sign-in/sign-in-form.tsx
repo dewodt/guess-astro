@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Google from "@/components/icons/google";
 import Discord from "@/components/icons/discord";
 import { signIn } from "next-auth/react";
@@ -22,6 +23,9 @@ import {
 } from "@/components/ui/form";
 
 const SignInForm = () => {
+  // Router
+  const router = useRouter();
+
   // Toast initailization
   const { toast } = useToast();
 
@@ -37,7 +41,42 @@ const SignInForm = () => {
 
   // Form Submit Handler (After validated with zod)
   const onSubmit = async (values: z.infer<typeof signInSchema>) => {
-    await signIn("email", { email: values.email, callbackUrl: "/" });
+    // Initiate loading toast
+    toast({
+      variant: "default",
+      title: "Loading",
+      description: "Please wait...",
+      duration: Infinity,
+    });
+
+    // Sign in with email
+    // Disable redirect to prevent hard refresh, so we use router.push() & router.refresh()
+    const res = await signIn("email", {
+      email: values.email,
+      callbackUrl: "/",
+      redirect: false,
+    });
+
+    // Error
+    if (!res?.ok) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Error sign in with email. Please try again.",
+        duration: 5000,
+      });
+      return;
+    }
+
+    // Success
+    toast({
+      variant: "success",
+      title: "Success",
+      description: "Email sent. Please check your inbox.",
+      duration: 5000,
+    });
+    router.push("/verify-request");
+    router.refresh();
   };
 
   return (
