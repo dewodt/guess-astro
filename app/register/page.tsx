@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 const RegisterPage = () => {
   return (
     <main className="flex flex-auto items-center justify-center bg-muted p-5 sm:p-10">
-      <Card className="w-full max-w-sm">
+      <Card className="w-full max-w-md">
         {/* Title */}
         <CardHeader>
           <h1 className="text-center text-3xl font-bold text-primary">

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { objectToFormData } from "@/lib/utils";
@@ -26,7 +27,8 @@ const RegisterForm = () => {
   const router = useRouter();
 
   // Session
-  const { data: session, update } = useSession();
+  const { data: session, update, status } = useSession();
+  const isLoadingSession = status === "loading";
 
   // Toast initailization
   const { toast } = useToast();
@@ -41,8 +43,21 @@ const RegisterForm = () => {
     control,
     handleSubmit,
     setValue,
+    reset,
     formState: { isSubmitting },
   } = form;
+
+  // Set default value after session loaded.
+  // Can't use defaultValues in useForm because it is undefined at first.
+  useEffect(() => {
+    if (!isLoadingSession) {
+      reset({
+        username: session?.username ?? undefined,
+        name: session?.name ?? undefined,
+        image: undefined,
+      });
+    }
+  }, [session, reset, isLoadingSession]);
 
   // Form Submit Handler (After validated with zod)
   const onSubmit = async (
@@ -93,6 +108,71 @@ const RegisterForm = () => {
     <div className="flex flex-col gap-5">
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+          {/* Profile Picture */}
+          <FormField
+            control={control}
+            name="image"
+            render={({ field: { onChange }, ...field }) => {
+              const uploadedAvatar = form.getValues("image");
+              const uploadedAvatarUrl =
+                uploadedAvatar === undefined // Initial state, taken from session
+                  ? (session?.image as string)
+                  : uploadedAvatar === "DELETE" // File is deleted
+                  ? undefined
+                  : URL.createObjectURL(uploadedAvatar); // New file is uploaded
+
+              return (
+                <FormItem>
+                  <FormLabel>Avatar</FormLabel>
+                  <div className="flex flex-row items-center gap-4">
+                    {/* Avatar Preview */}
+                    <Avatar className="h-20 w-20">
+                      <AvatarImage
+                        src={uploadedAvatarUrl}
+                        alt="Avatar Upload Preview"
+                        className="object-cover object-center"
+                      />
+                      <AvatarFallback>
+                        <UserCircle2 className="h-full w-full stroke-gray-500 stroke-1" />
+                      </AvatarFallback>
+                    </Avatar>
+
+                    {/* File Upload */}
+                    <FormControl>
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        disabled={isSubmitting || isLoadingSession}
+                        onChange={(e) => {
+                          onChange(e.target.files![0]);
+                        }}
+                        {...field}
+                      />
+                    </FormControl>
+
+                    {/* File Delete */}
+                    <Button
+                      type="reset"
+                      variant="destructive"
+                      size="icon"
+                      className="flex-none"
+                      disabled={
+                        uploadedAvatar === "DELETE" || // Current avatar / file is deleted
+                        (uploadedAvatar === undefined && !session?.image) || // Initial state and there's no image in current session
+                        isSubmitting || // Submitting form
+                        isLoadingSession // Loading session
+                      }
+                      onClick={() => setValue("image", "DELETE")}
+                    >
+                      <Trash2 className="h-5 w-5" />
+                    </Button>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+
           {/* Username */}
           <FormField
             control={control}
@@ -104,7 +184,7 @@ const RegisterForm = () => {
                   <Input
                     type="text"
                     placeholder="Username"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || isLoadingSession}
                     {...field}
                   />
                 </FormControl>
@@ -124,7 +204,7 @@ const RegisterForm = () => {
                   <Input
                     type="text"
                     placeholder="Name"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || isLoadingSession}
                     {...field}
                   />
                 </FormControl>
@@ -133,77 +213,13 @@ const RegisterForm = () => {
             )}
           />
 
-          {/* Profile Picture */}
-          <FormField
-            control={control}
-            name="image"
-            render={({ field: { onChange }, ...field }) => {
-              const uploadedAvatar = form.getValues("image");
-              const uploadedAvatarUrl =
-                uploadedAvatar === undefined // Initial state, taken from session
-                  ? (session?.image as string)
-                  : uploadedAvatar === "DELETE" // File is deleted
-                  ? undefined
-                  : URL.createObjectURL(uploadedAvatar); // New file is uploaded
-
-              return (
-                <FormItem>
-                  <FormLabel>Avatar</FormLabel>
-                  <div className="flex flex-row gap-3">
-                    {/* Avatar Preview */}
-                    <Avatar>
-                      <AvatarImage
-                        src={uploadedAvatarUrl}
-                        alt="Avatar Upload Preview"
-                        className="object-cover object-center"
-                      />
-                      <AvatarFallback>
-                        <UserCircle2 className="h-full w-full stroke-gray-500 stroke-1" />
-                      </AvatarFallback>
-                    </Avatar>
-
-                    {/* File Upload */}
-                    <FormControl>
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        disabled={isSubmitting}
-                        onChange={(e) => {
-                          onChange(e.target.files![0]);
-                        }}
-                        {...field}
-                      />
-                    </FormControl>
-
-                    {/* File Delete */}
-                    <Button
-                      type="reset"
-                      variant="destructive"
-                      size="icon"
-                      className="flex-none"
-                      disabled={
-                        uploadedAvatar === "DELETE" || // Current avatar / file is deleted
-                        (uploadedAvatar === undefined && !session?.image) || // Initial state and there's no image in current session
-                        isSubmitting // Submitting form
-                      }
-                      onClick={() => setValue("image", "DELETE")}
-                    >
-                      <Trash2 className="h-5 w-5" />
-                    </Button>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-
           {/* Submit Button */}
           <Button
             variant="default"
             className="w-full"
             size="lg"
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || isLoadingSession}
           >
             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Submit
