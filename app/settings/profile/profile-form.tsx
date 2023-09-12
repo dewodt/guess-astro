@@ -102,7 +102,7 @@ const ProfileForm = () => {
   };
 
   return (
-    <div className="flex flex-col gap-5">
+    <div>
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
           {/* Profile Picture */}
@@ -121,7 +121,7 @@ const ProfileForm = () => {
               return (
                 <FormItem>
                   <FormLabel>Avatar</FormLabel>
-                  <div className="flex flex-row items-center gap-4">
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                     {/* Avatar Preview */}
                     <Avatar className="h-20 w-20">
                       <AvatarImage
@@ -134,38 +134,40 @@ const ProfileForm = () => {
                       </AvatarFallback>
                     </Avatar>
 
-                    {/* File Upload */}
-                    <FormControl>
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        disabled={isSubmitting || isLoadingSession}
-                        onChange={(e) => {
-                          onChange(e.target.files![0]);
-                        }}
-                        {...field}
-                      />
-                    </FormControl>
+                    <div className="flex flex-row gap-4">
+                      {/* File Upload */}
+                      <FormControl>
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          disabled={isSubmitting || isLoadingSession}
+                          onChange={(e) => {
+                            onChange(e.target.files![0]);
+                          }}
+                          {...field}
+                        />
+                      </FormControl>
 
-                    {/* File Delete */}
-                    <Button
-                      type="reset"
-                      variant="destructive"
-                      size="icon"
-                      className="flex-none"
-                      disabled={
-                        uploadedAvatar === "DELETE" || // Current avatar / file is deleted
-                        (uploadedAvatar === undefined && !session?.image) || // Initial state and there's no image in current session
-                        isSubmitting || // Submitting form
-                        isLoadingSession // Session loads
-                      }
-                      onClick={() =>
-                        // Should dirty must be true to trigger form changes.
-                        setValue("image", "DELETE", { shouldDirty: true })
-                      }
-                    >
-                      <Trash2 className="h-5 w-5" />
-                    </Button>
+                      {/* File Delete */}
+                      <Button
+                        type="reset"
+                        variant="destructive"
+                        size="icon"
+                        className="flex-none"
+                        disabled={
+                          uploadedAvatar === "DELETE" || // Current avatar / file is deleted
+                          (uploadedAvatar === undefined && !session?.image) || // Initial state and there's no image in current session
+                          isSubmitting || // Submitting form
+                          isLoadingSession // Session loads
+                        }
+                        onClick={() =>
+                          // Should dirty must be true to trigger form changes.
+                          setValue("image", "DELETE", { shouldDirty: true })
+                        }
+                      >
+                        <Trash2 className="h-5 w-5" />
+                      </Button>
+                    </div>
                   </div>
                   <FormMessage />
                 </FormItem>

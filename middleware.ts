@@ -9,8 +9,8 @@ export default withAuth(
 
     const unAuthenticatedRoute = ["/sign-in", "/verify-request"];
     const authenticatedRoute = [
-      "/profile",
-      "constellation",
+      "/settings",
+      "/constellation",
       "/messier",
       "/register",
     ];

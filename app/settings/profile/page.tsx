@@ -1,6 +1,7 @@
 import { type Metadata } from "next";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import ProfileForm from "./profile-form";
+import { User } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Profile | Guess Astro",
@@ -8,12 +9,13 @@ export const metadata: Metadata = {
 
 const ProfilePage = () => {
   return (
-    <main className="flex flex-auto items-center justify-center bg-muted p-5 sm:p-10">
-      <Card className="h-w-full max-w-md">
+    <main className="w-full">
+      <Card>
         <CardHeader>
-          <h1 className="text-center text-3xl font-bold text-primary">
-            Profile
-          </h1>
+          <div className="flex flex-row items-center gap-2">
+            <User className="h-6 w-6 stroke-primary" />
+            <h2 className="text-2xl font-bold text-primary">Profile</h2>
+          </div>
         </CardHeader>
         <CardContent>
           <ProfileForm />

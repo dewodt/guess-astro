@@ -11,9 +11,9 @@ import {
   X,
   Sun,
   MoonStar,
-  User,
   LogOut,
   UserCircle2,
+  Settings,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { signOut, useSession } from "next-auth/react";
@@ -146,20 +146,20 @@ const NavBar = ({
                   <DropdownMenuSeparator />
 
                   {/* My Profile */}
-                  <Link href="/profile">
+                  <Link href="/settings/profile">
                     <DropdownMenuItem>
-                      <User className="mr-2 h-4 w-4" />
-                      Profile
+                      <Settings className="mr-2 h-4 w-4" />
+                      Settings
                     </DropdownMenuItem>
                   </Link>
 
-                  {/* Log Out */}
+                  {/* Sign Out */}
                   <DropdownMenuItem
                     className="text-destructive focus:text-destructive"
                     onClick={() => signOut()}
                   >
                     <LogOut className="mr-2 h-4 w-4" />
-                    Log Out
+                    Sign Out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
