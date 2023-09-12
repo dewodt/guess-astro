@@ -16,7 +16,7 @@ export default withAuth(
     ];
 
     // User not signed in and requests for protected page
-    if (!token && authenticatedRoute.includes(reqPath)) {
+    if (!token && authenticatedRoute.some((path) => reqPath.startsWith(path))) {
       return NextResponse.redirect(new URL("/sign-in", req.nextUrl));
     }
 
@@ -40,7 +40,10 @@ export default withAuth(
     }
 
     // User signed in and requests for unauthenticated page
-    if (token && unAuthenticatedRoute.includes(reqPath)) {
+    if (
+      token &&
+      unAuthenticatedRoute.some((path) => reqPath.startsWith(path))
+    ) {
       return NextResponse.redirect(new URL("/", req.nextUrl));
     }
 
