@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "Leaderboard | Guess Astro",
 };
 
+// Force dynamic page
+export const dynamic = "force-dynamic";
+
 const LeaderboardPage = () => {
   return (
     <main className="flex flex-auto justify-center bg-muted p-5 sm:p-10">
