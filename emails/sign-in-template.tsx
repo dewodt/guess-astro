@@ -27,7 +27,12 @@ const SignInTemplate = ({ url }: { url: string }) => {
           fontStyle="normal"
         />
       </Head>
-      <Preview>Verify request to Guess Astro</Preview>
+      <Preview>
+        Click this button below if you want to verify sign in / sign up request
+        to Guess Astro! After you clicked this, you will be signed in and
+        redirected to the app. If you didn&apos;t request this, please ignore
+        this email!
+      </Preview>
       <Tailwind>
         <Container>
           <Section className="text-center">

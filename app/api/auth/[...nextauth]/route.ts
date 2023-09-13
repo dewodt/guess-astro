@@ -20,7 +20,7 @@ export const authOptions: AuthOptions = {
           await resend.emails.send({
             from: provider.from,
             to: identifier,
-            subject: "Sign in to Guess Astro",
+            subject: "Verify request to Guess Astro",
             react: SignInTemplate({ url: url }),
           });
         } catch (error) {
