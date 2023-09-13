@@ -15,9 +15,9 @@ export const user = pgTable("user", {
   username: text("username").unique(),
   name: text("name"),
   image: text("image"),
-  score: integer("score").default(0),
-  streak: integer("streak").default(0),
-  // add createdAt
+  scoreConstellation: integer("scoreConstellation").default(0),
+  scoreMessier: integer("scoreMessier").default(0),
+  createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
 });
 
 export const account = pgTable(
