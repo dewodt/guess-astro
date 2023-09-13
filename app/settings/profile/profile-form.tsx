@@ -175,6 +175,20 @@ const ProfileForm = () => {
             }}
           />
 
+          {/* Readonly Email Input */}
+          {/* Don't register it to React Hook Form because we don't want to send to BE */}
+          <FormItem>
+            <FormLabel>Email</FormLabel>
+            <FormControl>
+              <Input
+                type="text"
+                placeholder="Email"
+                value={session?.email}
+                disabled
+              />
+            </FormControl>
+          </FormItem>
+
           {/* Username */}
           <FormField
             control={control}
