@@ -1,7 +1,5 @@
 import { type Metadata } from "next";
-import { headers } from "next/headers";
-import { getBaseUrl } from "@/lib/utils";
-import { StatisticsResponse } from "@/types/api";
+import { getStatisticsData } from "@/lib/get-data";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 
 export const metadata: Metadata = {
@@ -12,41 +10,8 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 const ConstellationStatisticsPage = async () => {
-  const baseUrl = getBaseUrl();
-  const res = await fetch(`${baseUrl}/api/statistics/constellation`, {
-    method: "GET",
-    cache: "no-store",
-    headers: headers(),
-  });
-  const resJSON = (await res.json()) as StatisticsResponse;
-
   // Create structure to ease mapping
-  const data = [
-    {
-      title: "Score",
-      value: resJSON.score,
-    },
-    {
-      title: "Leaderboard Rank",
-      value: resJSON.leaderboardRank,
-    },
-    {
-      title: "Current Streak",
-      value: resJSON.currentStreak,
-    },
-    {
-      title: "Highest Streak",
-      value: resJSON.highestStreak,
-    },
-    {
-      title: "Win Rate",
-      value: resJSON.winRate,
-    },
-    {
-      title: "Match Played",
-      value: resJSON.matchPlayed,
-    },
-  ];
+  const data = await getStatisticsData("constellation");
 
   return (
     <main className="grid h-fit w-full grid-cols-1 gap-5 sm:grid-cols-2">

@@ -1,6 +1,5 @@
 import { type Metadata } from "next";
-import { getBaseUrl } from "@/lib/utils";
-import { LeaderboardResponse } from "@/types/api";
+import { getLeaderboardData } from "@/lib/get-data";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Table,
@@ -19,13 +18,8 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 const ConstellationLeaderboardPage = async () => {
-  // Fetch leaderboard data
-  const baseUrl = getBaseUrl();
-  const res = await fetch(`${baseUrl}/api/leaderboard/constellation`, {
-    method: "GET",
-    cache: "no-store",
-  });
-  const data = (await res.json()) as LeaderboardResponse;
+  // Get leaderboard data
+  const data = await getLeaderboardData("constellation");
 
   return (
     <main className="w-full">
@@ -49,7 +43,7 @@ const ConstellationLeaderboardPage = async () => {
 
               {/* Body */}
               <TableBody>
-                {data.leaderboard.map((user, idx) => {
+                {data.map((user, idx) => {
                   return (
                     <TableRow key={user.id}>
                       <TableCell className="font-medium">{idx + 1}</TableCell>
