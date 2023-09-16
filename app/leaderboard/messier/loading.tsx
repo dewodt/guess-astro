@@ -35,9 +35,7 @@ const MessierLeaderboardLoadingPage = () => {
                 {/* Create 3 skeleton rows */}
                 {Array.from({ length: 10 }, (_, i) => i).map((_, idx) => (
                   <TableRow key={idx}>
-                    <TableCell className="font-medium">
-                      <Skeleton className="h-5 w-10" />
-                    </TableCell>
+                    <TableCell className="font-medium">{idx + 1}</TableCell>
                     <TableCell>
                       <Skeleton className="h-5 w-20" />
                     </TableCell>
