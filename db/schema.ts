@@ -1,13 +1,23 @@
 import { AdapterAccount } from "next-auth/adapters";
+import { relations } from "drizzle-orm";
 import {
   pgTable,
-  uuid,
   text,
   integer,
   timestamp,
   primaryKey,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 
+// Enums
+// Mode enums
+export const typeEnum = pgEnum("type", ["constellation", "messier"]);
+
+// Match result enum
+export const resultEnum = pgEnum("result", ["win", "lose"]);
+
+// Schemas
+// User schema (also for nextauth)
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
   email: text("email").unique().notNull(),
@@ -15,11 +25,10 @@ export const user = pgTable("user", {
   username: text("username").unique(),
   name: text("name"),
   image: text("image"),
-  scoreConstellation: integer("scoreConstellation").default(0),
-  scoreMessier: integer("scoreMessier").default(0),
   createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
 });
 
+// Account schema (for next-auth)
 export const account = pgTable(
   "account",
   {
@@ -42,6 +51,7 @@ export const account = pgTable(
   })
 );
 
+// Session schema (for next-auth)
 export const session = pgTable("session", {
   sessionToken: text("sessionToken").notNull().primaryKey(),
   userId: text("userId")
@@ -50,6 +60,7 @@ export const session = pgTable("session", {
   expires: timestamp("expires", { mode: "date" }).notNull(),
 });
 
+// Verification request schema (for next-auth)
 export const verificationTokens = pgTable(
   "verificationToken",
   {
@@ -62,12 +73,52 @@ export const verificationTokens = pgTable(
   })
 );
 
-export const constelation = pgTable("constellation", {
-  id: uuid("id").primaryKey(),
-  name: text("name"),
+// Object schema
+export const astonomicalObject = pgTable("astronomicalObject", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  type: typeEnum("type").notNull(),
+  imageUrl: text("imageUrl").notNull(),
 });
 
-export const messier = pgTable("messier", {
-  id: uuid("id").primaryKey(),
-  name: text("name"),
+// Match schema
+export const match = pgTable("match", {
+  id: text("id").primaryKey(),
+  mode: typeEnum("type").notNull(),
+  createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
+  result: resultEnum("result").notNull(),
+  userId: text("userId")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  astonomicalObjectId: text("astronomicalObjectId")
+    .notNull()
+    .references(() => astonomicalObject.id, {
+      onDelete: "cascade",
+    }),
 });
+
+// Relation Declarations
+// User relations
+export const userRelations = relations(user, ({ many }) => ({
+  match: many(match),
+}));
+
+// Object relations
+export const astonomicalObjectRelations = relations(
+  astonomicalObject,
+  ({ many }) => ({
+    match: many(match),
+  })
+);
+
+// Match relations
+export const matchRelations = relations(match, ({ one }) => ({
+  user: one(user, {
+    fields: [match.userId],
+    references: [user.id],
+  }),
+  object: one(astonomicalObject, {
+    fields: [match.astonomicalObjectId],
+    references: [astonomicalObject.id],
+  }),
+}));

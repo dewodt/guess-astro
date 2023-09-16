@@ -11,3 +11,12 @@ export interface LeaderboardResponse {
   }[];
   message: string;
 }
+
+export interface StatisticsResponse {
+  score: string;
+  currentStreak: string;
+  highestStreak: string;
+  leaderboardRank: string;
+  matchPlayed: string;
+  winRate: string;
+}

@@ -61,10 +61,10 @@ export const authOptions: AuthOptions = {
       // Runs when user sign in
       if (user) {
         // Get user username (username is not available in user object)
-        const [{ username }] = await db
-          .select({ username: userSchema.username })
-          .from(userSchema)
-          .where(eq(userSchema.id, user.id));
+        const { username } = (await db.query.user.findFirst({
+          columns: { username: true },
+          where: eq(userSchema.id, user.id),
+        }))!;
 
         // Update token
         token.id = user.id;
@@ -77,14 +77,10 @@ export const authOptions: AuthOptions = {
       // Trigger update session (when user changes username / fullname / avatar image)
       if (trigger === "update") {
         // Get new data
-        const [{ username, name, image }] = await db
-          .select({
-            username: userSchema.username,
-            name: userSchema.name,
-            image: userSchema.image,
-          })
-          .from(userSchema)
-          .where(eq(userSchema.id, token.id));
+        const { username, name, image } = (await db.query.user.findFirst({
+          columns: { username: true, name: true, image: true },
+          where: eq(userSchema.id, token.id),
+        }))!;
 
         // Update token
         token.username = username;

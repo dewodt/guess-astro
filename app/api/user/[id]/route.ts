@@ -49,15 +49,12 @@ export const PUT = async (req: NextRequest) => {
   }
 
   // Find if username is available
-  const data = await db
-    .select()
-    .from(user)
-    .where(
-      and(eq(user.username, formObject.username), ne(user.id, session.id))
-    );
+  const data = await db.query.user.findFirst({
+    where: and(eq(user.username, formObject.username), ne(user.id, session.id)),
+  });
 
   // Check if username is available
-  if (data.length !== 0) {
+  if (data) {
     return NextResponse.json(
       {
         error: "Bad Request",

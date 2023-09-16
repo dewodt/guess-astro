@@ -13,6 +13,7 @@ export default withAuth(
       "/constellation",
       "/messier",
       "/register",
+      "/statistics",
     ];
 
     // User not signed in and requests for protected page

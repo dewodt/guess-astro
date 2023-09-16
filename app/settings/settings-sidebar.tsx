@@ -7,7 +7,7 @@ import { Settings, User, LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 
-const Sidebar = () => {
+const SettingsSidebar = () => {
   const pathname = usePathname();
 
   return (
@@ -52,4 +52,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default SettingsSidebar;
