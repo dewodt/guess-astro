@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { modes } from "@/lib/constants";
 import { db } from "@/lib/drizzle";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/route";
@@ -7,7 +8,6 @@ import { authOptions } from "../../auth/[...nextauth]/route";
 export const dynamic = "force-dynamic";
 
 // Available modes
-const modes = ["constellation", "messier"] as const;
 
 // Get users data statistics of a certain mode
 // Return score, leaderboard rank, current streak, highest streak, win rate, match played
@@ -114,6 +114,7 @@ export const GET = async (
 
   return NextResponse.json(
     {
+      message: "Success",
       score,
       currentStreak,
       highestStreak,

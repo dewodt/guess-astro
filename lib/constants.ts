@@ -6,3 +6,6 @@ export const allowedImagesTypes = [
   "image/webp",
   "image/jpg",
 ];
+
+// Game modes
+export const modes = ["constellation", "messier"] as const;

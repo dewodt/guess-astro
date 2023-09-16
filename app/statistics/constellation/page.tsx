@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "Constellation Statistics | Guess Astro",
 };
 
+// Force dynamic page
+export const dynamic = "force-dynamic";
+
 const ConstellationStatisticsPage = async () => {
   const baseUrl = getBaseUrl();
   const res = await fetch(`${baseUrl}/api/statistics/constellation`, {

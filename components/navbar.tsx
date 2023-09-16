@@ -47,7 +47,7 @@ const NavBar = ({
     },
     {
       name: "Leaderboard",
-      url: "/leaderboard",
+      url: "/leaderboard/constellation",
     },
   ];
 
