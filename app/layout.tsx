@@ -29,7 +29,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en" className={`${inter.variable}`}>
       <SessionProvider>
-        <ThemeProvider attribute="class" defaultTheme="dark">
+        <ThemeProvider attribute="class" defaultTheme="light">
           <body
             className={`flex min-h-screen flex-col bg-background font-inter ${
               navBarExpanded && "overflow-hidden"
