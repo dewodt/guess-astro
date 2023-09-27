@@ -1,7 +1,7 @@
 export type LeaderboardData = {
-  username: string;
+  username: string | null;
   id: string;
-  score: string;
+  score: number;
 }[];
 
 export type StatisticsData = {
