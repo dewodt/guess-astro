@@ -40,46 +40,49 @@ export const getLeaderboardData = async (
 export const getStatisticsData = async (
   mode: (typeof modes)[number]
 ): Promise<StatisticsData> => {
-  // Check if user is authenticated or no
+  // Get user's session
+  // User's session is already validated via middleware.
   const session = await getServerSession(authOptions);
 
-  // Get all users and matches data for certain mode (for current leaderboard rank + streak)
-  const usersAndMatches = await db.query.user.findMany({
-    columns: { id: true, username: true },
-    with: {
-      match: {
-        where: (match, { eq }) => eq(match.mode, mode),
-        orderBy: (match, { desc }) => desc(match.createdAt),
-      },
-    },
-  });
-
-  // Get user's matches data
-  const matches = usersAndMatches.find(
-    (userAndMatch) => userAndMatch.id === session!.id
-  )!.match;
-
-  // Get score
-  const score = matches.filter((match) => match.result === "win").length;
-
-  // Get leaderboard rank
-  // Get win matches
-  const usersAndWinMatches = usersAndMatches.map((userAndMatch) => {
-    // filter win matches
-    const winMatches = userAndMatch.match.filter(
-      (match) => match.result === "win"
-    );
-    return { ...userAndMatch, match: winMatches };
-  });
-  usersAndWinMatches.sort((a, b) => b.match.length - a.match.length);
-
-  // Update rank
-  const leaderboardRank = `#${
-    1 +
-    usersAndWinMatches.findIndex(
-      (userAndMatch) => userAndMatch.id === session!.id
+  // Get user's leaderboard rank
+  // Need to compare to other user's data
+  // Subquery to get all user's rank
+  // Left join and group by user id and username to count the score
+  const sq = db
+    .select({
+      id: user.id,
+      username: user.username,
+      score: sql<number>`count(${match.id})`.as("score"),
+      rank: sql<number>`rank() over (order by count(${match.id}) desc, ${user.username} asc)`.as(
+        "rank"
+      ),
+    })
+    .from(user)
+    .leftJoin(
+      match,
+      and(
+        eq(match.userId, user.id),
+        and(eq(match.mode, mode), eq(match.result, "win"))
+      )
     )
-  }`;
+    .groupBy(user.id, user.username)
+    .orderBy(desc(sql<number>`count(${match.id})`))
+    .as("sq");
+  // Query to get specific user's rank
+  const userLeaderboard = db.select().from(sq).where(eq(sq.id, session!.id));
+
+  // Get user's matches, total match played, streak, and current streak.
+  // Don't need to compare to other user's data
+  const userMatches = db
+    .select({ id: match.id, result: match.result })
+    .from(match)
+    .where(and(eq(match.userId, session!.id), eq(match.mode, mode)));
+
+  // Fetch data paralelly to reduce wait time and because data is independent of each other
+  const [matches, [{ score, rank }]] = await Promise.all([
+    userMatches,
+    userLeaderboard,
+  ]);
 
   // Get current streak
   let currentStreak = 0;
@@ -124,7 +127,7 @@ export const getStatisticsData = async (
     },
     {
       title: "Leaderboard Rank",
-      value: leaderboardRank,
+      value: rank.toString(),
     },
     {
       title: "Current Streak",
