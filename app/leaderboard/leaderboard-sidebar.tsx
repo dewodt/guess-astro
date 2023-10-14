@@ -22,7 +22,7 @@ const LeaderboardSidebar = () => {
 
   return (
     <aside className="w-full md:max-w-[240px]">
-      <Card>
+      <Card className="shadow-lg">
         <CardHeader>
           <div className="flex flex-row items-center gap-2">
             <ScrollText className="h-6 w-6 stroke-primary" />

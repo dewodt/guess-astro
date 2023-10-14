@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 
 const NotFoundPage = () => {
   return (
-    <main className="flex flex-auto items-center justify-center bg-muted p-5 sm:p-10">
-      <Card className="w-full max-w-lg">
+    <main className="flex flex-auto items-center justify-center p-5 sm:p-10">
+      <Card className="w-full max-w-lg shadow-lg">
         <CardHeader className="px-9 pt-9">
           <h1 className="text-center text-3xl font-bold text-primary">
             Error 404: Page Not Found
@@ -22,7 +22,7 @@ const NotFoundPage = () => {
             bellow to go to the home page!
           </p>
           <Link href="/">
-            <Button size="lg">Home</Button>
+            <Button size="lg">Return Home</Button>
           </Link>
         </CardContent>
       </Card>

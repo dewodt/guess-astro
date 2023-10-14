@@ -8,8 +8,8 @@ export const metadata: Metadata = {
 
 const SignInPage = async () => {
   return (
-    <main className="flex flex-auto items-center justify-center bg-muted p-5 sm:p-10">
-      <Card className="w-full max-w-sm">
+    <main className="flex flex-auto items-center justify-center p-5 sm:p-10">
+      <Card className="w-full max-w-sm shadow-lg">
         {/* Title */}
         <CardHeader>
           <h1 className="text-center text-3xl font-bold text-primary">

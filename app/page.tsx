@@ -1,12 +1,17 @@
 import Image from "next/image";
+import { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+export const metadata: Metadata = {
+  title: "Guess Astro",
+};
+
 const Home = () => {
   return (
-    <main className="flex min-h-[calc(100vh-5rem)] flex-auto items-center justify-center px-6 py-12 sm:p-10 lg:min-h-[calc(100vh-90px)] lg:p-20">
-      <section className="flex max-w-7xl flex-col-reverse items-center gap-4 sm:flex-row sm:gap-0">
+    <main className="flex flex-auto items-center justify-center px-6 py-12 sm:p-14 lg:p-20">
+      <section className="flex max-w-6xl flex-col-reverse items-center gap-6 sm:flex-row lg:gap-16">
         {/* Hero Texts */}
         <div className="flex flex-col gap-3 lg:gap-6">
           <h1 className="text-3xl font-bold lg:text-6xl">
@@ -18,7 +23,7 @@ const Home = () => {
           </p>
           <Link href="/play">
             <Button size="lg">
-              Try now
+              Play now
               <ArrowRight className="ml-1 h-5 w-5" />
             </Button>
           </Link>
@@ -30,7 +35,7 @@ const Home = () => {
           alt="Image"
           width={400}
           height={400}
-          className="w-4/5 max-w-lg sm:w-2/5"
+          className="w-3/5 max-w-lg sm:w-1/4 lg:w-1/3"
         />
       </section>
     </main>

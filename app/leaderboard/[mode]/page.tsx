@@ -1,4 +1,7 @@
+import { notFound } from "next/navigation";
 import { type Metadata } from "next";
+import { ModesType } from "@/types/constants";
+import { modes } from "@/lib/constants";
 import { getLeaderboardData } from "@/lib/get-data";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
@@ -10,24 +13,48 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-export const metadata: Metadata = {
-  title: "Messier Leaderboard | Guess Astro",
+// Generate dynamic metadata
+export const generateMetadata = ({
+  params: { mode },
+}: {
+  params: { mode: ModesType };
+}): Metadata => {
+  // If params is not valid (mode is not available)
+  if (!modes.includes(mode)) {
+    return notFound();
+  }
+
+  // Return title
+  const modeTitle = mode.charAt(0).toUpperCase() + mode.slice(1);
+  return {
+    title: `${modeTitle} Mode Leaderboard | Guess Astro`,
+  };
 };
 
 // Force dynamic page
 export const dynamic = "force-dynamic";
 
-const MessierLeaderboardPage = async () => {
-  // Fetch leaderboard data
-  const data = await getLeaderboardData("messier");
+const LeaderboardPage = async ({
+  params: { mode },
+}: {
+  params: { mode: ModesType };
+}) => {
+  // If params is not valid (mode is not available)
+  if (!modes.includes(mode)) {
+    return notFound();
+  }
+
+  // Get mode title
+  const modeTitle = mode.charAt(0).toUpperCase() + mode.slice(1);
+
+  // Get leaderboard data
+  const data = await getLeaderboardData(mode);
 
   return (
     <main className="w-full">
-      <Card className="h-fit w-full max-w-2xl">
+      <Card className="h-fit w-full max-w-2xl shadow-lg">
         <CardHeader>
-          <h2 className="text-2xl font-bold text-primary">
-            Messier Leaderboard
-          </h2>
+          <h2 className="text-2xl font-bold text-primary">{modeTitle} Mode</h2>
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
@@ -61,4 +88,4 @@ const MessierLeaderboardPage = async () => {
   );
 };
 
-export default MessierLeaderboardPage;
+export default LeaderboardPage;

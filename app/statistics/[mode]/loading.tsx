@@ -1,7 +1,8 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const ConstellationStatisticsLoadingPage = () => {
+const StatisticsLoadingPage = () => {
+  // Score, Leaderboard Rank, Current Streak, Highest Streak, Win Rate, Match Played
   const data = [
     {
       title: "Score",
@@ -41,4 +42,4 @@ const ConstellationStatisticsLoadingPage = () => {
   );
 };
 
-export default ConstellationStatisticsLoadingPage;
+export default StatisticsLoadingPage;

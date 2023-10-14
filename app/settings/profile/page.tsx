@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const ProfilePage = () => {
   return (
     <main className="w-full">
-      <Card>
+      <Card className="shadow-lg">
         <CardHeader>
           <div className="flex flex-row items-center gap-2">
             <User className="h-6 w-6 stroke-primary" />

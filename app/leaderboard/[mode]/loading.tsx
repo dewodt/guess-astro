@@ -9,14 +9,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const MessierLeaderboardLoadingPage = () => {
+const LeaderboardLoadingPage = () => {
   return (
     <main className="w-full">
       <Card className="h-fit w-full max-w-2xl">
         <CardHeader>
-          <h2 className="text-2xl font-bold text-primary">
-            Messier Leaderboard
-          </h2>
+          <Skeleton className="h-8 w-64" />
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
@@ -53,4 +51,4 @@ const MessierLeaderboardLoadingPage = () => {
   );
 };
 
-export default MessierLeaderboardLoadingPage;
+export default LeaderboardLoadingPage;
