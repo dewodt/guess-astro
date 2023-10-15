@@ -38,12 +38,8 @@ const NavBar = ({
   // List of paths
   const paths = [
     {
-      name: "Constellation",
-      url: "/constellation",
-    },
-    {
-      name: "Messier",
-      url: "/messier",
+      name: "Play",
+      url: "/play",
     },
     {
       name: "Leaderboard",

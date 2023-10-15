@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { UserPutResponseJson } from "@/types/api";
 import { objectToFormData } from "@/lib/utils";
 import { Loader2, Trash2, UserCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -79,7 +80,7 @@ const RegisterForm = () => {
       method: "PUT",
       body: formData,
     });
-    const resJSON = await res.json();
+    const resJSON = (await res.json()) as UserPutResponseJson;
 
     // Error response
     if (!res.ok) {

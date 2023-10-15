@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { type Metadata } from "next";
+import { getTitleCase } from "@/lib/utils";
 import { ModesType } from "@/types/constants";
 import { modes } from "@/lib/constants";
 import { getLeaderboardData } from "@/lib/get-data";
@@ -25,7 +26,7 @@ export const generateMetadata = ({
   }
 
   // Return title
-  const modeTitle = mode.charAt(0).toUpperCase() + mode.slice(1);
+  const modeTitle = getTitleCase(mode);
   return {
     title: `${modeTitle} Mode Leaderboard | Guess Astro`,
   };
@@ -45,7 +46,7 @@ const LeaderboardPage = async ({
   }
 
   // Get mode title
-  const modeTitle = mode.charAt(0).toUpperCase() + mode.slice(1);
+  const modeTitle = getTitleCase(mode);
 
   // Get leaderboard data
   const data = await getLeaderboardData(mode);

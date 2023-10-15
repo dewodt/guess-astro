@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { objectToFormData } from "@/lib/utils";
+import { UserPutResponseJson } from "@/types/api";
 import { Loader2, Trash2, UserCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -77,7 +78,7 @@ const ProfileForm = () => {
       method: "PUT",
       body: formData,
     });
-    const resJSON = await res.json();
+    const resJSON = (await res.json()) as UserPutResponseJson;
 
     // Error response
     if (!res.ok) {
