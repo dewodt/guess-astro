@@ -1,7 +1,7 @@
 import { GameData, LeaderboardData, StatisticsData } from "@/types/get-data";
 import { ModesType } from "@/types/constants";
 import { db } from "@/lib/drizzle";
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, asc, desc, eq, sql } from "drizzle-orm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { match, user, astronomicalObject } from "@/db/schema";
@@ -24,7 +24,8 @@ export const getGameData = async (mode: ModesType): Promise<GameData> => {
   const optionsQuery = db
     .select({ name: astronomicalObject.name })
     .from(astronomicalObject)
-    .where(eq(astronomicalObject.mode, mode));
+    .where(eq(astronomicalObject.mode, mode))
+    .orderBy(asc(astronomicalObject.name));
 
   // Paralel query to reduce wait time
   const [[question], options] = await Promise.all([

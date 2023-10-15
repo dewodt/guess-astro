@@ -5,7 +5,7 @@ import * as z from "zod";
 import { type NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/drizzle";
 import { astronomicalObject, match } from "@/db/schema";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { formDataToObject } from "@/lib/utils";
 
 // Post Request
@@ -46,17 +46,18 @@ export const POST = async (req: NextRequest) => {
     );
   }
 
-  // Check if answer is correct
-  const data = await db
-    .select({ imageAnswerUrl: astronomicalObject.imageAnswerUrl })
+  // Get the correct answer data
+  const [data] = await db
+    .select({
+      id: astronomicalObject.id,
+      name: astronomicalObject.name,
+      imageAnswerUrl: astronomicalObject.imageAnswerUrl,
+    })
     .from(astronomicalObject)
-    .where(
-      and(
-        eq(astronomicalObject.id, answer.id),
-        eq(astronomicalObject.name, answer.answer)
-      )
-    );
-  const isWin = data.length != 0;
+    .where(eq(astronomicalObject.id, answer.id));
+
+  // Check if answer is correct
+  const isWin = data.name === answer.answer;
   const result = isWin ? "win" : "lose";
 
   // Update score and match data
@@ -72,9 +73,10 @@ export const POST = async (req: NextRequest) => {
   // Only return imageAnswerUrl if answer is correct so data[0] is not undefined
   return NextResponse.json(
     {
-      isWin: isWin,
-      ...(isWin && { imageAnswerUrl: data[0].imageAnswerUrl }),
       message: "Answer submitted successfully.",
+      isWin: isWin,
+      correctAnswerName: data.name,
+      correctAnswerImageUrl: data.imageAnswerUrl,
     },
     { status: 200 }
   );

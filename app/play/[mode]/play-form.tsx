@@ -95,14 +95,14 @@ const PlayForm = ({
         variant: "success",
         title: "Correct!",
         description: "Click next question or quit to the main menu.",
-        duration: 5000,
+        duration: 10000,
       });
     } else {
       toast({
         variant: "destructive",
         title: "Wrong!",
-        description: "Click next question or quit to the main menu.",
-        duration: 5000,
+        description: `Correct answer is ${resJSON.correctAnswerName}. Click next question or quit to the main menu.`,
+        duration: 10000,
       });
     }
 
@@ -110,7 +110,7 @@ const PlayForm = ({
     setIsAnswered(true);
 
     // If answer image url is available, set it to answer image url
-    const newImageUrl = resJSON.imageAnswerUrl;
+    const newImageUrl = resJSON.correctAnswerImageUrl;
     newImageUrl && setImageUrl(newImageUrl);
   };
 
@@ -129,14 +129,16 @@ const PlayForm = ({
       </div>
 
       {/* Question Image */}
-      <Image
-        src={imageUrl}
-        className="aspect-square w-full rounded-full shadow-lg"
-        style={{ rotate: rotateDeg }}
-        alt="Object (?)"
-        width={500}
-        height={500}
-      />
+      <div className="aspect-square w-full rounded-full shadow-xl">
+        <Image
+          src={imageUrl}
+          className="aspect-square w-full rounded-full object-cover object-center"
+          style={{ rotate: rotateDeg }}
+          alt="Object (?)"
+          width={500}
+          height={500}
+        />
+      </div>
 
       {/* Question Form */}
       <Form {...form}>
@@ -163,6 +165,7 @@ const PlayForm = ({
                           "w-full justify-between",
                           !field.value && "text-muted-foreground"
                         )}
+                        disabled={isSubmitting || isAnswered}
                       >
                         {field.value
                           ? options.find(
@@ -184,7 +187,7 @@ const PlayForm = ({
                       <CommandEmpty>No object found.</CommandEmpty>
 
                       {/* Options */}
-                      <CommandGroup className="max-h-40 overflow-y-auto">
+                      <CommandGroup className="max-h-28 overflow-y-auto">
                         {options.map((option) => (
                           <CommandItem
                             value={option.name}

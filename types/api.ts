@@ -1,6 +1,7 @@
 export type MatchPostResponseJson = {
   isWin: boolean;
-  imageAnswerUrl?: string;
+  correctAnswerName: string;
+  correctAnswerImageUrl?: string;
   error?: string;
   message?: string;
 };
