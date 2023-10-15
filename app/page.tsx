@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 const Home = () => {
   return (
     <main className="flex flex-auto items-center justify-center px-6 py-12 sm:p-14 lg:p-20">
-      <section className="flex max-w-6xl flex-col-reverse items-center gap-6 sm:flex-row lg:gap-16">
+      <section className="flex max-w-7xl flex-col-reverse items-center gap-6 sm:flex-row lg:gap-16">
         {/* Hero Texts */}
         <div className="flex flex-col gap-3 lg:gap-6">
           <h1 className="text-3xl font-bold lg:text-6xl">

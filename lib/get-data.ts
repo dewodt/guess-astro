@@ -105,7 +105,8 @@ export const getStatisticsData = async (
   const userMatches = db
     .select({ id: match.id, result: match.result })
     .from(match)
-    .where(and(eq(match.userId, session!.id), eq(match.mode, mode)));
+    .where(and(eq(match.userId, session!.id), eq(match.mode, mode)))
+    .orderBy(desc(match.createdAt));
 
   // Fetch data paralelly to reduce wait time and because data is independent of each other
   const [matches, [{ score, rank }]] = await Promise.all([
