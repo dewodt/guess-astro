@@ -1,4 +1,5 @@
 import { type Metadata } from "next";
+import { getTitleCase } from "@/lib/utils";
 import { getStatisticsData } from "@/lib/get-data";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { ModesType } from "@/types/constants";
@@ -20,9 +21,34 @@ export const generateMetadata = ({
   }
 
   // Return title
-  const modeTitle = mode.charAt(0).toUpperCase() + mode.slice(1);
+  const modeTitle = getTitleCase(mode);
+
   return {
     title: `${modeTitle} Mode Statistics | Guess Astro`,
+    description:
+      "Guess Astro is a website to help students memorizing astronomical objects for astronomy national science olympiad.",
+    metadataBase: new URL("https://astro.dewodt.com"),
+    generator: "Next.js",
+    applicationName: "Guess Astro",
+    keywords: ["Guess Astro", "Astronomy", "Game"],
+    colorScheme: "normal",
+    category: "education",
+    themeColor: "#2563EB",
+    openGraph: {
+      title: `${modeTitle} Mode Statistics | Guess Astro`,
+      description:
+        "Guess Astro is a website to help students memorizing astronomical objects for astronomy national science olympiad.",
+      url: "https://astro.dewodt.com/",
+      siteName: "Guess Astro",
+      locale: "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${modeTitle} Mode Statistics | Guess Astro`,
+      description:
+        "Guess Astro is a website to help students memorizing astronomical objects for astronomy national science olympiad.",
+    },
   };
 };
 
