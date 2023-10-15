@@ -1,15 +1,44 @@
-import { LeaderboardData, StatisticsData } from "@/types/get-data";
-import { modes } from "@/lib/constants";
+import { GameData, LeaderboardData, StatisticsData } from "@/types/get-data";
+import { ModesType } from "@/types/constants";
 import { db } from "@/lib/drizzle";
 import { and, desc, eq, sql } from "drizzle-orm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { match, user } from "@/db/schema";
+import { match, user, astronomicalObject } from "@/db/schema";
+
+// Get game data (generate game data)
+export const getGameData = async (mode: ModesType): Promise<GameData> => {
+  // Get random astronomical object for certain mode
+  const questionQuery = db
+    .select({
+      id: astronomicalObject.id,
+      mode: astronomicalObject.mode,
+      imageQuestionUrl: astronomicalObject.imageQuestionUrl,
+    })
+    .from(astronomicalObject)
+    .where(eq(astronomicalObject.mode, mode))
+    .orderBy(sql`random()`)
+    .limit(1);
+
+  // Get all possible answer for dropdown choices
+  const optionsQuery = db
+    .select({ name: astronomicalObject.name })
+    .from(astronomicalObject)
+    .where(eq(astronomicalObject.mode, mode));
+
+  // Paralel query to reduce wait time
+  const [[question], options] = await Promise.all([
+    questionQuery,
+    optionsQuery,
+  ]);
+
+  return { question, options };
+};
 
 // Get leaderboard data
 // return Rank, Username, Score
 export const getLeaderboardData = async (
-  mode: (typeof modes)[number]
+  mode: ModesType
 ): Promise<LeaderboardData> => {
   // Get leaderboard data
   // Left join to preserve all users data even if they don't have any match / score
@@ -38,7 +67,7 @@ export const getLeaderboardData = async (
 // Get users data statistics of a certain mode
 // Return score, leaderboard rank, current streak, highest streak, win rate, match played
 export const getStatisticsData = async (
-  mode: (typeof modes)[number]
+  mode: ModesType
 ): Promise<StatisticsData> => {
   // Get user's session
   // User's session is already validated via middleware.

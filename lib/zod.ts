@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { maxImageSize, allowedImagesTypes } from "./constants";
+import { maxImageSize, allowedImagesTypes, modes } from "./constants";
 
 // Sign in user
 export const signInSchema = z.object({
@@ -29,4 +29,13 @@ export const registerOrUpdateUserSchema = z.object({
       return allowedImagesTypes.includes(file!.type);
     }, "Only these types are allowed .jpg, .jpeg, .png and .webp")
     .optional(),
+});
+
+// MatchAnswerSchema
+export const MatchAnswerSchema = z.object({
+  id: z.string(),
+  mode: z.enum(modes),
+  answer: z.string({
+    required_error: "Please select an answer.",
+  }),
 });

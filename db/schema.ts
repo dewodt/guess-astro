@@ -1,5 +1,5 @@
 import { AdapterAccount } from "next-auth/adapters";
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   pgTable,
   text,
@@ -7,11 +7,12 @@ import {
   timestamp,
   primaryKey,
   pgEnum,
+  uuid,
 } from "drizzle-orm/pg-core";
 
 // Enums
-// Mode enums
-export const typeEnum = pgEnum("type", ["constellation", "messier"]);
+// Mode enum
+export const modeEnum = pgEnum("mode", ["constellation", "messier"]);
 
 // Match result enum
 export const resultEnum = pgEnum("result", ["win", "lose"]);
@@ -19,7 +20,7 @@ export const resultEnum = pgEnum("result", ["win", "lose"]);
 // Schemas
 // User schema (also for nextauth)
 export const user = pgTable("user", {
-  id: text("id").primaryKey(),
+  id: text("id").notNull().primaryKey(),
   email: text("email").unique().notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   username: text("username").unique(),
@@ -74,25 +75,30 @@ export const verificationTokens = pgTable(
 );
 
 // Object schema
-export const astonomicalObject = pgTable("astronomicalObject", {
-  id: text("id").primaryKey(),
+export const astronomicalObject = pgTable("astronomicalObject", {
+  id: uuid("id")
+    .default(sql`gen_random_uuid()`)
+    .primaryKey(),
   name: text("name").notNull(),
-  type: typeEnum("type").notNull(),
-  imageUrl: text("imageUrl").notNull(),
+  mode: modeEnum("mode").notNull(),
+  imageQuestionUrl: text("imageQuestionUrl").notNull(),
+  imageAnswerUrl: text("imageAnswerUrl"),
 });
 
 // Match schema
 export const match = pgTable("match", {
-  id: text("id").primaryKey(),
-  mode: typeEnum("type").notNull(),
+  id: uuid("id")
+    .default(sql`gen_random_uuid()`)
+    .primaryKey(),
+  mode: modeEnum("mode").notNull(),
   createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
   result: resultEnum("result").notNull(),
   userId: text("userId")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
-  astonomicalObjectId: text("astronomicalObjectId")
+  astronomicalObjectId: uuid("astronomicalObjectId")
     .notNull()
-    .references(() => astonomicalObject.id, {
+    .references(() => astronomicalObject.id, {
       onDelete: "cascade",
     }),
 });
@@ -104,8 +110,8 @@ export const userRelations = relations(user, ({ many }) => ({
 }));
 
 // Object relations
-export const astonomicalObjectRelations = relations(
-  astonomicalObject,
+export const astronomicalObjectRelations = relations(
+  astronomicalObject,
   ({ many }) => ({
     match: many(match),
   })
@@ -117,8 +123,8 @@ export const matchRelations = relations(match, ({ one }) => ({
     fields: [match.userId],
     references: [user.id],
   }),
-  object: one(astonomicalObject, {
-    fields: [match.astonomicalObjectId],
-    references: [astonomicalObject.id],
+  object: one(astronomicalObject, {
+    fields: [match.astronomicalObjectId],
+    references: [astronomicalObject.id],
   }),
 }));

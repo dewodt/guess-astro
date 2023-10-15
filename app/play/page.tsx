@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: "Play | Guess Astro",
 };
 
-const PlayPage = () => {
+const PlayMenuPage = () => {
   const modes = [
     {
       title: "Constellation",
@@ -71,4 +71,4 @@ const PlayPage = () => {
   );
 };
 
-export default PlayPage;
+export default PlayMenuPage;

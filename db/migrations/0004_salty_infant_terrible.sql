@@ -1,0 +1,1 @@
+ALTER TABLE "astronomicalObject" ALTER COLUMN "imageAnswerUrl" DROP NOT NULL;
