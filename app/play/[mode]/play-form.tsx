@@ -7,7 +7,7 @@ import { useState } from "react";
 import { MatchAnswerSchema } from "@/lib/zod";
 import { GameData } from "@/types/get-data";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { cn, objectToFormData } from "@/lib/utils";
@@ -57,6 +57,9 @@ const PlayForm = ({
   });
   const {
     formState: { isSubmitting },
+    handleSubmit,
+    control,
+    setValue,
   } = form;
 
   // Submit handler
@@ -143,11 +146,11 @@ const PlayForm = ({
       {/* Question Form */}
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-4 lg:gap-6"
         >
           <FormField
-            control={form.control}
+            control={control}
             name="answer"
             render={({ field }) => (
               <FormItem className="flex flex-col">
@@ -193,7 +196,7 @@ const PlayForm = ({
                             value={option.name}
                             key={option.name}
                             onSelect={() => {
-                              form.setValue("answer", option.name);
+                              setValue("answer", option.name);
                               setOpen(false);
                             }}
                           >
@@ -246,6 +249,9 @@ const PlayForm = ({
                 type="submit"
                 disabled={isSubmitting}
               >
+                {isSubmitting && (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                )}
                 Submit
               </Button>
             ) : (

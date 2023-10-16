@@ -87,16 +87,12 @@ const SignInForm = () => {
           <FormField
             control={control}
             name="email"
+            disabled={isSubmitting}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input
-                    type="email"
-                    placeholder="Email"
-                    disabled={isSubmitting}
-                    {...field}
-                  />
+                  <Input type="email" placeholder="Email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
