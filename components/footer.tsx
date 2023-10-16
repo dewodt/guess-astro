@@ -8,20 +8,15 @@ const Footer = () => {
       {/* Privacy policy */}
       <Link
         href="/privacy-policy"
-        className="font-semibold text-muted-foreground xl:hover:text-foreground"
+        className="font-medium text-muted-foreground xl:hover:text-foreground"
       >
         Privacy Policy
       </Link>
 
-      <div>
-        {/* Logo */}
-        <></>
-
-        {/* Copyright */}
-        <p className="text-center font-medium text-muted-foreground">
-          Copyright © {year} Guess Astro
-        </p>
-      </div>
+      {/* Copyright */}
+      <p className="text-center font-medium text-muted-foreground">
+        Copyright © {year} Guess Astro
+      </p>
     </footer>
   );
 };

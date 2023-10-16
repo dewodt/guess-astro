@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Metadata } from "next";
+import { type Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -37,7 +37,7 @@ const Home = () => {
     <main className="flex flex-auto items-center justify-center px-6 py-12 sm:p-14 lg:p-20">
       <section className="flex max-w-7xl flex-col-reverse items-center gap-6 sm:flex-row lg:gap-16">
         {/* Hero Texts */}
-        <div className="flex flex-col gap-3 lg:gap-6">
+        <div className="flex flex-col items-start gap-3 lg:gap-6">
           <h1 className="text-3xl font-bold lg:text-6xl">
             Memorize Astronomical Object Easily.
           </h1>
