@@ -6,32 +6,37 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <url>
   <loc>https://astro.dewodt.com/</loc>
-  <lastmod>2023-10-16T14:14:50+00:00</lastmod>
+  <lastmod>2023-10-18T19:59:58+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://astro.dewodt.com/sign-in</loc>
-  <lastmod>2023-10-16T14:14:50+00:00</lastmod>
+  <lastmod>2023-10-18T19:59:58+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://astro.dewodt.com/play</loc>
-  <lastmod>2023-10-16T14:14:50+00:00</lastmod>
+  <lastmod>2023-10-18T19:59:58+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://astro.dewodt.com/leaderboard/constellation</loc>
-  <lastmod>2023-10-16T14:14:50+00:00</lastmod>
+  <lastmod>2023-10-18T19:59:58+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://astro.dewodt.com/about</loc>
+  <lastmod>2023-10-18T19:59:58+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://astro.dewodt.com/privacy-policy</loc>
-  <lastmod>2023-10-16T14:14:50+00:00</lastmod>
+  <lastmod>2023-10-18T19:59:58+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://astro.dewodt.com/leaderboard/messier</loc>
-  <lastmod>2023-10-16T14:14:50+00:00</lastmod>
+  <lastmod>2023-10-18T19:59:58+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 </urlset>
