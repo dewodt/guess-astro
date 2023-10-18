@@ -169,7 +169,7 @@ const NavBar = ({
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Link href="/sign-in">
+              <Link href="/sign-in" aria-label="Sign In">
                 <Button
                   variant="default"
                   size="lg"
@@ -197,24 +197,25 @@ const NavBar = ({
         <ul className="flex flex-col lg:flex-row lg:gap-12">
           {paths.map((path, index) => {
             return (
-              <Link key={index} href={path.url}>
-                <li
-                  className={`py-2 ${
+              <li key={index} className="py-2">
+                <Link
+                  href={path.url}
+                  className={`${
                     pathname.startsWith(path.url)
                       ? "font-semibold text-foreground"
-                      : "font-medium text-muted-foreground xl:hover:text-foreground"
+                      : "font-medium text-muted-foreground lg:hover:text-foreground"
                   }`}
                 >
                   {path.name}
-                </li>
-              </Link>
+                </Link>
+              </li>
             );
           })}
         </ul>
 
         {/* Sign In button when there's no session */}
         {!session && (
-          <Link href="/sign-in" className="self-center">
+          <Link href="/sign-in" className="self-center" aria-label="Sign In">
             <Button
               variant="default"
               size="lg"

@@ -103,7 +103,7 @@ const PrivacyPolicyPage = () => {
         </div>
 
         <div className="flex flex-col gap-2 lg:gap-4">
-          <h2 className="text-xl font-bold lg:text-3xl">Contact Us</h2>
+          <h2 className="text-xl font-bold lg:text-3xl">Contact</h2>
           <p className="text-justify text-base lg:text-lg">
             If you have any questions, concerns, or requests related to this
             Privacy Policy or how we handle your data, please contact us at {}

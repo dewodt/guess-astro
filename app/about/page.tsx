@@ -46,8 +46,14 @@ const AboutPage = () => {
       <section className="flex max-w-3xl flex-col gap-2 text-center lg:gap-5">
         <h1 className="text-3xl font-bold lg:text-5xl">Contact</h1>
         <p className="text-lg text-black lg:text-xl">
-          If you have any feedback, suggestion, inquiries, or anything you want
-          to tell me, please feel free to contact me at{" "}
+          This app is{" "}
+          <Link href="https://github.com/dewodt/guess-astro">
+            <Button variant="link" className="h-fit p-0 text-lg lg:text-xl">
+              open source
+            </Button>
+          </Link>
+          . If you have any feedback, suggestion, inquiries, or anything you
+          want to tell me, please feel free to contact me at{" "}
           <Link href="mailto:dewantorotriatmojo@gmail.com">
             <Button variant="link" className="h-fit p-0 text-lg lg:text-xl">
               this email.

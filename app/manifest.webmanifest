@@ -3,7 +3,7 @@
   "short_name": "Guess Astro",
   "start_url": "https://astro.dewodt.com/",
   "display": "browser",
-  "description": "Guess Astro is a website to help students memorizing astronomical objects for astronomy national science olympiad.",
+  "description": "Guess Astro is a website to help students memorize astronomical objects for astronomy national science olympiad.",
   "icons": [
     {
       "src": "/icon.ico",
