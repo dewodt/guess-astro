@@ -31,7 +31,7 @@ export const generateMetadata = ({
   return {
     title: `${modeTitle} Mode Leaderboard | Guess Astro`,
     description:
-      "Guess Astro is a website to help students memorizing astronomical objects for astronomy national science olympiad.",
+      "Guess Astro is a website to help students memorize astronomical objects for astronomy national science olympiad.",
     metadataBase: new URL("https://astro.dewodt.com"),
     generator: "Next.js",
     applicationName: "Guess Astro",
@@ -42,7 +42,7 @@ export const generateMetadata = ({
     openGraph: {
       title: `${modeTitle} Mode Leaderboard | Guess Astro`,
       description:
-        "Guess Astro is a website to help students memorizing astronomical objects for astronomy national science olympiad.",
+        "Guess Astro is a website to help students memorize astronomical objects for astronomy national science olympiad.",
       url: "https://astro.dewodt.com/",
       siteName: "Guess Astro",
       locale: "en_US",
@@ -52,7 +52,7 @@ export const generateMetadata = ({
       card: "summary_large_image",
       title: `${modeTitle} Mode Leaderboard | Guess Astro`,
       description:
-        "Guess Astro is a website to help students memorizing astronomical objects for astronomy national science olympiad.",
+        "Guess Astro is a website to help students memorize astronomical objects for astronomy national science olympiad.",
     },
   };
 };

@@ -4,7 +4,7 @@
 
 # 🔭 Short Description
 
-Guess Astro is a website to help students memorizing astronomical objects for astronomy national science olympiad.
+Guess Astro is a website to help students memorize astronomical objects for astronomy national science olympiad.
 
 # ⚙️ How To Run
 

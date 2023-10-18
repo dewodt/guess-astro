@@ -20,7 +20,7 @@ import {
 export const metadata: Metadata = {
   title: "Guess Astro",
   description:
-    "Guess Astro is a website to help students memorizing astronomical objects for astronomy national science olympiad.",
+    "Guess Astro is a website to help students memorize astronomical objects for astronomy national science olympiad.",
   metadataBase: new URL("https://astro.dewodt.com"),
   generator: "Next.js",
   applicationName: "Guess Astro",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Guess Astro",
     description:
-      "Guess Astro is a website to help students memorizing astronomical objects for astronomy national science olympiad.",
+      "Guess Astro is a website to help students memorize astronomical objects for astronomy national science olympiad.",
     url: "https://astro.dewodt.com/",
     siteName: "Guess Astro",
     locale: "en_US",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Guess Astro",
     description:
-      "Guess Astro is a website to help students memorizing astronomical objects for astronomy national science olympiad.",
+      "Guess Astro is a website to help students memorize astronomical objects for astronomy national science olympiad.",
   },
 };
 
@@ -85,7 +85,7 @@ const Home = () => {
           </h1>
           <p className="text-base font-normal text-muted-foreground lg:text-xl">
             Here at Guess Astro we help you memorize astronomical objects to
-            prepare for Astronomy National Science Olympiad!
+            prepare for Astronomy National/International Science Olympiad!
           </p>
           <Link href="/play">
             <Button size="lg">

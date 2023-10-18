@@ -5,7 +5,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Privacy Policy | Guess Astro",
   description:
-    "Guess Astro is a website to help students memorizing astronomical objects for astronomy national science olympiad.",
+    "Guess Astro is a website to help students memorize astronomical objects for astronomy national science olympiad.",
   metadataBase: new URL("https://astro.dewodt.com"),
   generator: "Next.js",
   applicationName: "Guess Astro",
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Privacy Policy | Guess Astro",
     description:
-      "Guess Astro is a website to help students memorizing astronomical objects for astronomy national science olympiad.",
+      "Guess Astro is a website to help students memorize astronomical objects for astronomy national science olympiad.",
     url: "https://astro.dewodt.com/",
     siteName: "Guess Astro",
     locale: "en_US",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Privacy Policy | Guess Astro",
     description:
-      "Guess Astro is a website to help students memorizing astronomical objects for astronomy national science olympiad.",
+      "Guess Astro is a website to help students memorize astronomical objects for astronomy national science olympiad.",
   },
 };
 
@@ -34,7 +34,7 @@ const PrivacyPolicyPage = () => {
   return (
     <main className="flex flex-auto justify-center px-6 py-12 sm:p-14 lg:p-20">
       <section className="flex max-w-4xl flex-col gap-5 lg:gap-10">
-        <div className="flex flex-col gap-2 lg:gap-4">
+        <div className="flex flex-col gap-2 lg:gap-6">
           <h1 className="text-center text-3xl font-bold lg:text-5xl">
             Privacy Policy
           </h1>
