@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Link from "next/link";
 
 // Generate dynamic metadata
 export const generateMetadata = ({
@@ -100,7 +101,14 @@ const LeaderboardPage = async ({
                   return (
                     <TableRow key={user.id}>
                       <TableCell className="font-medium">{idx + 1}</TableCell>
-                      <TableCell>{user.username}</TableCell>
+                      <TableCell>
+                        <Link
+                          href={`/user/${user.username}`}
+                          className="hover:underline"
+                        >
+                          {user.username}
+                        </Link>
+                      </TableCell>
                       <TableCell>{user.score}</TableCell>
                     </TableRow>
                   );

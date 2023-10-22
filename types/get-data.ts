@@ -11,6 +11,13 @@ export type GameData = {
   }[];
 };
 
+export type UserDetailData = {
+  username: string | null;
+  name: string | null;
+  image: string | null;
+  createdAt: Date | null;
+};
+
 export type LeaderboardData = {
   username: string | null;
   id: string;

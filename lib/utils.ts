@@ -1,6 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { z } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -29,4 +28,12 @@ export const getTitleCase = (str: string): string => {
 
 export const getRandomInt = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min)) + min;
+};
+
+export const getFormattedDate = (date: Date) => {
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(date);
 };
