@@ -1,6 +1,7 @@
 import { type Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const metadata: Metadata = {
   title: "About | Guess Astro",
@@ -32,34 +33,53 @@ export const metadata: Metadata = {
 
 const AboutPage = () => {
   return (
-    <main className="flex flex-auto flex-col items-center justify-center gap-16 p-5 sm:p-12 lg:gap-28 lg:p-16">
+    <main className="flex flex-auto flex-col items-center justify-center gap-10 p-5 sm:p-12 lg:gap-16 lg:p-16">
       {/* Mission */}
-      <section className="flex max-w-3xl flex-col gap-2 text-center lg:gap-5">
-        <h1 className="text-3xl font-bold lg:text-5xl">Mission</h1>
-        <p className="text-lg text-black lg:text-xl">
-          Help students memorize astronomical objects to prepare for astronomy
-          national/international science olympiad.
-        </p>
+      <section className="max-w-2xl">
+        <Card className="flex flex-col gap-2 p-8 shadow-lg lg:gap-5 lg:p-10">
+          <CardHeader className="p-0">
+            <CardTitle className="text-center text-2xl font-bold lg:text-4xl">
+              Mission
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            <p className="text-justify text-lg lg:text-xl">
+              Help students memorize astronomical objects to prepare for
+              astronomy national/international science olympiad.
+            </p>
+          </CardContent>
+        </Card>
       </section>
 
       {/* Contact Me */}
-      <section className="flex max-w-3xl flex-col gap-2 text-center lg:gap-5">
-        <h1 className="text-3xl font-bold lg:text-5xl">Contact</h1>
-        <p className="text-lg text-black lg:text-xl">
-          This app is{" "}
-          <Link href="https://github.com/dewodt/guess-astro" target="_blank">
-            <Button variant="link" className="h-fit p-0 text-lg lg:text-xl">
-              open source
-            </Button>
-          </Link>
-          . If you have any feedback, suggestion, inquiries, or anything you
-          want to tell me, please feel free to contact me at{" "}
-          <Link href="mailto:dewantorotriatmojo@gmail.com" target="_blank">
-            <Button variant="link" className="h-fit p-0 text-lg lg:text-xl">
-              this email.
-            </Button>
-          </Link>
-        </p>
+      <section className="max-w-2xl">
+        <Card className="flex flex-col gap-2 p-8 shadow-lg lg:gap-5 lg:p-10">
+          <CardHeader className="p-0">
+            <CardTitle className="text-center text-2xl font-bold lg:text-4xl">
+              Contact
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            <p className="text-justify text-lg lg:text-xl">
+              This app is{" "}
+              <Link
+                href="https://github.com/dewodt/guess-astro"
+                target="_blank"
+              >
+                <Button variant="link" className="h-fit p-0 text-lg lg:text-xl">
+                  open source
+                </Button>
+              </Link>
+              . If you have any feedback, suggestion, inquiries, or anything you
+              want to tell me, please feel free to contact me at{" "}
+              <Link href="mailto:dewantorotriatmojo@gmail.com" target="_blank">
+                <Button variant="link" className="h-fit p-0 text-lg lg:text-xl">
+                  this email.
+                </Button>
+              </Link>
+            </p>
+          </CardContent>
+        </Card>
       </section>
     </main>
   );
