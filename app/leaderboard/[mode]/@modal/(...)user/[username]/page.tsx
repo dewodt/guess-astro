@@ -9,6 +9,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
+// Force dynamic page
+export const dynamic = "force-dynamic";
+
+// Page
 const UserDetailModalPage = async ({
   params: { username },
 }: {
