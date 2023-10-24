@@ -1,7 +1,7 @@
 "use client";
 
-import { Dialog } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const UserDetailModalLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
@@ -14,7 +14,9 @@ const UserDetailModalLayout = ({ children }: { children: React.ReactNode }) => {
         }
       }}
     >
-      {children}
+      <DialogContent className="flex max-w-xs flex-col rounded-lg sm:max-w-sm">
+        {children}
+      </DialogContent>
     </Dialog>
   );
 };

@@ -1,9 +1,9 @@
-import { DialogContent, DialogHeader } from "@/components/ui/dialog";
+import { DialogHeader } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const UserDetailModalLoadingPage = () => {
   return (
-    <DialogContent className="flex max-w-xs flex-col rounded-lg sm:max-w-sm">
+    <>
       {/* Header */}
       <DialogHeader className="flex flex-col items-center gap-2">
         {/* Title */}
@@ -28,7 +28,7 @@ const UserDetailModalLoadingPage = () => {
           <Skeleton className="h-5 w-32" />
         </div>
       </div>
-    </DialogContent>
+    </>
   );
 };
 

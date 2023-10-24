@@ -3,11 +3,7 @@ import { notFound } from "next/navigation";
 import { getFormattedDate } from "@/lib/utils";
 import { UserCircle2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 // Force dynamic page
 export const dynamic = "force-dynamic";
@@ -28,7 +24,7 @@ const UserDetailModalPage = async ({
 
   // Valid
   return (
-    <DialogContent className="flex max-w-xs flex-col rounded-lg sm:max-w-sm">
+    <>
       {/* Header */}
       <DialogHeader className="flex flex-col items-center gap-2">
         {/* Title */}
@@ -70,7 +66,7 @@ const UserDetailModalPage = async ({
           </h4>
         </div>
       </div>
-    </DialogContent>
+    </>
   );
 };
 
