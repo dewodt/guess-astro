@@ -1,12 +1,11 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { MatchAnswerSchema } from "@/lib/zod";
-import * as z from "zod";
 import { type NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/drizzle";
 import { astronomicalObject, match } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { formDataToObject } from "@/lib/utils";
+import { formDataToObject, getZodParseErrorMessage } from "@/lib/utils";
 
 // Post Request
 export const POST = async (req: NextRequest) => {
@@ -24,18 +23,13 @@ export const POST = async (req: NextRequest) => {
 
   // Validate input
   const formData = await req.formData();
-  const answer = formDataToObject(formData) as z.infer<
-    typeof MatchAnswerSchema
-  >;
+  const formObject = formDataToObject(formData) as unknown;
 
   // Safe parse with zod (return an object)
-  const validationResult = MatchAnswerSchema.safeParse(answer);
-  if (!validationResult.success) {
+  const zodParseResult = MatchAnswerSchema.safeParse(formObject);
+  if (!zodParseResult.success) {
     // Convert zod error to string
-    const ArrayOfErrorMessages = validationResult.error.errors.map(
-      (error) => `${error.path.join(", ")}: ${error.message}`
-    );
-    const errorMessage = ArrayOfErrorMessages.join("\n");
+    const errorMessage = getZodParseErrorMessage(zodParseResult);
 
     return NextResponse.json(
       {
@@ -45,6 +39,9 @@ export const POST = async (req: NextRequest) => {
       { status: 400 }
     );
   }
+
+  // If parsing success
+  const answer = zodParseResult.data;
 
   // Get the correct answer data
   const [data] = await db

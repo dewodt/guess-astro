@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import type { SafeParseError } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -36,4 +37,16 @@ export const getFormattedDate = (date: Date) => {
     month: "long",
     day: "numeric",
   }).format(date);
+};
+
+export const getZodParseErrorMessage = <T>(
+  zodParseResult: SafeParseError<T>
+): string => {
+  // Convert zod error to string
+  const ArrayOfErrorMessages = zodParseResult.error.errors.map(
+    (error) => `${error.path.join(", ")}: ${error.message}`
+  );
+  const errorMessage = ArrayOfErrorMessages.join("\n");
+
+  return errorMessage;
 };
