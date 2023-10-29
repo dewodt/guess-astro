@@ -76,7 +76,7 @@ const RegisterForm = () => {
     const formData = objectToFormData(values);
 
     // Send request
-    const res = await fetch(`/api/user/${session!.id}`, {
+    const res = await fetch("/api/user/", {
       method: "PUT",
       body: formData,
     });

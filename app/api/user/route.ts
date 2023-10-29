@@ -1,11 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { authOptions } from "../auth/[...nextauth]/route";
 import { registerOrUpdateUserSchema } from "@/lib/zod";
-import { formDataToObject } from "@/lib/utils";
+import { formDataToObject, getZodParseErrorMessage } from "@/lib/utils";
 import { db } from "@/lib/drizzle";
 import { eq, ne, and } from "drizzle-orm";
-import * as z from "zod";
 import { user } from "@/db/schema";
 import { uploadAvatar } from "@/lib/cloudinary";
 
@@ -25,19 +24,13 @@ export const PUT = async (req: NextRequest) => {
 
   // Convert back form data to object
   const formData = await req.formData();
-  const rawFormObject = formDataToObject(formData); // Raw Type
-  const formObject = rawFormObject as z.infer<
-    typeof registerOrUpdateUserSchema
-  >; // Validated Type
+  const formObject = formDataToObject(formData) as unknown;
 
   // Check data schema with zod
-  const validationResult = registerOrUpdateUserSchema.safeParse(rawFormObject);
-  if (!validationResult.success) {
+  const zodParseResult = registerOrUpdateUserSchema.safeParse(formObject);
+  if (!zodParseResult.success) {
     // Convert zod error to string
-    const ArrayOfErrorMessages = validationResult.error.errors.map(
-      (error) => `${error.path.join(", ")}: ${error.message}`
-    );
-    const errorMessage = ArrayOfErrorMessages.join("\n");
+    const errorMessage = getZodParseErrorMessage(zodParseResult);
 
     return NextResponse.json(
       {
@@ -48,9 +41,15 @@ export const PUT = async (req: NextRequest) => {
     );
   }
 
+  // If parsing success
+  const userFormData = zodParseResult.data;
+
   // Find if username is available
   const data = await db.query.user.findFirst({
-    where: and(eq(user.username, formObject.username), ne(user.id, session.id)),
+    where: and(
+      eq(user.username, userFormData.username),
+      ne(user.id, session.id)
+    ),
   });
 
   // Check if username is available
@@ -65,20 +64,20 @@ export const PUT = async (req: NextRequest) => {
   }
 
   // Update user data
-  if (formObject.image) {
+  if (userFormData.image) {
     // User's avatar is updated
     // Upload avatar to cloudinary
     const imageUrl =
-      formObject.image === "DELETE"
+      userFormData.image === "DELETE"
         ? null
-        : await uploadAvatar(session.id, formObject.image);
+        : await uploadAvatar(session.id, userFormData.image);
 
     // Update database
     await db
       .update(user)
       .set({
-        name: formObject.name,
-        username: formObject.username,
+        name: userFormData.name,
+        username: userFormData.username,
         image: imageUrl,
       })
       .where(eq(user.id, session.id));
@@ -88,8 +87,8 @@ export const PUT = async (req: NextRequest) => {
     await db
       .update(user)
       .set({
-        name: formObject.name,
-        username: formObject.username,
+        name: userFormData.name,
+        username: userFormData.username,
       })
       .where(eq(user.id, session.id));
   }
