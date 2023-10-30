@@ -60,6 +60,7 @@ const PlayForm = ({
     handleSubmit,
     control,
     setValue,
+    setError,
   } = form;
 
   // Submit handler
@@ -89,6 +90,12 @@ const PlayForm = ({
         description: resJSON.message,
         duration: Infinity,
       });
+
+      // Set error to form
+      resJSON.paths!.forEach((item) => {
+        setError(item.path, { message: item.message }, { shouldFocus: true });
+      });
+
       return;
     }
 

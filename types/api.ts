@@ -1,4 +1,4 @@
-import { registerOrUpdateUserSchema } from "@/lib/zod";
+import { registerOrUpdateUserSchema, MatchAnswerSchema } from "@/lib/zod";
 import { z } from "zod";
 
 export type MatchPostResponseJson = {
@@ -7,6 +7,10 @@ export type MatchPostResponseJson = {
   correctAnswerImageUrl?: string;
   error?: string;
   message?: string;
+  paths?: {
+    path: keyof z.infer<typeof MatchAnswerSchema>;
+    message: string;
+  }[];
 };
 
 export type UserPutResponseJson = {

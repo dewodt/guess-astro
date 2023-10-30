@@ -5,7 +5,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/drizzle";
 import { astronomicalObject, match } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { formDataToObject, getZodParseErrorMessage } from "@/lib/utils";
+import { formDataToObject, getZodParseErrors } from "@/lib/utils";
 
 // Post Request
 export const POST = async (req: NextRequest) => {
@@ -28,13 +28,14 @@ export const POST = async (req: NextRequest) => {
   // Safe parse with zod (return an object)
   const zodParseResult = MatchAnswerSchema.safeParse(formObject);
   if (!zodParseResult.success) {
-    // Convert zod error to string
-    const errorMessage = getZodParseErrorMessage(zodParseResult);
+    // Get zod error path
+    const paths = getZodParseErrors(zodParseResult);
 
     return NextResponse.json(
       {
         error: "Bad Request",
-        message: errorMessage,
+        message: "Data is not valid",
+        paths: paths,
       },
       { status: 400 }
     );
