@@ -196,7 +196,6 @@ const RegisterForm = () => {
           <FormField
             control={control}
             name="username"
-            disabled={isSubmitting || isLoadingSession}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Username</FormLabel>
@@ -227,7 +226,6 @@ const RegisterForm = () => {
           <FormField
             control={control}
             name="name"
-            disabled={isSubmitting || isLoadingSession}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Name</FormLabel>
