@@ -42,6 +42,7 @@ const ProfileForm = () => {
     control,
     handleSubmit,
     setValue,
+    setError,
     reset,
     formState: { isSubmitting, isDirty },
   } = form;
@@ -88,6 +89,12 @@ const ProfileForm = () => {
         description: resJSON.message,
         duration: 5000,
       });
+
+      // Trigger error focus
+      resJSON.paths!.forEach((item) => {
+        setError(item.path, { message: item.message }, { shouldFocus: true });
+      });
+
       return;
     }
 
@@ -138,15 +145,26 @@ const ProfileForm = () => {
                     <div className="flex flex-row gap-4">
                       {/* File Upload */}
                       <FormControl>
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          disabled={isSubmitting || isLoadingSession}
-                          onChange={(e) => {
-                            onChange(e.target.files![0]);
-                          }}
-                          {...field}
-                        />
+                        <div
+                          className={`${
+                            (isSubmitting || isLoadingSession) &&
+                            "cursor-not-allowed"
+                          }`}
+                        >
+                          <Input
+                            type="file"
+                            accept="image/*"
+                            readOnly={isSubmitting || isLoadingSession}
+                            className={`${
+                              (isSubmitting || isLoadingSession) &&
+                              "pointer-events-none"
+                            }`}
+                            onChange={(e) => {
+                              onChange(e.target.files![0]);
+                            }}
+                            {...field}
+                          />
+                        </div>
                       </FormControl>
 
                       {/* File Delete */}
@@ -185,7 +203,7 @@ const ProfileForm = () => {
                 type="text"
                 placeholder="Email"
                 value={session?.email}
-                disabled
+                disabled={true}
               />
             </FormControl>
           </FormItem>
@@ -194,12 +212,26 @@ const ProfileForm = () => {
           <FormField
             control={control}
             name="username"
-            disabled={isSubmitting || isLoadingSession}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input type="text" placeholder="Username" {...field} />
+                  <div
+                    className={`${
+                      (isSubmitting || isLoadingSession) && "cursor-not-allowed"
+                    }`}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="Username"
+                      readOnly={isSubmitting || isLoadingSession}
+                      className={`${
+                        (isSubmitting || isLoadingSession) &&
+                        "pointer-events-none"
+                      }`}
+                      {...field}
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -210,12 +242,26 @@ const ProfileForm = () => {
           <FormField
             control={control}
             name="name"
-            disabled={isSubmitting || isLoadingSession}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input type="text" placeholder="Name" {...field} />
+                  <div
+                    className={`${
+                      (isSubmitting || isLoadingSession) && "cursor-not-allowed"
+                    }`}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="Name"
+                      readOnly={isSubmitting || isLoadingSession}
+                      className={`${
+                        (isSubmitting || isLoadingSession) &&
+                        "pointer-events-none"
+                      }`}
+                      {...field}
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

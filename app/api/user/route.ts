@@ -2,11 +2,14 @@ import { type NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { registerOrUpdateUserSchema } from "@/lib/zod";
-import { formDataToObject, getZodParseErrorMessage } from "@/lib/utils";
+import { formDataToObject, getZodParseErrors } from "@/lib/utils";
 import { db } from "@/lib/drizzle";
 import { eq, ne, and } from "drizzle-orm";
 import { user } from "@/db/schema";
 import { uploadAvatar } from "@/lib/cloudinary";
+
+// Force dynamic page
+export const dynamic = "force-dynamic";
 
 // Update or Register user data
 export const PUT = async (req: NextRequest) => {
@@ -29,13 +32,14 @@ export const PUT = async (req: NextRequest) => {
   // Check data schema with zod
   const zodParseResult = registerOrUpdateUserSchema.safeParse(formObject);
   if (!zodParseResult.success) {
-    // Convert zod error to string
-    const errorMessage = getZodParseErrorMessage(zodParseResult);
+    // Get zod error each path and message
+    const paths = getZodParseErrors(zodParseResult);
 
     return NextResponse.json(
       {
         error: "Bad Request",
-        message: errorMessage,
+        message: "Data is not valid",
+        paths: paths,
       },
       { status: 400 }
     );
@@ -58,6 +62,12 @@ export const PUT = async (req: NextRequest) => {
       {
         error: "Bad Request",
         message: "Username is not available",
+        paths: [
+          {
+            path: "username",
+            message: "Username is not available",
+          },
+        ],
       },
       { status: 400 }
     );

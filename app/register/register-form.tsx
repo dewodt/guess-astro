@@ -44,6 +44,7 @@ const RegisterForm = () => {
     control,
     handleSubmit,
     setValue,
+    setError,
     reset,
     formState: { isSubmitting },
   } = form;
@@ -90,6 +91,12 @@ const RegisterForm = () => {
         description: resJSON.message,
         duration: 5000,
       });
+
+      // Trigger error focus
+      resJSON.paths!.forEach((item) => {
+        setError(item.path, { message: item.message }, { shouldFocus: true });
+      });
+
       return;
     }
 
@@ -140,15 +147,26 @@ const RegisterForm = () => {
 
                     {/* File Upload */}
                     <FormControl>
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        disabled={isSubmitting || isLoadingSession}
-                        onChange={(e) => {
-                          onChange(e.target.files![0]);
-                        }}
-                        {...field}
-                      />
+                      <div
+                        className={`${
+                          (isSubmitting || isLoadingSession) &&
+                          "cursor-not-allowed"
+                        }`}
+                      >
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          readOnly={isSubmitting || isLoadingSession}
+                          className={`${
+                            (isSubmitting || isLoadingSession) &&
+                            "pointer-events-none"
+                          }`}
+                          onChange={(e) => {
+                            onChange(e.target.files![0]);
+                          }}
+                          {...field}
+                        />
+                      </div>
                     </FormControl>
 
                     {/* File Delete */}
@@ -183,7 +201,22 @@ const RegisterForm = () => {
               <FormItem>
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input type="text" placeholder="Username" {...field} />
+                  <div
+                    className={`${
+                      (isSubmitting || isLoadingSession) && "cursor-not-allowed"
+                    }`}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="Username"
+                      readOnly={isSubmitting || isLoadingSession}
+                      className={`${
+                        (isSubmitting || isLoadingSession) &&
+                        "pointer-events-none"
+                      }`}
+                      {...field}
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -199,7 +232,22 @@ const RegisterForm = () => {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input type="text" placeholder="Name" {...field} />
+                  <div
+                    className={`${
+                      (isSubmitting || isLoadingSession) && "cursor-not-allowed"
+                    }`}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="Name"
+                      readOnly={isSubmitting || isLoadingSession}
+                      className={`${
+                        (isSubmitting || isLoadingSession) &&
+                        "pointer-events-none"
+                      }`}
+                      {...field}
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

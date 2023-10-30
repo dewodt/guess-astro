@@ -39,14 +39,14 @@ export const getFormattedDate = (date: Date) => {
   }).format(date);
 };
 
-export const getZodParseErrorMessage = <T>(
-  zodParseResult: SafeParseError<T>
-): string => {
-  // Convert zod error to string
-  const ArrayOfErrorMessages = zodParseResult.error.errors.map(
-    (error) => `${error.path.join(", ")}: ${error.message}`
-  );
-  const errorMessage = ArrayOfErrorMessages.join("\n");
+export const getZodParseErrors = <T>(zodParseResult: SafeParseError<T>) => {
+  // Get each path of error and add them to an array (unique)
+  const errors = zodParseResult.error.errors.map((error) => {
+    return {
+      path: error.path[0],
+      message: error.message,
+    };
+  });
 
-  return errorMessage;
+  return errors;
 };
