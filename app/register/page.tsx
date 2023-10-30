@@ -1,5 +1,4 @@
 import { type Metadata } from "next";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import RegisterForm from "./register-form";
 
 export const metadata: Metadata = {
@@ -33,19 +32,7 @@ export const metadata: Metadata = {
 const RegisterPage = () => {
   return (
     <main className="flex flex-auto items-center justify-center p-5 sm:p-10">
-      <Card className="w-full max-w-md shadow-lg">
-        {/* Title */}
-        <CardHeader>
-          <h1 className="text-center text-3xl font-bold text-primary">
-            Register
-          </h1>
-        </CardHeader>
-
-        {/* Register Form */}
-        <CardContent>
-          <RegisterForm />
-        </CardContent>
-      </Card>
+      <RegisterForm />
     </main>
   );
 };

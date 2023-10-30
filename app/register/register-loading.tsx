@@ -3,12 +3,13 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const ProfileLoadingPage = () => {
+const RegisterLoadingPage = () => {
   return (
-    <Card className="shadow-lg">
+    <Card className="w-full max-w-md shadow-lg">
       <CardHeader>
-        <Skeleton className="h-8 w-40" />
+        <Skeleton className="h-8 w-40 self-center" />
       </CardHeader>
+
       <CardContent>
         <div className="flex flex-col gap-5">
           {/* Profile Picture */}
@@ -26,12 +27,6 @@ const ProfileLoadingPage = () => {
                 <Skeleton className="h-10 w-10 flex-none" />
               </div>
             </div>
-          </div>
-
-          {/* Readonly Email Input */}
-          <div className="flex flex-col gap-2">
-            <Skeleton className="h-6 w-20" />
-            <Skeleton className="h-10 w-full" />
           </div>
 
           {/* Username */}
@@ -54,4 +49,4 @@ const ProfileLoadingPage = () => {
   );
 };
 
-export default ProfileLoadingPage;
+export default RegisterLoadingPage;
