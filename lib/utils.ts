@@ -6,20 +6,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const objectToFormData = (obj: Object) => {
-  const formData = new FormData();
-
-  Object.entries(obj).forEach(([key, value]) => {
-    value !== undefined && formData.append(key, value);
-  });
-
-  return formData;
-};
-
-export const formDataToObject = (formData: FormData) => {
-  return Object.fromEntries(formData);
-};
-
 export const getTitleCase = (str: string): string => {
   return str
     .split(" ")
@@ -39,14 +25,37 @@ export const getFormattedDate = (date: Date) => {
   }).format(date);
 };
 
-export const getZodParseErrors = <T>(zodParseResult: SafeParseError<T>) => {
+export const getZodParseErrorPaths = <T>(zodParseResult: SafeParseError<T>) => {
   // Get each path of error and add them to an array (unique)
   const errors = zodParseResult.error.errors.map((error) => {
     return {
-      path: error.path[0],
-      message: error.message,
+      path: error.path[0] as string,
+      description: error.message,
     };
   });
 
   return errors;
+};
+
+export const getZodParseErrorDescription = <T>(
+  zodParseResult: SafeParseError<T>
+) => {
+  // Initiate message
+  let description = "An error occured in the following fields: ";
+
+  // Get attributes errors
+  const errors = zodParseResult.error.errors;
+  errors.forEach((error, index) => {
+    // Add path to message
+    description += `${error.path}`;
+
+    // Add comma if not last and period if last
+    if (index !== errors.length - 1) {
+      description += ", ";
+    } else {
+      description += ".";
+    }
+  });
+
+  return description;
 };
