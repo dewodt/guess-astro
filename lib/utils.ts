@@ -43,14 +43,17 @@ export const getZodParseErrorDescription = <T>(
   // Initiate message
   let description = "An error occured in the following fields: ";
 
-  // Get attributes errors
-  const errors = zodParseResult.error.errors;
+  // Get unique attributes errors
+  const errors = new Set(
+    zodParseResult.error.errors.map((error) => error.path[0])
+  );
+
   errors.forEach((error, index) => {
     // Add path to message
-    description += `${error.path}`;
+    description += `${error}`;
 
     // Add comma if not last and period if last
-    if (index !== errors.length - 1) {
+    if (index !== errors.size - 1) {
       description += ", ";
     } else {
       description += ".";

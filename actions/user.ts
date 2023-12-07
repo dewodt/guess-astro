@@ -1,48 +1,43 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route";
+"use server";
+
+import { getServerSession, type Session } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { registerOrUpdateUserSchema } from "@/lib/zod";
-import { formDataToObject, getZodParseErrors } from "@/lib/utils";
 import { db } from "@/lib/drizzle";
 import { eq, ne, and } from "drizzle-orm";
 import { user } from "@/db/schema";
 import { uploadAvatar } from "@/lib/cloudinary";
+import {
+  getZodParseErrorPaths,
+  getZodParseErrorDescription,
+} from "@/lib/utils";
 
-// Force dynamic page
-export const dynamic = "force-dynamic";
+export const UserAction = async (formData: FormData) => {
+  // Get session
+  // Session is already validated in middleware, safe to assume session is not undefined/null
+  const session = (await getServerSession(authOptions)) as Session;
 
-// Update or Register user data
-export const PUT = async (req: NextRequest) => {
-  // Check if user has session
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return NextResponse.json(
-      {
-        error: "Unauthorized request",
-        message: "Please sign in to have access.",
-      },
-      { status: 401 }
-    );
-  }
-
-  // Convert back form data to object
-  const formData = await req.formData();
-  const formObject = formDataToObject(formData) as unknown;
+  // Create object from form data
+  const formObject = {};
+  Object.assign(formObject, { name: formData.get("name") });
+  Object.assign(formObject, { username: formData.get("username") });
+  Object.assign(formObject, { image: formData.get("image") });
 
   // Check data schema with zod
   const zodParseResult = registerOrUpdateUserSchema.safeParse(formObject);
   if (!zodParseResult.success) {
     // Get zod error each path and message
-    const paths = getZodParseErrors(zodParseResult);
+    const errorPaths = getZodParseErrorPaths(zodParseResult);
 
-    return NextResponse.json(
-      {
-        error: "Bad Request",
-        message: "Data is not valid",
-        paths: paths,
-      },
-      { status: 400 }
-    );
+    // Get zod error description
+    const description = getZodParseErrorDescription(zodParseResult);
+
+    return {
+      ok: false,
+      title: "Invalid Submission Data.",
+      description: description,
+      errorPaths: errorPaths,
+    };
   }
 
   // If parsing success
@@ -58,19 +53,17 @@ export const PUT = async (req: NextRequest) => {
 
   // Check if username is available
   if (data) {
-    return NextResponse.json(
-      {
-        error: "Bad Request",
-        message: "Username is not available",
-        paths: [
-          {
-            path: "username",
-            message: "Username is not available",
-          },
-        ],
-      },
-      { status: 400 }
-    );
+    return {
+      ok: false,
+      title: "Invalid Submission Data.",
+      description: "Username is not available",
+      errorPaths: [
+        {
+          path: "username",
+          description: "Username is not available",
+        },
+      ],
+    };
   }
 
   // Update user data
@@ -103,5 +96,9 @@ export const PUT = async (req: NextRequest) => {
       .where(eq(user.id, session.id));
   }
 
-  return NextResponse.json({ message: "User data updated" }, { status: 200 });
+  return {
+    ok: true,
+    title: "Success",
+    description: "User data is updated successfully",
+  };
 };

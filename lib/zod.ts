@@ -12,8 +12,8 @@ export const signInSchema = z.object({
 // 2. "DELETE": User deleted the image
 // 3. undefined: User didn't upload a new image
 export const registerOrUpdateUserSchema = z.object({
-  name: z.string(),
-  username: z.string().min(3),
+  name: z.string().min(1, "Name is required."),
+  username: z.string().min(3, "Username must be at least 3 characters."),
   image: z
     .custom<File | "DELETE">()
     .refine((file) => {
@@ -28,7 +28,7 @@ export const registerOrUpdateUserSchema = z.object({
       }
       return allowedImagesTypes.includes(file!.type);
     }, "Only these types are allowed .jpg, .jpeg, .png and .webp")
-    .optional(),
+    .nullable(),
 });
 
 // MatchAnswerSchema
