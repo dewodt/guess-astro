@@ -8,7 +8,7 @@ import { ModesType } from "@/types/constants";
 import { db } from "@/lib/drizzle";
 import { and, asc, desc, eq, sql } from "drizzle-orm";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "./auth-options";
 import { match, user, astronomicalObject } from "@/db/schema";
 
 // Get game data (generate game data)
