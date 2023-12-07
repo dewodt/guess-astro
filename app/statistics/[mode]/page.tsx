@@ -31,9 +31,7 @@ export const generateMetadata = ({
     generator: "Next.js",
     applicationName: "Guess Astro",
     keywords: ["Guess Astro", "Astronomy", "Game"],
-    colorScheme: "normal",
     category: "education",
-    themeColor: "#2563EB",
     openGraph: {
       title: `${modeTitle} Mode Statistics | Guess Astro`,
       description:

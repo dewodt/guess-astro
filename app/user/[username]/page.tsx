@@ -26,9 +26,7 @@ export const generateMetadata = async ({
     generator: "Next.js",
     applicationName: "Guess Astro",
     keywords: ["Guess Astro", "Astronomy", "Game"],
-    colorScheme: "normal",
     category: "education",
-    themeColor: "#2563EB",
     openGraph: {
       title: `User Detail ${userDetailData.username} | Guess Astro`,
       description:
