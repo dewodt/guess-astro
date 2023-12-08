@@ -15,12 +15,14 @@ export default withAuth(
       "/statistics",
     ];
 
-    // User not signed in and requests for protected page
+    // REGISTRATION & AUTHENTICATION VALIDATION ON REQUEST PATH
+
+    // Non signed in user requests for authenticated only page
     if (!token && authenticatedRoute.some((path) => reqPath.startsWith(path))) {
       return NextResponse.redirect(new URL("/sign-in", req.nextUrl));
     }
 
-    // User signed in but name and username is empty, always redirect to register page
+    // Non Registered user (data is not complete, name and username is empty) requests for non register page
     if (
       token &&
       (!token.name || !token.username) &&
@@ -29,7 +31,7 @@ export default withAuth(
       return NextResponse.redirect(new URL("/register", req.nextUrl));
     }
 
-    // User signed in and name and username is not empty, and requests for register page (protect register page)
+    // Registered user (data is complete, name and username is not empty) requests for register page
     if (
       token &&
       token.name &&
@@ -39,12 +41,33 @@ export default withAuth(
       return NextResponse.redirect(new URL("/", req.nextUrl));
     }
 
-    // User signed in and requests for unauthenticated page
+    // Authenticated user requests for unauthenticated only page
     if (
       token &&
       unAuthenticatedRoute.some((path) => reqPath.startsWith(path))
     ) {
       return NextResponse.redirect(new URL("/", req.nextUrl));
+    }
+
+    // CUSTOM REDIRECTS (AFTER PREVIOUS VALIDATIONS)
+
+    // User requests /leaderboard, redirect to default /leaderboard/constellation
+    if (reqPath === "/leaderboard") {
+      return NextResponse.redirect(
+        new URL("/leaderboard/constellation", req.nextUrl)
+      );
+    }
+
+    // User requests /settings, redirect to /settings/profile
+    if (reqPath === "/settings") {
+      return NextResponse.redirect(new URL("/settings/profile", req.nextUrl));
+    }
+
+    // User requests /statistics, redirect to /statistics/constellation
+    if (reqPath === "/statistics") {
+      return NextResponse.redirect(
+        new URL("/statistics/constellation", req.nextUrl)
+      );
     }
 
     return NextResponse.next();
