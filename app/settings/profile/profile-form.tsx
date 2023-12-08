@@ -3,8 +3,6 @@
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { objectToFormData } from "@/lib/utils";
-import { UserPutResponseJson } from "@/types/api";
 import { Loader2, Trash2, User, UserCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +22,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import ProfileLoadingPage from "./profile-loading";
+import { UserAction } from "@/actions/user";
 
 const ProfileForm = () => {
   // Router
@@ -39,6 +38,9 @@ const ProfileForm = () => {
   // Form Hooks
   const form = useForm<z.infer<typeof registerOrUpdateUserSchema>>({
     resolver: zodResolver(registerOrUpdateUserSchema),
+    defaultValues: {
+      image: null,
+    },
   });
   const {
     control,
@@ -56,7 +58,7 @@ const ProfileForm = () => {
       reset({
         username: session?.username as string,
         name: session?.name as string,
-        image: undefined,
+        image: null,
       });
     }
   }, [session, reset, isLoadingSession]);
@@ -74,40 +76,51 @@ const ProfileForm = () => {
     });
 
     // Create form data
-    const formData = objectToFormData(values);
+    const formData = new FormData();
+    formData.append("username", values.username);
+    formData.append("name", values.name);
+    values.image && formData.append("image", values.image as File | "DELETE");
 
     // Send request
-    const res = await fetch("/api/user/", {
-      method: "PUT",
-      body: formData,
-    });
-    const resJSON = (await res.json()) as UserPutResponseJson;
+    const res = await UserAction(formData);
 
     // Error response
     if (!res.ok) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: resJSON.message,
+        title: res.title,
+        description: res.description,
         duration: 5000,
       });
 
+      // Return if there's no error paths
+      if (!res.errorPaths) return;
+
       // Trigger error focus
-      resJSON.paths!.forEach((item) => {
-        setError(item.path, { message: item.message }, { shouldFocus: true });
+      res.errorPaths.forEach((item) => {
+        setError(
+          item.path as keyof z.infer<typeof registerOrUpdateUserSchema>,
+          { message: item.description },
+          { shouldFocus: true }
+        );
       });
 
       return;
     }
 
     // Success response
+    // Update session
     await update();
+
+    // Show success toast
     toast({
       variant: "success",
-      title: "Success",
-      description: resJSON.message,
+      title: res.title,
+      description: res.description,
       duration: 5000,
     });
+
+    // Refresh router
     router.refresh();
   };
 
@@ -138,10 +151,10 @@ const ProfileForm = () => {
               render={({ field: { onChange }, ...field }) => {
                 const uploadedAvatar = form.getValues("image");
                 const uploadedAvatarUrl =
-                  uploadedAvatar === undefined // Initial state, taken from session
+                  uploadedAvatar === null // Initial state, taken from session
                     ? (session?.image as string)
                     : uploadedAvatar === "DELETE" // File is deleted
-                    ? undefined
+                    ? ""
                     : URL.createObjectURL(uploadedAvatar); // New file is uploaded
 
                 return (
@@ -176,7 +189,7 @@ const ProfileForm = () => {
                                 isSubmitting && "pointer-events-none"
                               }`}
                               onChange={(e) => {
-                                onChange(e.target.files![0]);
+                                onChange(e.target.files![0] ?? null);
                               }}
                               {...field}
                             />
@@ -191,7 +204,7 @@ const ProfileForm = () => {
                           className="flex-none"
                           disabled={
                             uploadedAvatar === "DELETE" || // Current avatar / file is deleted
-                            (uploadedAvatar === undefined && !session?.image) || // Initial state and there's no image in current session
+                            (uploadedAvatar === null && !session?.image) || // Initial state and there's no image in current session
                             isSubmitting // Submitting form
                           }
                           onClick={() =>

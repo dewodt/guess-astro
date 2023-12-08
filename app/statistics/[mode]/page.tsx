@@ -1,6 +1,6 @@
 import { type Metadata } from "next";
 import { getTitleCase } from "@/lib/utils";
-import { getStatisticsData } from "@/lib/get-data";
+import { getStatisticsData } from "@/data/statistics";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { ModesType } from "@/types/constants";
 import { modes } from "@/lib/constants";
@@ -31,9 +31,7 @@ export const generateMetadata = ({
     generator: "Next.js",
     applicationName: "Guess Astro",
     keywords: ["Guess Astro", "Astronomy", "Game"],
-    colorScheme: "normal",
     category: "education",
-    themeColor: "#2563EB",
     openGraph: {
       title: `${modeTitle} Mode Statistics | Guess Astro`,
       description:

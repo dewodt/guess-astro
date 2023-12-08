@@ -5,15 +5,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { MatchAnswerSchema } from "@/lib/zod";
-import { GameData } from "@/types/get-data";
+import { GameData } from "@/types/data";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { cn, objectToFormData } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import { MatchPostResponseJson } from "@/types/api";
 import {
   Command,
   CommandEmpty,
@@ -34,6 +33,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { MatchAction } from "@/actions/match";
 
 const PlayForm = ({
   data: { options, question },
@@ -42,12 +42,19 @@ const PlayForm = ({
   data: GameData;
   rotateDeg: string;
 }) => {
-  // Hooks
+  // Router hooks
   const router = useRouter();
+
+  // Popover hooks
   const [open, setOpen] = useState(false);
+
+  // Game state hooks
+  const [isAnswered, setIsAnswered] = useState(false);
+
   // Initiallly, set image url to question image url. After answered, if answer image url is available, set it to answer image url
   const [imageUrl, setImageUrl] = useState(question.imageQuestionUrl);
-  const [isAnswered, setIsAnswered] = useState(false);
+
+  // Form hooks
   const form = useForm<z.infer<typeof MatchAnswerSchema>>({
     resolver: zodResolver(MatchAnswerSchema),
     defaultValues: {
@@ -73,46 +80,54 @@ const PlayForm = ({
       duration: Infinity,
     });
 
-    // Fetch api
-    const formData = objectToFormData(data);
-    const res = await fetch("/api/match", {
-      method: "POST",
-      body: formData,
-      cache: "no-cache",
-    });
-    const resJSON = (await res.json()) as MatchPostResponseJson;
+    // Initialize form data
+    const formData = new FormData();
+    formData.append("id", data.id);
+    formData.append("mode", data.mode);
+    formData.append("answer", data.answer);
 
-    // Check if response is error
+    // Call server action
+    const res = await MatchAction(formData);
+
+    // Response is error
     if (!res.ok) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: resJSON.message,
-        duration: Infinity,
+        title: res.title,
+        description: res.description,
+        duration: 5000,
       });
 
-      // Set error to form
-      resJSON.paths!.forEach((item) => {
-        setError(item.path, { message: item.message }, { shouldFocus: true });
+      // If error paths is not available, return
+      if (!res.errorPaths) return;
+
+      // Set error to form fields
+      res.errorPaths.forEach((item) => {
+        setError(
+          item.path as keyof z.infer<typeof MatchAnswerSchema>,
+          { message: item.description },
+          { shouldFocus: true }
+        );
       });
 
       return;
     }
 
-    // Toast
-    if (resJSON.isWin) {
+    // Response not error
+    // Toasts
+    if (res.isWin) {
       toast({
         variant: "success",
-        title: "Correct!",
-        description: "Click next question or quit to the main menu.",
-        duration: 10000,
+        title: res.title,
+        description: res.description,
+        duration: 5000,
       });
     } else {
       toast({
         variant: "destructive",
-        title: "Wrong!",
-        description: `Correct answer is ${resJSON.correctAnswerName}. Click next question or quit to the main menu.`,
-        duration: 10000,
+        title: res.title,
+        description: res.description,
+        duration: 5000,
       });
     }
 
@@ -120,8 +135,9 @@ const PlayForm = ({
     setIsAnswered(true);
 
     // If answer image url is available, set it to answer image url
-    const newImageUrl = resJSON.correctAnswerImageUrl;
-    newImageUrl && setImageUrl(newImageUrl);
+    const newImageUrl = res.correctAnswerImageUrl;
+    if (!newImageUrl) return;
+    setImageUrl(newImageUrl);
   };
 
   return (

@@ -12,8 +12,8 @@ export const signInSchema = z.object({
 // 2. "DELETE": User deleted the image
 // 3. undefined: User didn't upload a new image
 export const registerOrUpdateUserSchema = z.object({
-  name: z.string(),
-  username: z.string().min(3),
+  name: z.string().min(1, "Name is required"),
+  username: z.string().min(3, "Username must be at least 3 characters"),
   image: z
     .custom<File | "DELETE">()
     .refine((file) => {
@@ -21,14 +21,14 @@ export const registerOrUpdateUserSchema = z.object({
         return true;
       }
       return file!.size <= maxImageSize;
-    }, `File size should be less than 5 MB.`)
+    }, `File size should be less than 5 MB`)
     .refine((file) => {
       if (file === "DELETE") {
         return true;
       }
       return allowedImagesTypes.includes(file!.type);
     }, "Only these types are allowed .jpg, .jpeg, .png and .webp")
-    .optional(),
+    .nullable(),
 });
 
 // MatchAnswerSchema
@@ -36,6 +36,6 @@ export const MatchAnswerSchema = z.object({
   id: z.string(),
   mode: z.enum(modes),
   answer: z.string({
-    required_error: "Please select an answer.",
+    required_error: "Please select an answer",
   }),
 });

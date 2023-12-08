@@ -10,9 +10,7 @@ export const metadata: Metadata = {
   generator: "Next.js",
   applicationName: "Guess Astro",
   keywords: ["Guess Astro", "Astronomy", "Game"],
-  colorScheme: "normal",
   category: "education",
-  themeColor: "#2563EB",
   openGraph: {
     title: "Privacy Policy | Guess Astro",
     description:

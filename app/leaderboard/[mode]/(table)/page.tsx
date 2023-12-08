@@ -3,7 +3,7 @@ import { type Metadata } from "next";
 import { getTitleCase } from "@/lib/utils";
 import { ModesType } from "@/types/constants";
 import { modes } from "@/lib/constants";
-import { getLeaderboardData } from "@/lib/get-data";
+import { getLeaderboardData } from "@/data/leaderboard";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Table,
@@ -37,9 +37,7 @@ export const generateMetadata = ({
     generator: "Next.js",
     applicationName: "Guess Astro",
     keywords: ["Guess Astro", "Astronomy", "Game"],
-    colorScheme: "normal",
     category: "education",
-    themeColor: "#2563EB",
     openGraph: {
       title: `${modeTitle} Mode Leaderboard | Guess Astro`,
       description:
