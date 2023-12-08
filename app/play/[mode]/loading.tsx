@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const PlayMatchLoadingPage = () => {
   return (
-    <main className="flex flex-auto items-center justify-center p-6 py-12 sm:p-12">
+    <main className="flex flex-auto items-center justify-center p-6 py-12 sm:p-12 lg:p-24">
       <section className="flex w-full max-w-[420px] flex-col gap-4 lg:gap-6">
         {/* Title */}
         <div className="flex flex-col gap-2">

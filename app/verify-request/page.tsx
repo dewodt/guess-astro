@@ -29,8 +29,7 @@ export const metadata: Metadata = {
 
 const VerifyRequest = () => {
   return (
-    <main className="flex flex-auto items-center justify-center p-5 sm:p-10">
-      {/* Card */}
+    <main className="flex flex-auto items-center justify-center p-6 py-12 sm:p-12 lg:p-24">
       <section className="max-w-xl">
         <Card className="flex flex-col gap-2 p-8 shadow-lg lg:gap-5 lg:p-10">
           <CardHeader className="p-0">
@@ -39,7 +38,7 @@ const VerifyRequest = () => {
             </h1>
           </CardHeader>
           <CardContent className="p-0">
-            <p className="text-justify text-lg lg:text-xl">
+            <p className="text-justify text-base lg:text-xl">
               To complete the verification process, please check your email
               inbox for a verification link from us. If you don&apos;t see the
               email in your inbox, please also check your spam folder.

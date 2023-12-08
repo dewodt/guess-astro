@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 
 const SignInPage = async () => {
   return (
-    <main className="flex flex-auto items-center justify-center p-5 sm:p-10">
+    <main className="flex flex-auto items-center justify-center p-6 py-12 sm:p-12 lg:p-24">
       <Card className="w-full max-w-sm shadow-lg">
         {/* Title */}
         <CardHeader>

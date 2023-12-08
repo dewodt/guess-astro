@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 
 const PrivacyPolicyPage = () => {
   return (
-    <main className="flex flex-auto justify-center px-6 py-12 sm:p-14 lg:p-20">
+    <main className="flex flex-auto justify-center p-6 py-12 sm:p-12 lg:p-24">
       <section className="flex max-w-4xl flex-col gap-5 lg:gap-10">
         <div className="flex flex-col gap-2 lg:gap-6">
           <h1 className="text-center text-3xl font-bold lg:text-5xl">

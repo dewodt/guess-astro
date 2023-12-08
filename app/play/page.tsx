@@ -54,7 +54,7 @@ const PlayMenuPage = () => {
   ];
 
   return (
-    <main className="flex flex-auto  items-center justify-center p-5 py-10 sm:p-12">
+    <main className="flex flex-auto  items-center justify-center p-6 py-12 sm:p-12 lg:p-24">
       <section className="flex max-w-5xl flex-col gap-6 lg:gap-8">
         <div className="flex flex-col gap-3 lg:gap-4">
           <h1 className="text-center text-3xl font-bold lg:text-5xl">

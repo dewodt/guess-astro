@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const UserDetailLoadingPage = () => {
   return (
-    <main className="flex flex-auto items-center justify-center p-6 sm:p-12 lg:p-24">
+    <main className="flex flex-auto items-center justify-center p-6 py-12 sm:p-12 lg:p-24">
       <section className="w-full max-w-xs sm:max-w-sm">
         <Card className="shadow-lg">
           {/* Header */}
