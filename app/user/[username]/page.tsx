@@ -4,7 +4,7 @@ import { getUserDetailData } from "@/data/user";
 import { getFormattedDate } from "@/lib/utils";
 import { UserCircle2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 // Generate dynamic metadata
 export const generateMetadata = async ({
@@ -66,9 +66,9 @@ const UserDetailPage = async ({
           {/* Header */}
           <CardHeader className="gap-3 pb-3">
             {/* Title */}
-            <CardTitle className="font-bold text-primary">
+            <h1 className="text-2xl font-bold leading-none tracking-tight text-primary">
               User Detail
-            </CardTitle>
+            </h1>
 
             {/* Profile Picture */}
             <Avatar className="h-60 w-60 self-center sm:h-72 sm:w-72">

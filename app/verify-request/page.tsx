@@ -30,20 +30,23 @@ export const metadata: Metadata = {
 const VerifyRequest = () => {
   return (
     <main className="flex flex-auto items-center justify-center p-5 sm:p-10">
-      <Card className="w-full max-w-sm shadow-lg">
-        <CardHeader>
-          <h1 className="text-center text-3xl font-bold text-primary">
-            Verify Request
-          </h1>
-        </CardHeader>
-        <CardContent>
-          <p className="text-justify text-base">
-            To complete the verification process, please check your email inbox
-            for a verification link from us. If you don&apos;t see the email in
-            your inbox, please also check your spam folder.
-          </p>
-        </CardContent>
-      </Card>
+      {/* Card */}
+      <section className="max-w-xl">
+        <Card className="flex flex-col gap-2 p-8 shadow-lg lg:gap-5 lg:p-10">
+          <CardHeader className="p-0">
+            <h1 className="text-center text-2xl font-bold leading-none tracking-tight lg:text-4xl lg:leading-none">
+              Verify Request
+            </h1>
+          </CardHeader>
+          <CardContent className="p-0">
+            <p className="text-justify text-lg lg:text-xl">
+              To complete the verification process, please check your email
+              inbox for a verification link from us. If you don&apos;t see the
+              email in your inbox, please also check your spam folder.
+            </p>
+          </CardContent>
+        </Card>
+      </section>
     </main>
   );
 };

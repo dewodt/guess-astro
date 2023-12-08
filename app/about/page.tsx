@@ -1,7 +1,7 @@
 import { type Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export const metadata: Metadata = {
   title: "About | Guess Astro",
@@ -36,9 +36,9 @@ const AboutPage = () => {
       <section className="max-w-2xl">
         <Card className="flex flex-col gap-2 p-8 shadow-lg lg:gap-5 lg:p-10">
           <CardHeader className="p-0">
-            <CardTitle className="text-center text-2xl font-bold lg:text-4xl">
+            <h1 className="text-center text-2xl font-bold leading-none tracking-tight lg:text-4xl lg:leading-none">
               Mission
-            </CardTitle>
+            </h1>
           </CardHeader>
           <CardContent className="p-0">
             <p className="text-justify text-lg lg:text-xl">
@@ -53,9 +53,9 @@ const AboutPage = () => {
       <section className="max-w-2xl">
         <Card className="flex flex-col gap-2 p-8 shadow-lg lg:gap-5 lg:p-10">
           <CardHeader className="p-0">
-            <CardTitle className="text-center text-2xl font-bold lg:text-4xl">
+            <h1 className="text-center text-2xl font-bold leading-none tracking-tight lg:text-4xl lg:leading-none">
               Contact
-            </CardTitle>
+            </h1>
           </CardHeader>
           <CardContent className="p-0">
             <p className="text-justify text-lg lg:text-xl">
