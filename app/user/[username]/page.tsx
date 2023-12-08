@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { type Metadata } from "next";
-import { getUserDetailData } from "@/lib/get-data";
+import { getUserDetailData } from "@/data/user";
 import { getFormattedDate } from "@/lib/utils";
 import { UserCircle2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

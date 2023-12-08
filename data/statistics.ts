@@ -1,96 +1,12 @@
-import {
-  GameData,
-  LeaderboardData,
-  StatisticsData,
-  UserDetailData,
-} from "@/types/get-data";
+import "server-only";
+
+import { StatisticsData } from "@/types/data";
 import { ModesType } from "@/types/constants";
 import { db } from "@/lib/drizzle";
-import { and, asc, desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 import { getServerSession } from "next-auth";
-import { authOptions } from "./auth-options";
-import { match, user, astronomicalObject } from "@/db/schema";
-
-// Get game data (generate game data)
-export const getGameData = async (mode: ModesType): Promise<GameData> => {
-  // Get random astronomical object for certain mode
-  const questionQuery = db
-    .select({
-      id: astronomicalObject.id,
-      mode: astronomicalObject.mode,
-      imageQuestionUrl: astronomicalObject.imageQuestionUrl,
-    })
-    .from(astronomicalObject)
-    .where(eq(astronomicalObject.mode, mode))
-    .orderBy(sql`random()`)
-    .limit(1);
-
-  // Get all possible answer for dropdown choices
-  const optionsQuery = db
-    .select({ name: astronomicalObject.name })
-    .from(astronomicalObject)
-    .where(eq(astronomicalObject.mode, mode))
-    .orderBy(asc(astronomicalObject.name));
-
-  // Paralel query to reduce wait time
-  const [[question], options] = await Promise.all([
-    questionQuery,
-    optionsQuery,
-  ]);
-
-  return { question, options };
-};
-
-// Get user data for user detail page
-// Return username, full name, and profile picture, joined date.
-export const getUserDetailData = async (
-  username: string
-): Promise<UserDetailData | null> => {
-  const userData = await db
-    .select({
-      username: user.username,
-      name: user.name,
-      image: user.image,
-      createdAt: user.createdAt,
-    })
-    .from(user)
-    .where(eq(user.username, username));
-
-  if (userData.length === 0) {
-    return null;
-  }
-
-  return userData[0];
-};
-
-// Get leaderboard data
-// return Rank, Username, Score
-export const getLeaderboardData = async (
-  mode: ModesType
-): Promise<LeaderboardData> => {
-  // Get leaderboard data
-  // Left join to preserve all users data even if they don't have any match / score
-  // Group by user id and username to count the score
-  const leaderboard = await db
-    .select({
-      id: user.id,
-      username: user.username,
-      score: sql<number>`count(${match.id})`.as("score"),
-    })
-    .from(user)
-    .leftJoin(
-      match,
-      and(
-        eq(match.userId, user.id),
-        and(eq(match.mode, mode), eq(match.result, "win"))
-      )
-    )
-    .groupBy(user.id, user.username)
-    .orderBy(desc(sql<number>`count(${match.id})`))
-    .limit(10);
-
-  return leaderboard;
-};
+import { authOptions } from "@/lib/auth-options";
+import { match, user } from "@/db/schema";
 
 // Get users data statistics of a certain mode
 // Return score, leaderboard rank, current streak, highest streak, win rate, match played

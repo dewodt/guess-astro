@@ -3,7 +3,7 @@ import { type Metadata } from "next";
 import { getTitleCase } from "@/lib/utils";
 import { ModesType } from "@/types/constants";
 import { modes } from "@/lib/constants";
-import { getLeaderboardData } from "@/lib/get-data";
+import { getLeaderboardData } from "@/data/leaderboard";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Table,

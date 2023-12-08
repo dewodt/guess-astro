@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getRandomInt, getTitleCase } from "@/lib/utils";
 import { modes } from "@/lib/constants";
 import type { ModesType } from "@/types/constants";
-import { getGameData } from "@/lib/get-data";
+import { getGameData } from "@/data/game";
 import PlayForm from "./play-form";
 
 // Force dynamic page

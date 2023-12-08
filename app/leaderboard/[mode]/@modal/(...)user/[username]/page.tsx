@@ -1,4 +1,4 @@
-import { getUserDetailData } from "@/lib/get-data";
+import { getUserDetailData } from "@/data/user";
 import { notFound } from "next/navigation";
 import { getFormattedDate } from "@/lib/utils";
 import { UserCircle2 } from "lucide-react";

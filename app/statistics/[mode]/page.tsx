@@ -1,6 +1,6 @@
 import { type Metadata } from "next";
 import { getTitleCase } from "@/lib/utils";
-import { getStatisticsData } from "@/lib/get-data";
+import { getStatisticsData } from "@/data/statistics";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { ModesType } from "@/types/constants";
 import { modes } from "@/lib/constants";
