@@ -67,7 +67,7 @@ const PlayMatchPage = async ({
   const rotateDeg = `${getRandomInt(0, 360)}deg`;
 
   return (
-    <main className="flex flex-auto items-center justify-center overflow-x-hidden p-6 py-12 sm:p-12 lg:p-24">
+    <main className="flex flex-auto items-center justify-center overflow-x-hidden p-6 py-12 sm:p-12">
       <PlayForm data={data} rotateDeg={rotateDeg} />
     </main>
   );
