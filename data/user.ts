@@ -2,10 +2,10 @@ import "server-only";
 
 import { UserDetailData } from "@/types/data";
 import { db } from "@/lib/drizzle";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { user } from "@/db/schema";
 
-// Get user data for user detail page
+// Get user data for user detail page from user's username (CASE INSENSITIVE)
 // Return username, full name, and profile picture, joined date.
 export const getUserDetailData = async (
   username: string
@@ -18,7 +18,7 @@ export const getUserDetailData = async (
       createdAt: user.createdAt,
     })
     .from(user)
-    .where(eq(user.username, username));
+    .where(eq(sql`LOWER(${user.username})`, username.toLowerCase()));
 
   if (userData.length === 0) {
     return null;
