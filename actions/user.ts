@@ -4,7 +4,7 @@ import { getServerSession, type Session } from "next-auth";
 import { authOptions } from "@/lib/auth-options";
 import { registerOrUpdateUserSchema } from "@/lib/zod";
 import { db } from "@/lib/drizzle";
-import { eq, ne, and } from "drizzle-orm";
+import { eq, ne, and, sql } from "drizzle-orm";
 import { user } from "@/db/schema";
 import { uploadAvatar } from "@/lib/cloudinary";
 import {
@@ -43,24 +43,24 @@ export const UserAction = async (formData: FormData) => {
   // If parsing success
   const userFormData = zodParseResult.data;
 
-  // Find if username is available
+  // Find if username target is available by finding other user's username that is equal to username target (stored in userFormData)
   const data = await db.query.user.findFirst({
     where: and(
-      eq(user.username, userFormData.username),
-      ne(user.id, session.id)
+      ne(user.id, session.id),
+      eq(sql`LOWER(${user.username})`, userFormData.username.toLowerCase())
     ),
   });
 
-  // Check if username is available
+  // Username is not available
   if (data) {
     return {
       ok: false,
       title: "Invalid Submission Data.",
-      description: "Username is not available",
+      description: `Username "${userFormData.username}" is not available`,
       errorPaths: [
         {
           path: "username",
-          description: "Username is not available",
+          description: `Username "${userFormData.username}" is not available`,
         },
       ],
     };
