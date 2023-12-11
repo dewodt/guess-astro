@@ -87,9 +87,9 @@ const LeaderboardPage = async ({
               {/* Header */}
               <TableHeader>
                 <TableRow>
-                  <TableHead>Rank</TableHead>
-                  <TableHead>Username</TableHead>
-                  <TableHead>Score</TableHead>
+                  <TableHead className="px-8 text-center">Rank</TableHead>
+                  <TableHead className="w-full px-8">Username</TableHead>
+                  <TableHead className="px-8 text-center">Score</TableHead>
                 </TableRow>
               </TableHeader>
 
@@ -98,8 +98,10 @@ const LeaderboardPage = async ({
                 {data.map((user, idx) => {
                   return (
                     <TableRow key={user.id}>
-                      <TableCell className="font-medium">{idx + 1}</TableCell>
-                      <TableCell>
+                      <TableCell className="px-8 text-center font-medium">
+                        {idx + 1}
+                      </TableCell>
+                      <TableCell className="w-full px-8">
                         <Link
                           href={`/user/${user.username}`}
                           className="hover:underline"
@@ -107,7 +109,9 @@ const LeaderboardPage = async ({
                           {user.username}
                         </Link>
                       </TableCell>
-                      <TableCell>{user.score}</TableCell>
+                      <TableCell className="px-8 text-center">
+                        {user.score}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
