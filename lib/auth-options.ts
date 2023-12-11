@@ -1,3 +1,5 @@
+import "server-only";
+
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/drizzle";
 import { user as userSchema } from "@/db/schema";
@@ -8,6 +10,7 @@ import GoogleProvider from "next-auth/providers/google";
 import DiscordProvider from "next-auth/providers/discord";
 import { resend } from "@/lib/resend";
 import SignInEmail from "@/emails/sign-in";
+import WelcomeEmail from "@/emails/welcome";
 
 export const authOptions: AuthOptions = {
   adapter: DrizzleAdapter(db),
@@ -98,6 +101,23 @@ export const authOptions: AuthOptions = {
       session.image = token.image;
 
       return session;
+    },
+  },
+  events: {
+    async signIn({ isNewUser, user }) {
+      // Send welcome email
+      if (isNewUser && user.email) {
+        try {
+          await resend.emails.send({
+            from: process.env.EMAIL_FROM as string,
+            to: user.email,
+            subject: "Welcome to Guess Astro",
+            react: WelcomeEmail(),
+          });
+        } catch (error) {
+          console.log({ error });
+        }
+      }
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
