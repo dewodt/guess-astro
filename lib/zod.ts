@@ -13,7 +13,14 @@ export const signInSchema = z.object({
 // 3. undefined: User didn't upload a new image
 export const registerOrUpdateUserSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  username: z.string().min(3, "Username must be at least 3 characters"),
+  username: z
+    .string()
+    .min(3, "Username must be at least 3 characters")
+    .max(30, "Username must be at most 30 characters")
+    .regex(
+      /^[A-Za-z0-9]+$/,
+      "Username can only contain alphanumeric characters"
+    ),
   image: z
     .custom<File | "DELETE">()
     .refine((file) => {
