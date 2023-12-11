@@ -73,7 +73,7 @@ const Home = () => {
   ];
 
   return (
-    <main className="flex flex-auto flex-col items-center justify-center gap-20 px-6 py-16 sm:p-12 lg:gap-36 lg:pb-52 lg:pt-28">
+    <main className="flex flex-auto flex-col items-center justify-center gap-20 px-6 py-16 sm:p-12 lg:gap-36 lg:px-24 lg:pb-52 lg:pt-28">
       {/* Hero Section */}
       <section className="flex max-w-7xl flex-col-reverse items-center gap-6 sm:flex-row lg:gap-16">
         {/* Hero Texts */}
