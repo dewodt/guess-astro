@@ -7,7 +7,7 @@ import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 import DiscordProvider from "next-auth/providers/discord";
 import { resend } from "@/lib/resend";
-import SignInTemplate from "@/emails/sign-in-template";
+import SignInEmail from "@/emails/sign-in";
 
 export const authOptions: AuthOptions = {
   adapter: DrizzleAdapter(db),
@@ -20,8 +20,8 @@ export const authOptions: AuthOptions = {
           await resend.emails.send({
             from: provider.from,
             to: identifier,
-            subject: "Verify request to Guess Astro",
-            react: SignInTemplate({ url: url }),
+            subject: "Verify Request to Guess Astro",
+            react: SignInEmail({ url: url }),
           });
         } catch (error) {
           console.log({ error });

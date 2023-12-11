@@ -87,7 +87,7 @@ const Home = () => {
           </p>
           <Link href="/play">
             <Button size="lg">
-              Play now
+              Play Now
               <ArrowRight className="ml-1 h-5 w-5" />
             </Button>
           </Link>

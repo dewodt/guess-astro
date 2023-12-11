@@ -14,7 +14,7 @@ import {
   Section,
 } from "@react-email/components";
 
-const SignInTemplate = ({ url }: { url: string }) => {
+const SignInEmail = ({ url }: { url: string }) => {
   return (
     <Html>
       <Head>
@@ -57,7 +57,7 @@ const SignInTemplate = ({ url }: { url: string }) => {
               </Heading>
 
               {/* Description */}
-              <Text className="mb-6 text-left text-base">
+              <Text className="my-5 text-left text-base">
                 Click this button below if you want to verify sign in / sign up
                 request to Guess Astro! After you clicked this, you will be
                 signed in and redirected to the app.
@@ -72,11 +72,11 @@ const SignInTemplate = ({ url }: { url: string }) => {
               </Button>
 
               {/* Warning */}
-              <Text className="mt-6 text-left text-base font-semibold text-red-500">
+              <Text className="my-5 text-left text-base font-semibold text-red-500">
                 *If you didn&apos;t request this, please ignore this email!*
               </Text>
 
-              <Hr className="mb-5" />
+              <Hr className="my-5" />
 
               {/* Footer */}
               <Text className="my-0 text-left text-sm">
@@ -90,4 +90,4 @@ const SignInTemplate = ({ url }: { url: string }) => {
   );
 };
 
-export default SignInTemplate;
+export default SignInEmail;
