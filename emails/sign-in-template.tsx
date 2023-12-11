@@ -1,16 +1,18 @@
-import { Html } from "@react-email/html";
-import { Head } from "@react-email/head";
-import { Container } from "@react-email/container";
-import { Heading } from "@react-email/heading";
-import { Text } from "@react-email/text";
-import { Tailwind } from "@react-email/tailwind";
-import { Button } from "@react-email/button";
-import { Hr } from "@react-email/hr";
-import { Img } from "@react-email/img";
-import { Preview } from "@react-email/preview";
-import { Font } from "@react-email/font";
-import { Section } from "@react-email/section";
-import { Column } from "@react-email/column";
+import {
+  Html,
+  Head,
+  Body,
+  Container,
+  Heading,
+  Text,
+  Tailwind,
+  Button,
+  Hr,
+  Img,
+  Preview,
+  Font,
+  Section,
+} from "@react-email/components";
 
 const SignInTemplate = ({ url }: { url: string }) => {
   return (
@@ -34,42 +36,55 @@ const SignInTemplate = ({ url }: { url: string }) => {
         this email!
       </Preview>
       <Tailwind>
-        <Container>
-          <Section className="text-center">
-            <Heading className="text-left">
-              Verify request to Guess Astro
-            </Heading>
-            <Text className="text-left">
-              Click this button below if you want to verify sign in / sign up
-              request to Guess Astro! After you clicked this, you will be signed
-              in and redirected to the app.
-            </Text>
-            <Button
-              href={url}
-              className="cursor-pointer rounded-md bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white hover:bg-[#2563EB]/90"
-            >
-              Verify Request
-            </Button>
-            <Text className="text-left font-semibold text-red-500">
-              If you didn&apos;t request this, please ignore this email!
-            </Text>
-          </Section>
-
-          <Hr className="mb-5" />
-
-          <Section className="text-center">
-            <Column align="center">
+        <Body className="bg-white">
+          <Container className="mx-auto pb-12 pt-5">
+            {/* Logo Section */}
+            <Section className="mx-auto mb-2">
               <Img
-                src={`https://astro.dewodt.com/guess-astro.png`}
+                src="https://astro.dewodt.com/guess-astro-full.png"
                 alt="Guess Astro Logo"
-                width={32}
-                height={32}
-                className="text-center"
+                className="mx-auto rounded-md"
+                width={300}
+                height={158}
               />
-              <Text>Guess Astro</Text>
-            </Column>
-          </Section>
-        </Container>
+            </Section>
+
+            {/* Content Section */}
+            <Section className="text-center">
+              {/* Title */}
+              <Heading as="h1" className="text-left text-2xl">
+                Verify Request to Guess Astro
+              </Heading>
+
+              {/* Description */}
+              <Text className="mb-6 text-left text-base">
+                Click this button below if you want to verify sign in / sign up
+                request to Guess Astro! After you clicked this, you will be
+                signed in and redirected to the app.
+              </Text>
+
+              {/* Magic Link */}
+              <Button
+                href={url}
+                className="cursor-pointer rounded-md bg-[#2563EB] px-6 py-4 text-sm font-semibold text-white hover:bg-[#2563EB]/90"
+              >
+                Verify Request
+              </Button>
+
+              {/* Warning */}
+              <Text className="mt-6 text-left text-base font-semibold text-red-500">
+                *If you didn&apos;t request this, please ignore this email!*
+              </Text>
+
+              <Hr className="mb-5" />
+
+              {/* Footer */}
+              <Text className="my-0 text-left text-sm">
+                Copyright © 2023 Guess Astro
+              </Text>
+            </Section>
+          </Container>
+        </Body>
       </Tailwind>
     </Html>
   );

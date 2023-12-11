@@ -85,7 +85,7 @@ const NavBar = ({
         <Image
           width={40}
           height={40}
-          src="/guess-astro.png"
+          src="/guess-astro-logo.png"
           alt="Guess Astro Logo"
         />
       </Link>

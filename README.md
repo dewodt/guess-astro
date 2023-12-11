@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://astro.dewodt.com/opengraph-image.png" alt="Guess Astro" width="500">
+<img src="https://astro.dewodt.com/guess-astro-full.png" alt="Guess Astro" width="500">
 </p>
 
 # 🔭 Short Description
