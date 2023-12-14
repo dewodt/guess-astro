@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useRef } from "react";
+import { type Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Loader2, Trash2, User, UserCircle2 } from "lucide-react";
@@ -21,27 +22,31 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import ProfileLoadingPage from "./profile-loading";
 import { UserAction } from "@/actions/user";
 
-const ProfileForm = () => {
+const ProfileForm = ({ session }: { session: Session }) => {
   // Router
   const router = useRouter();
 
   // Session
-  const { data: session, update, status } = useSession();
-  const isLoadingSession = status === "loading";
+  const { update } = useSession();
 
   // Toast initailization
   const { toast } = useToast();
+
+  // File input ref
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Form Hooks
   const form = useForm<z.infer<typeof registerOrUpdateUserSchema>>({
     resolver: zodResolver(registerOrUpdateUserSchema),
     defaultValues: {
+      name: session.name!,
+      username: session.username!,
       image: null,
     },
   });
+
   const {
     control,
     handleSubmit,
@@ -50,18 +55,6 @@ const ProfileForm = () => {
     reset,
     formState: { isSubmitting, isDirty },
   } = form;
-
-  // Set default value after session loaded.
-  // Can't use defaultValues in useForm because it is undefined at first.
-  useEffect(() => {
-    if (!isLoadingSession) {
-      reset({
-        username: session?.username as string,
-        name: session?.name as string,
-        image: null,
-      });
-    }
-  }, [session, reset, isLoadingSession]);
 
   // Form Submit Handler (After validated with zod)
   const onSubmit = async (
@@ -120,14 +113,12 @@ const ProfileForm = () => {
       duration: 5000,
     });
 
+    // Reset form
+    reset();
+
     // Refresh router
     router.refresh();
   };
-
-  // Loading skeleton
-  if (isLoadingSession) {
-    return <ProfileLoadingPage />;
-  }
 
   // Finished loading
   return (
@@ -162,16 +153,27 @@ const ProfileForm = () => {
                     <FormLabel>Avatar</FormLabel>
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                       {/* Avatar Preview */}
-                      <Avatar className="h-20 w-20">
-                        <AvatarImage
-                          src={uploadedAvatarUrl}
-                          alt="Avatar Upload Preview"
-                          className="object-cover object-center"
-                        />
-                        <AvatarFallback>
-                          <UserCircle2 className="h-full w-full stroke-gray-500 stroke-1" />
-                        </AvatarFallback>
-                      </Avatar>
+                      <div
+                        className={`${
+                          isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
+                        }`}
+                      >
+                        <Avatar
+                          onClick={() => fileInputRef!.current!.click()}
+                          className={`h-20 w-20 ${
+                            isSubmitting && "pointer-events-none"
+                          }`}
+                        >
+                          <AvatarImage
+                            src={uploadedAvatarUrl}
+                            alt="Avatar Upload Preview"
+                            className="object-cover object-center"
+                          />
+                          <AvatarFallback>
+                            <UserCircle2 className="h-full w-full stroke-gray-500 stroke-1" />
+                          </AvatarFallback>
+                        </Avatar>
+                      </div>
 
                       <div className="flex flex-row gap-4">
                         {/* File Upload */}
@@ -185,35 +187,44 @@ const ProfileForm = () => {
                               type="file"
                               accept="image/*"
                               readOnly={isSubmitting}
-                              className={`${
+                              className={`cursor-pointer ${
                                 isSubmitting && "pointer-events-none"
                               }`}
                               onChange={(e) => {
                                 onChange(e.target.files![0] ?? null);
                               }}
+                              ref={fileInputRef}
                               {...field}
                             />
                           </div>
                         </FormControl>
 
                         {/* File Delete */}
-                        <Button
-                          type="reset"
-                          variant="destructive"
-                          size="icon"
-                          className="flex-none"
-                          disabled={
-                            uploadedAvatar === "DELETE" || // Current avatar / file is deleted
-                            (uploadedAvatar === null && !session?.image) || // Initial state and there's no image in current session
-                            isSubmitting // Submitting form
-                          }
-                          onClick={() =>
-                            // Should dirty must be true to trigger form changes.
-                            setValue("image", "DELETE", { shouldDirty: true })
-                          }
+                        <div
+                          className={`${
+                            isSubmitting
+                              ? "cursor-not-allowed"
+                              : "cursor-pointer"
+                          }`}
                         >
-                          <Trash2 className="h-5 w-5" />
-                        </Button>
+                          <Button
+                            type="reset"
+                            variant="destructive"
+                            size="icon"
+                            className="flex-none"
+                            disabled={
+                              uploadedAvatar === "DELETE" || // Current avatar / file is deleted
+                              (uploadedAvatar === null && !session?.image) || // Initial state and there's no image in current session
+                              isSubmitting // Submitting form
+                            }
+                            onClick={() =>
+                              // Should dirty must be true to trigger form changes.
+                              setValue("image", "DELETE", { shouldDirty: true })
+                            }
+                          >
+                            <Trash2 className="h-5 w-5" />
+                          </Button>
+                        </div>
                       </div>
                     </div>
                     <FormMessage />
