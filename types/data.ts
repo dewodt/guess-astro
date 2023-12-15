@@ -25,6 +25,12 @@ export type LeaderboardData = {
 }[];
 
 export type StatisticsData = {
-  title: string;
-  value: string;
-}[];
+  chartData: {
+    month: string;
+    score: number;
+  }[];
+  numberData: {
+    title: string;
+    value: string;
+  }[];
+};

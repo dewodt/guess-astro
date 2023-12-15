@@ -7,6 +7,7 @@ import { and, desc, eq, sql } from "drizzle-orm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth-options";
 import { match, user } from "@/db/schema";
+import { getShortMonth } from "@/lib/utils";
 
 // Get users data statistics of a certain mode
 // Return score, leaderboard rank, current streak, highest streak, win rate, match played
@@ -94,30 +95,66 @@ export const getStatisticsData = async (
   const winRate =
     matchPlayed !== 0 ? `${((score / matchPlayed) * 100).toFixed(2)}%` : "0%";
 
-  return [
-    {
-      title: "Score",
-      value: score.toString(),
-    },
-    {
-      title: "Leaderboard Rank",
-      value: rank.toString(),
-    },
-    {
-      title: "Current Streak",
-      value: currentStreak.toString(),
-    },
-    {
-      title: "Highest Streak",
-      value: highestStreak.toString(),
-    },
-    {
-      title: "Win Rate",
-      value: winRate,
-    },
-    {
-      title: "Match Played",
-      value: matchPlayed.toString(),
-    },
-  ];
+  // Get this year's user match statistics per month, group per month using the character (e.g. Jan, Feb, ect) and count frequency
+  // Note: if no acticity, then no data will be returned
+  const userMatchesThisYearDirty = await db
+    .select({
+      month: sql<string>`extract(month from ${match.createdAt})`.as("month"),
+      count: sql<string>`count(${match.id})`.as("count"),
+    })
+    .from(match)
+    .where(
+      and(
+        eq(match.userId, session!.id),
+        eq(match.mode, mode),
+        eq(
+          sql<string>`extract(year from ${match.createdAt})`,
+          sql<string>`extract(year from now())`
+        )
+      )
+    )
+    .groupBy(sql<string>`extract(month from ${match.createdAt})`);
+
+  // Clean the data, get all 12 months and fill the missing month with 0
+  const userMatchesThisYearClean = Array.from({ length: 12 }, (_, i) => {
+    const month = userMatchesThisYearDirty.find(
+      // Note: month in sql starts from 1, but in js starts from 0
+      (m) => parseInt(m.month) == i + 1
+    );
+
+    return {
+      month: getShortMonth(i),
+      score: month ? parseInt(month.count) : 0,
+    };
+  });
+
+  return {
+    chartData: userMatchesThisYearClean,
+    numberData: [
+      {
+        title: "Score",
+        value: score.toString(),
+      },
+      {
+        title: "Leaderboard Rank",
+        value: rank.toString(),
+      },
+      {
+        title: "Win Rate",
+        value: winRate,
+      },
+      {
+        title: "Match Played",
+        value: matchPlayed.toString(),
+      },
+      {
+        title: "Current Streak",
+        value: currentStreak.toString(),
+      },
+      {
+        title: "Highest Streak",
+        value: highestStreak.toString(),
+      },
+    ],
+  };
 };

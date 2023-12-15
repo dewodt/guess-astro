@@ -25,6 +25,13 @@ export const getFormattedDate = (date: Date) => {
   }).format(date);
 };
 
+// Convert month to string (0 -> Jan, 1 -> Feb, ect)
+export const getShortMonth = (month: number) => {
+  const date = new Date();
+  date.setMonth(month);
+  return date.toLocaleString("en-US", { month: "short" });
+};
+
 export const getZodParseErrorPaths = <T>(zodParseResult: SafeParseError<T>) => {
   // Get each path of error and add them to an array (unique)
   const errors = zodParseResult.error.errors.map((error) => {
