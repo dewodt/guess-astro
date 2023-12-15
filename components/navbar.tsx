@@ -169,7 +169,7 @@ const NavBar = ({
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Link href="/sign-in" aria-label="Sign In">
+              <Link href="/auth/sign-in" aria-label="Sign In">
                 <Button
                   variant="default"
                   size="lg"
@@ -215,7 +215,7 @@ const NavBar = ({
 
         {/* Sign In button when there's no session */}
         {!session && (
-          <Link href="/sign-in" className="self-center" aria-label="Sign In">
+          <Link href="/auth/sign-in" className="self-center" aria-label="Sign In">
             <Button
               variant="default"
               size="lg"

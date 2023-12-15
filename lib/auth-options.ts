@@ -126,8 +126,10 @@ export const authOptions: AuthOptions = {
     maxAge: 86400, // Time since **IDLE**
   },
   pages: {
-    signIn: "/sign-in",
-    verifyRequest: "/verify-request",
-    newUser: "/register",
+    signIn: "/auth/sign-in",
+    verifyRequest: "/auth/verify-request",
+    newUser: "/auth/register",
+    signOut: "/auth/sign-out",
+    error: "/auth/error",
   },
 };

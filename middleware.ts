@@ -7,11 +7,11 @@ export default withAuth(
     const reqPath = req.nextUrl.pathname;
     const token = req.nextauth.token;
 
-    const unAuthenticatedRoute = ["/sign-in", "/verify-request"];
+    const unAuthenticatedRoute = ["/auth/sign-in", "/auth/verify-request"];
     const authenticatedRoute = [
       "/settings",
       "/play/",
-      "/register",
+      "/auth/register",
       "/statistics",
     ];
 
@@ -19,16 +19,16 @@ export default withAuth(
 
     // Non signed in user requests for authenticated only page
     if (!token && authenticatedRoute.some((path) => reqPath.startsWith(path))) {
-      return NextResponse.redirect(new URL("/sign-in", req.nextUrl));
+      return NextResponse.redirect(new URL("/auth/sign-in", req.nextUrl));
     }
 
     // Non Registered user (data is not complete, name and username is empty) requests for non register page
     if (
       token &&
       (!token.name || !token.username) &&
-      !reqPath.startsWith("/register")
+      !reqPath.startsWith("/auth/register")
     ) {
-      return NextResponse.redirect(new URL("/register", req.nextUrl));
+      return NextResponse.redirect(new URL("/auth/register", req.nextUrl));
     }
 
     // Registered user (data is complete, name and username is not empty) requests for register page
@@ -36,7 +36,7 @@ export default withAuth(
       token &&
       token.name &&
       token.username &&
-      reqPath.startsWith("/register")
+      reqPath.startsWith("/auth/register")
     ) {
       return NextResponse.redirect(new URL("/", req.nextUrl));
     }

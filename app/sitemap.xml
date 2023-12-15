@@ -10,7 +10,7 @@
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>https://astro.dewodt.com/sign-in</loc>
+  <loc>https://astro.dewodt.com/auth/sign-in</loc>
   <lastmod>2023-10-18T19:59:58+00:00</lastmod>
   <priority>0.80</priority>
 </url>
