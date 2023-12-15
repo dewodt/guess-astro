@@ -1,5 +1,7 @@
 import { type Metadata } from "next";
 import RegisterForm from "./register-form";
+import { getServerSession, type Session } from "next-auth";
+import { authOptions } from "@/lib/auth-options";
 
 export const metadata: Metadata = {
   title: "Register | Guess Astro",
@@ -27,10 +29,13 @@ export const metadata: Metadata = {
   },
 };
 
-const RegisterPage = () => {
+const RegisterPage = async () => {
+  // Get session from server (note: already validated in middleware)
+  const session = (await getServerSession(authOptions)) as Session;
+
   return (
     <main className="flex flex-auto items-center justify-center p-6 py-12 sm:p-12 lg:p-24">
-      <RegisterForm />
+      <RegisterForm session={session} />
     </main>
   );
 };
