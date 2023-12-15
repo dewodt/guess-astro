@@ -123,9 +123,9 @@ const NavBar = ({
             {/* Profile dropdown when there's session */}
             {session ? (
               <DropdownMenu>
-                <DropdownMenuTrigger>
+                <DropdownMenuTrigger className="h-11 w-11 rounded-full border-4 border-transparent hover:border-border data-[state=open]:border-4 data-[state=open]:border-border">
                   {/* Avatar */}
-                  <Avatar>
+                  <Avatar className="h-full w-full">
                     <AvatarImage
                       src={session.image!}
                       alt="Avatar Image"
