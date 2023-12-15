@@ -12,6 +12,7 @@ export default withAuth(
       "/settings",
       "/play/",
       "/auth/register",
+      "/auth/sign-out",
       "/statistics",
     ];
 
