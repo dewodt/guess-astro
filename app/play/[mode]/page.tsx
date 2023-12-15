@@ -1,7 +1,5 @@
 import { type Metadata } from "next";
-import { notFound } from "next/navigation";
 import { getRandomInt, getTitleCase } from "@/lib/utils";
-import { modes } from "@/lib/constants";
 import type { ModesType } from "@/types/constants";
 import { getGameData } from "@/data/game";
 import PlayForm from "./play-form";
@@ -15,11 +13,6 @@ export const generateMetadata = ({
 }: {
   params: { mode: ModesType };
 }): Metadata => {
-  // If params is not valid (mode is not available)
-  if (!modes.includes(mode)) {
-    return notFound();
-  }
-
   // Return title
   const modeTitle = getTitleCase(mode);
 
@@ -55,12 +48,8 @@ const PlayMatchPage = async ({
 }: {
   params: { mode: ModesType };
 }) => {
-  // If params is not valid (mode is not available)
-  if (!modes.includes(mode)) {
-    return notFound();
-  }
-
   // Get game data
+  // Note: mode is already validated in middleware
   const data = await getGameData(mode);
 
   // Get image rotation data

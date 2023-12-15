@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { withAuth } from "next-auth/middleware";
+import { modes } from "./lib/constants";
+import { ModesType } from "./types/constants";
 
 export default withAuth(
   // `withAuth` augments your `Request` with the user's token.
@@ -69,6 +71,20 @@ export default withAuth(
       return NextResponse.redirect(
         new URL("/statistics/constellation", req.nextUrl)
       );
+    }
+
+    // VALIDATE MODE WHEN REQUESTING /STATISTICS/[], /LEADERBOARD/[MODE], AND /PLAY/[MODE]
+    if (
+      reqPath.startsWith("/statistics/") ||
+      reqPath.startsWith("/leaderboard/") ||
+      reqPath.startsWith("/play/")
+    ) {
+      const mode = reqPath.split("/")[2] as ModesType;
+
+      // Invalid mode
+      if (!modes.includes(mode)) {
+        return NextResponse.error();
+      }
     }
 
     return NextResponse.next();

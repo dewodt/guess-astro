@@ -1,8 +1,6 @@
-import { notFound } from "next/navigation";
 import { type Metadata } from "next";
 import { getTitleCase } from "@/lib/utils";
 import { ModesType } from "@/types/constants";
-import { modes } from "@/lib/constants";
 import { getLeaderboardData } from "@/data/leaderboard";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { LeaderboardRow } from "./leaderboard-row";
@@ -21,11 +19,6 @@ export const generateMetadata = ({
 }: {
   params: { mode: ModesType };
 }): Metadata => {
-  // If params is not valid (mode is not available)
-  if (!modes.includes(mode)) {
-    return notFound();
-  }
-
   // Return title
   const modeTitle = getTitleCase(mode);
 
@@ -64,15 +57,11 @@ const LeaderboardPage = async ({
 }: {
   params: { mode: ModesType };
 }) => {
-  // If params is not valid (mode is not available)
-  if (!modes.includes(mode)) {
-    return notFound();
-  }
-
   // Get mode title
   const modeTitle = getTitleCase(mode);
 
   // Get leaderboard data
+  // Note: mode is already validated in middleware
   const data = await getLeaderboardData(mode);
 
   return (

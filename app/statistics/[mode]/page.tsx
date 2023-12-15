@@ -3,8 +3,6 @@ import { getTitleCase } from "@/lib/utils";
 import { getStatisticsData } from "@/data/statistics";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { ModesType } from "@/types/constants";
-import { modes } from "@/lib/constants";
-import { notFound } from "next/navigation";
 
 // Force dynamic page
 export const dynamic = "force-dynamic";
@@ -15,11 +13,6 @@ export const generateMetadata = ({
 }: {
   params: { mode: ModesType };
 }): Metadata => {
-  // If params is not valid (mode is not available)
-  if (!modes.includes(mode)) {
-    return notFound();
-  }
-
   // Return title
   const modeTitle = getTitleCase(mode);
 
@@ -55,11 +48,8 @@ const StatisticsPage = async ({
 }: {
   params: { mode: ModesType };
 }) => {
-  // If params is not valid (mode is not available)
-  if (!modes.includes(mode)) {
-    return notFound();
-  }
-
+  // Get data
+  // Note: mode is already validated in middleware
   const data = await getStatisticsData(mode);
 
   return (
