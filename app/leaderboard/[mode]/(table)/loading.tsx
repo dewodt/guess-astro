@@ -22,14 +22,14 @@ const LeaderboardLoadingPage = () => {
               {/* Header */}
               <TableHeader>
                 <TableRow>
-                  <TableHead className="px-8">
-                    <Skeleton className="h-5 w-9" />
+                  <TableHead className="pl-10 pr-6">
+                    <Skeleton className="h-5 w-8" />
                   </TableHead>
-                  <TableHead className="w-full px-8">
+                  <TableHead className="w-full px-6">
                     <Skeleton className="h-5 w-32" />
                   </TableHead>
-                  <TableHead className="px-8">
-                    <Skeleton className="h-5 w-12" />
+                  <TableHead className="pl-6 pr-10">
+                    <Skeleton className="h-5 w-10" />
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -39,14 +39,14 @@ const LeaderboardLoadingPage = () => {
                 {/* Create 3 skeleton rows */}
                 {Array.from({ length: 10 }, (_, i) => i).map((_, idx) => (
                   <TableRow key={idx}>
-                    <TableCell className="px-8">
-                      <Skeleton className="h-5 w-9" />
+                    <TableCell className="pl-10 pr-6">
+                      <Skeleton className="h-5 w-8" />
                     </TableCell>
-                    <TableCell className="w-full px-8">
+                    <TableCell className="w-full px-6">
                       <Skeleton className="h-5 w-32" />
                     </TableCell>
-                    <TableCell className="px-8">
-                      <Skeleton className="h-5 w-12" />
+                    <TableCell className="pl-6 pr-10">
+                      <Skeleton className="h-5 w-10" />
                     </TableCell>
                   </TableRow>
                 ))}

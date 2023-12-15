@@ -5,15 +5,15 @@ import { ModesType } from "@/types/constants";
 import { modes } from "@/lib/constants";
 import { getLeaderboardData } from "@/data/leaderboard";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { LeaderboardRow } from "./leaderboard-row";
 import {
   Table,
   TableBody,
+  TableRow,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
 } from "@/components/ui/table";
-import Link from "next/link";
 
 // Generate dynamic metadata
 export const generateMetadata = ({
@@ -87,9 +87,11 @@ const LeaderboardPage = async ({
               {/* Header */}
               <TableHeader>
                 <TableRow>
-                  <TableHead className="px-8 text-center">Rank</TableHead>
-                  <TableHead className="w-full px-8">Username</TableHead>
-                  <TableHead className="px-8 text-center">Score</TableHead>
+                  <TableHead className="pl-10 pr-6 text-center">Rank</TableHead>
+                  <TableHead className="w-full px-6">Username</TableHead>
+                  <TableHead className="pl-6 pr-10 text-center">
+                    Score
+                  </TableHead>
                 </TableRow>
               </TableHeader>
 
@@ -97,22 +99,20 @@ const LeaderboardPage = async ({
               <TableBody>
                 {data.map((user, idx) => {
                   return (
-                    <TableRow key={user.id}>
-                      <TableCell className="px-8 text-center font-medium">
+                    <LeaderboardRow
+                      key={user.id}
+                      href={`/user/${user.username}`}
+                    >
+                      <TableCell className="pl-10 pr-6 text-center font-medium">
                         {idx + 1}
                       </TableCell>
-                      <TableCell className="w-full px-8">
-                        <Link
-                          href={`/user/${user.username}`}
-                          className="hover:underline"
-                        >
-                          {user.username}
-                        </Link>
+                      <TableCell className="w-full px-6">
+                        {user.username}
                       </TableCell>
-                      <TableCell className="px-8 text-center">
+                      <TableCell className="pl-6 pr-10 text-center">
                         {user.score}
                       </TableCell>
-                    </TableRow>
+                    </LeaderboardRow>
                   );
                 })}
               </TableBody>
