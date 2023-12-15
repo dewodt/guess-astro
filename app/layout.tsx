@@ -5,8 +5,8 @@ import { Inter } from "next/font/google";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { ThemeProvider } from "next-themes";
-import NavBar from "@/components/navbar";
-import Footer from "@/components/footer";
+import NavBar from "@/components/ui/navbar";
+import Footer from "@/components/ui/footer";
 import { Toaster } from "@/components/ui/toaster";
 import { SessionProvider } from "next-auth/react";
 

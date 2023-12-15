@@ -16,9 +16,9 @@ import {
   Settings,
   BarChart3,
 } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "./button";
 import { signOut, useSession } from "next-auth/react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,7 +26,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   DropdownMenuItem,
-} from "./ui/dropdown-menu";
+} from "./dropdown-menu";
 
 const NavBar = ({
   navBarExpanded,
@@ -215,7 +215,11 @@ const NavBar = ({
 
         {/* Sign In button when there's no session */}
         {!session && (
-          <Link href="/auth/sign-in" className="self-center" aria-label="Sign In">
+          <Link
+            href="/auth/sign-in"
+            className="self-center"
+            aria-label="Sign In"
+          >
             <Button
               variant="default"
               size="lg"
