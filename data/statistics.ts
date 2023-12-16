@@ -18,9 +18,9 @@ export const getStatisticsData = async (
   // User's session is already validated via middleware.
   const session = await getServerSession(authOptions);
 
-  // Get user's leaderboard rank
-  // Need to compare to other user's data
-  // Subquery to get all user's rank
+  // Get user's leaderboard rank and score
+  // Need to compare to other user's data but not fetch all user's data (waste of resource)
+  // Subquery to get all user's rank and score
   // Left join and group by user id and username to count the score
   const sq = db
     .select({
@@ -43,13 +43,13 @@ export const getStatisticsData = async (
     .groupBy(user.id, user.username)
     .orderBy(desc(sql<number>`count(${match.id})`))
     .as("sq");
-  // Query to get specific user's rank
+  // Query to get specific user's rank and score
   const userLeaderboard = db.select().from(sq).where(eq(sq.id, session!.id));
 
-  // Get user's matches, total match played, streak, and current streak.
+  // Get user's matches, total match played, streak, current streak, and chart graph.
   // Don't need to compare to other user's data
   const userMatches = db
-    .select({ id: match.id, result: match.result })
+    .select({ id: match.id, result: match.result, createdAt: match.createdAt })
     .from(match)
     .where(and(eq(match.userId, session!.id), eq(match.mode, mode)))
     .orderBy(desc(match.createdAt));
@@ -96,41 +96,25 @@ export const getStatisticsData = async (
   const winRate =
     matchPlayed !== 0 ? `${((score / matchPlayed) * 100).toFixed(2)}%` : "0%";
 
-  // Get this year's user match statistics per month, group per month using the character (e.g. Jan, Feb, ect) and count frequency
-  // Note: if no acticity, then no data will be returned
-  const userMatchesThisYearDirty = await db
-    .select({
-      month: sql<string>`extract(month from ${match.createdAt})`.as("month"),
-      count: sql<string>`count(${match.id})`.as("count"),
-    })
-    .from(match)
-    .where(
-      and(
-        eq(match.userId, session!.id),
-        eq(match.mode, mode),
-        eq(
-          sql<string>`extract(year from ${match.createdAt})`,
-          sql<string>`extract(year from now())`
-        )
-      )
-    )
-    .groupBy(sql<string>`extract(month from ${match.createdAt})`);
-
-  // Clean the data, get all 12 months and fill the missing month with 0
-  const userMatchesThisYearClean = Array.from({ length: 12 }, (_, i) => {
-    const month = userMatchesThisYearDirty.find(
-      // Note: month in sql starts from 1, but in js starts from 0
-      (m) => parseInt(m.month) == i + 1
-    );
-
+  // Get chart data
+  // Initialize chart array with 0 score
+  const chartData = Array.from({ length: 12 }, (_, i) => {
     return {
       month: getShortMonth(i),
-      score: month ? parseInt(month.count) : 0,
+      score: 0,
     };
   });
 
+  // Count win matches per month
+  matches.forEach((m) => {
+    if (m.result === "win" && m.createdAt) {
+      const month = m.createdAt.getMonth();
+      chartData[month].score += 1;
+    }
+  });
+
   return {
-    chartData: userMatchesThisYearClean,
+    chartData: chartData,
     numberData: [
       {
         title: "Score",
