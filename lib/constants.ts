@@ -9,3 +9,6 @@ export const allowedImagesTypes = [
 
 // Game modes
 export const modes = ["constellation", "messier"] as const;
+
+// Match result enum
+export const matchResults = ["win", "lose"] as const;

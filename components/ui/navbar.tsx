@@ -15,6 +15,7 @@ import {
   UserCircle2,
   Settings,
   BarChart3,
+  History,
 } from "lucide-react";
 import { Button } from "./button";
 import { signOut, useSession } from "next-auth/react";
@@ -155,6 +156,14 @@ const NavBar = ({
                     <DropdownMenuItem>
                       <BarChart3 className="mr-2 h-4 w-4" />
                       Statistics
+                    </DropdownMenuItem>
+                  </Link>
+
+                  {/* History */}
+                  <Link href="/history/constellation">
+                    <DropdownMenuItem>
+                      <History className="mr-2 h-4 w-4" />
+                      History
                     </DropdownMenuItem>
                   </Link>
 

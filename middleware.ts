@@ -11,6 +11,7 @@ export default withAuth(
 
     const unAuthenticatedRoute = ["/auth/sign-in", "/auth/verify-request"];
     const authenticatedRoute = [
+      "/history",
       "/settings",
       "/play/",
       "/auth/register",
@@ -73,11 +74,19 @@ export default withAuth(
       );
     }
 
+    // If User requests /history, redirect to /history/constellation
+    if (reqPath === "/history") {
+      return NextResponse.redirect(
+        new URL("/history/constellation", req.nextUrl)
+      );
+    }
+
     // VALIDATE MODE WHEN REQUESTING /STATISTICS/[], /LEADERBOARD/[MODE], AND /PLAY/[MODE]
     if (
       reqPath.startsWith("/statistics/") ||
       reqPath.startsWith("/leaderboard/") ||
-      reqPath.startsWith("/play/")
+      reqPath.startsWith("/play/") ||
+      reqPath.startsWith("/history/")
     ) {
       const mode = reqPath.split("/")[2] as ModesType;
 

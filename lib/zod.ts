@@ -1,5 +1,10 @@
 import * as z from "zod";
-import { maxImageSize, allowedImagesTypes, modes } from "./constants";
+import {
+  maxImageSize,
+  allowedImagesTypes,
+  modes,
+  matchResults,
+} from "./constants";
 
 // Sign in user
 export const signInSchema = z.object({
@@ -45,4 +50,15 @@ export const MatchAnswerSchema = z.object({
   answer: z.string({
     required_error: "Please select an answer",
   }),
+});
+
+// Search Params Schema for data-table
+export const dataTableSearchParamsSchema = z.object({
+  page: z.string().default("1"),
+  per_page: z.string().default("10"),
+  sort: z.string().optional(),
+  operator: z.string().optional(),
+  result: z.enum(matchResults).optional(),
+  dateStart: z.string().optional(),
+  dateEnd: z.string().optional(),
 });
