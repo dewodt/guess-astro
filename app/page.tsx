@@ -5,8 +5,9 @@ import Link from "next/link";
 import {
   ArrowRight,
   BarChart3,
-  RotateCcw,
   ScrollText,
+  Shuffle,
+  History,
   Sparkles,
 } from "lucide-react";
 import {
@@ -48,27 +49,33 @@ const Home = () => {
   const features = [
     {
       icon: <Sparkles className="h-8 w-8 stroke-primary" />,
-      title: "Various astronomical objects",
+      title: "Various Astronomical Objects",
       description:
         "There are various modes to play with such as constellation and messier mode!",
     },
     {
-      icon: <RotateCcw className="h-8 w-8 stroke-primary" />,
+      icon: <Shuffle className="h-8 w-8 stroke-primary" />,
       title: "Randomized Image Rotation",
       description:
         "The image rotation is randomized so you can't just 'memorize' the image of the object!",
-    },
-    {
-      icon: <BarChart3 className="h-8 w-8 stroke-primary" />,
-      title: "Statistics",
-      description:
-        "See your statistics like score, current streak, highest streak, rank, accuracy, and more!",
     },
     {
       icon: <ScrollText className="h-8 w-8 stroke-primary" />,
       title: "Leaderboard",
       description:
         "Compete with other players to get the highest score in the leaderboard for different mode!",
+    },
+    {
+      icon: <BarChart3 className="h-8 w-8 stroke-primary" />,
+      title: "Statistics",
+      description:
+        "See your statistics like score, current streak, highest streak, rank, accuracy, activity charts, and more!",
+    },
+    {
+      icon: <History className="h-8 w-8 stroke-primary" />,
+      title: "History",
+      description:
+        "Review your gameplay trajectory effortlessly so that you can analyze the matches you've ever played.",
     },
   ];
 
@@ -108,9 +115,12 @@ const Home = () => {
         <h2 className="text-center text-3xl font-bold lg:text-5xl">
           Epic Features.
         </h2>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:gap-8">
+        <div className="flex flex-row flex-wrap justify-center gap-6 lg:gap-8">
           {features.map((feature, index) => (
-            <Card key={index} className="flex flex-row gap-5 p-5 shadow-lg">
+            <Card
+              key={index}
+              className="flex w-full flex-row gap-5 p-5 shadow-lg sm:w-[calc(50%-12px)] lg:w-[calc(50%-16px)]"
+            >
               <CardContent className="flex items-center p-0">
                 {feature.icon}
               </CardContent>
