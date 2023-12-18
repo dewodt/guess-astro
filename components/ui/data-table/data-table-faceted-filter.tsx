@@ -1,7 +1,6 @@
 import type { Option } from "@/types/data-table";
 import { Check, PlusCircle } from "lucide-react";
 import { type Column } from "@tanstack/react-table";
-
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -41,7 +40,7 @@ export function DataTableFacetedFilter<TData, TValue>({
       {variant === "popover" ? (
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="outline" size="sm" className="h-8 border-dashed">
+            <Button variant="outline" className="border-dashed px-3">
               <PlusCircle className="mr-2 h-4 w-4" />
               {title}
               {selectedValues?.size > 0 && (
@@ -145,7 +144,6 @@ export function DataTableFacetedFilter<TData, TValue>({
           <CommandInput
             placeholder={title}
             autoFocus={true}
-            // showIcon={false}
             className="flex h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
           />
           <CommandList className="mt-1">

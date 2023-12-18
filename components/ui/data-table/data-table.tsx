@@ -1,8 +1,5 @@
 import * as React from "react";
-import type {
-  DataTableFilterableColumn,
-  DataTableSearchableColumn,
-} from "@/types/data-table";
+import type { DataTableFilterableColumn } from "@/types/data-table";
 import {
   flexRender,
   type ColumnDef,
@@ -18,7 +15,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { DataTableAdvancedToolbar } from "./data-table-advanced-toolbar";
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
 
@@ -26,32 +22,19 @@ interface DataTableProps<TData, TValue> {
   dataTable: TanstackTable<TData>;
   columns: ColumnDef<TData, TValue>[];
   filterableColumns?: DataTableFilterableColumn<TData>[];
-  searchableColumns?: DataTableSearchableColumn<TData>[];
-  advancedFilter?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   dataTable,
   columns,
   filterableColumns = [],
-  searchableColumns = [],
-  advancedFilter = false,
 }: DataTableProps<TData, TValue>) {
   return (
-    <div className="w-full space-y-2.5 overflow-auto">
-      {advancedFilter ? (
-        <DataTableAdvancedToolbar
-          dataTable={dataTable}
-          filterableColumns={filterableColumns}
-          searchableColumns={searchableColumns}
-        />
-      ) : (
-        <DataTableToolbar
-          table={dataTable}
-          filterableColumns={filterableColumns}
-          searchableColumns={searchableColumns}
-        />
-      )}
+    <div className="w-full items-center space-y-3 overflow-auto">
+      <DataTableToolbar
+        table={dataTable}
+        filterableColumns={filterableColumns}
+      />
       <div className="rounded-md border">
         <Table className="table-fixed">
           <TableHeader>
@@ -102,7 +85,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="space-y-2.5">
+      <div className="flex items-center justify-center">
         <DataTablePagination table={dataTable} />
       </div>
     </div>

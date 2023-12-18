@@ -5,6 +5,9 @@ import { ModesType } from "@/types/constants";
 import { HistoryTableShell } from "./table-shell";
 import { getHistoryData } from "@/data/history";
 
+// Force dynamic page
+export const dynamic = "force-dynamic";
+
 // Generate dynamic metadata
 export const generateMetadata = ({
   params: { mode },

@@ -37,9 +37,6 @@ export function HistoryTableShell({ data, pageCount }: HistoryTableShellProps) {
     <DataTable
       dataTable={dataTable}
       columns={columns}
-      // Render notion like filters
-      advancedFilter={false}
-      // Render dynamic faceted filters
       filterableColumns={filterableColumns}
     />
   );

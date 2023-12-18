@@ -81,7 +81,7 @@ export default withAuth(
       );
     }
 
-    // VALIDATE MODE WHEN REQUESTING /STATISTICS/[], /LEADERBOARD/[MODE], AND /PLAY/[MODE]
+    // VALIDATE MODE WHEN REQUESTING /STATISTICS/[], /LEADERBOARD/[MODE], /HISTORY/[MODE], AND /PLAY/[MODE]
     if (
       reqPath.startsWith("/statistics/") ||
       reqPath.startsWith("/leaderboard/") ||

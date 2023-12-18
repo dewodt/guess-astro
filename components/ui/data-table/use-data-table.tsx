@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type {
   DataTableFilterableColumn,
   DataTableSearchableColumn,
-} from "@/types/data-table.ts";
+} from "@/types/data-table";
 import {
   getCoreRowModel,
   getFacetedRowModel,
@@ -58,13 +58,21 @@ export function useDataTable<TData, TValue>({
     (params: Record<string, string | number | null>) => {
       const newSearchParams = new URLSearchParams(searchParams?.toString());
 
+      // console.log("=====");
+      // console.log(params);
+      // console.log(newSearchParams.toString());
+
       for (const [key, value] of Object.entries(params)) {
+        // console.log(key, value);
         if (value === null) {
           newSearchParams.delete(key);
         } else {
           newSearchParams.set(key, String(value));
         }
       }
+
+      // console.log(newSearchParams.toString());
+      // console.log("=====");
 
       return newSearchParams.toString();
     },

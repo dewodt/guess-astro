@@ -1,11 +1,11 @@
-import { ModesType } from "@/types/constants";
 import "server-only";
 
+import { addDays } from "date-fns";
+import { ModesType } from "@/types/constants";
 import { db } from "@/lib/drizzle";
 import { match, type Match } from "@/db/schema";
 import type { SearchParams } from "@/types/data-table";
-import { and, asc, desc, eq, inArray, or, sql } from "drizzle-orm";
-
+import { and, asc, desc, eq, gte, inArray, lte, or, sql } from "drizzle-orm";
 import { dataTableSearchParamsSchema } from "@/lib/zod";
 import { getServerSession, type Session } from "next-auth";
 import { authOptions } from "@/lib/auth-options";
@@ -14,43 +14,50 @@ export async function getHistoryData(
   mode: ModesType,
   searchParams: SearchParams
 ) {
-  // Get search params
-  const { page, per_page, sort, operator, result, dateStart, dateEnd } =
-    dataTableSearchParamsSchema.parse(searchParams);
+  // Validate search params to prevent SQL injection
+  const rawSearchParams = dataTableSearchParamsSchema.safeParse(searchParams);
+
+  // If search params is invalid, return empty array
+  if (!rawSearchParams.success) {
+    return { allHistory: [], pageCount: 0 };
+  }
+
+  // Valid search params, destructure search params
+  const { page, per_page, sort, result, createdAt, operator } =
+    rawSearchParams.data;
 
   // Get user's session (session is already validated in middleware)
   const session = (await getServerSession(authOptions)) as Session;
 
-  // Fallback page for invalid page numbers
-  const pageAsNumber = Number(page);
-  const fallbackPage =
-    isNaN(pageAsNumber) || pageAsNumber < 1 ? 1 : pageAsNumber;
-
-  // Number of items per page
-  const perPageAsNumber = Number(per_page);
-  const limit = isNaN(perPageAsNumber) ? 10 : perPageAsNumber;
-
   // Number of items to skip
-  const offset = fallbackPage > 0 ? (fallbackPage - 1) * limit : 0;
+  const offset = (page - 1) * per_page;
 
   // Column and order to sort by
   // Spliting the sort string by "." to get the column and order
   // Example: "title.desc" => ["title", "desc"]
+  // Default sort is by createdAt descending
   const [column, order] = (sort?.split(".") as [
-    keyof Match | undefined,
-    "asc" | "desc" | undefined
+    "createdAt",
+    "asc" | "desc"
   ]) ?? ["createdAt", "desc"];
 
   // Column to filter by
-  const results = (result?.split(".") as Match["result"][]) ?? [];
-  const dateStartVal = new Date(dateStart as string) ?? undefined;
-  const dateEndVal = new Date(dateEnd as string) ?? undefined;
+  // No default value
+  const results = (result?.split(".") as Match["result"][]) ?? undefined;
+  const dateRangeStr = (createdAt?.split(".") as string[]) ?? undefined;
+
+  const dateRange = dateRangeStr
+    ? {
+        from: new Date(dateRangeStr[0]),
+        to: addDays(new Date(dateRangeStr[1]), 1),
+      }
+    : undefined;
 
   // Get all history (filtered) with offset & limit
   const allHistoryQuery = db
     .select()
     .from(match)
-    .limit(limit)
+    .limit(per_page)
     .offset(offset)
     .where(
       and(
@@ -59,11 +66,23 @@ export async function getHistoryData(
         !operator || operator === "and"
           ? and(
               // Filter history by result
-              results.length > 0 ? inArray(match.result, results) : undefined
+              results ? inArray(match.result, results) : undefined,
+              dateRange
+                ? and(
+                    gte(match.createdAt, dateRange.from),
+                    lte(match.createdAt, dateRange.to)
+                  )
+                : undefined
             )
           : or(
               // Filter history by result
-              results.length > 0 ? inArray(match.result, results) : undefined
+              results ? inArray(match.result, results) : undefined,
+              dateRange
+                ? and(
+                    gte(match.createdAt, dateRange.from),
+                    lte(match.createdAt, dateRange.to)
+                  )
+                : undefined
             )
       )
     )
@@ -88,11 +107,23 @@ export async function getHistoryData(
         !operator || operator === "and"
           ? and(
               // Filter history by result
-              results.length > 0 ? inArray(match.result, results) : undefined
+              results ? inArray(match.result, results) : undefined,
+              dateRange
+                ? and(
+                    gte(match.createdAt, dateRange.from),
+                    lte(match.createdAt, dateRange.to)
+                  )
+                : undefined
             )
           : or(
               // Filter history by result
-              results.length > 0 ? inArray(match.result, results) : undefined
+              results ? inArray(match.result, results) : undefined,
+              dateRange
+                ? and(
+                    gte(match.createdAt, dateRange.from),
+                    lte(match.createdAt, dateRange.to)
+                  )
+                : undefined
             )
       )
     );
@@ -102,7 +133,7 @@ export async function getHistoryData(
     totalHistoryQuery,
   ]);
 
-  const pageCount = Math.ceil(total / limit);
+  const pageCount = Math.ceil(total / per_page);
 
   return { allHistory, pageCount };
 }

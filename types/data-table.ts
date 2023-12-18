@@ -16,12 +16,8 @@ export interface DataTableFilterOption<TData> {
   isMulti?: boolean;
 }
 
-export interface DataTableSearchableColumn<TData> {
+export interface DataTableFilterableColumn<TData> {
   id: keyof TData;
   title: string;
-}
-
-export interface DataTableFilterableColumn<TData>
-  extends DataTableSearchableColumn<TData> {
-  options: Option[];
+  options?: Option[];
 }

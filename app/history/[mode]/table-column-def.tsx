@@ -56,7 +56,12 @@ export function fetchTasksTableColumnDefs(
   ];
 }
 
+// For faceted filter only
 export const filterableColumns: DataTableFilterableColumn<Match>[] = [
+  {
+    id: "createdAt",
+    title: "Date",
+  },
   {
     id: "result",
     title: "Result",
