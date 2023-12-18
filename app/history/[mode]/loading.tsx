@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function HistoryLoadingPage() {
   return (
     <main className="w-full">
-      <Card className="h-fit w-full max-w-2xl shadow-lg">
+      <Card className="h-fit w-full shadow-lg">
         <CardHeader>
           <h2 className="text-2xl font-bold text-primary">
             <Skeleton className="h-8 w-64" />

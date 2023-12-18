@@ -12,7 +12,7 @@ import {
 const LeaderboardLoadingPage = () => {
   return (
     <main className="w-full">
-      <Card className="h-fit w-full max-w-2xl shadow-lg">
+      <Card className="h-fit w-full shadow-lg">
         <CardHeader>
           <Skeleton className="h-8 w-64" />
         </CardHeader>
