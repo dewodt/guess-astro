@@ -10,7 +10,7 @@ export const signInSchema = z.object({
 // Image states:
 // 1. File: User uploaded a new image
 // 2. "DELETE": User deleted the image
-// 3. undefined: User didn't upload a new image
+// 3. null: User didn't upload a new image
 export const registerOrUpdateUserSchema = z.object({
   name: z.string().min(1, "Name is required"),
   username: z

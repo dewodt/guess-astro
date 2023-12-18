@@ -102,8 +102,6 @@ const ProfileForm = ({ session }: { session: Session }) => {
     }
 
     // Success response
-    // Update session
-    await update();
 
     // Show success toast
     toast({
@@ -113,8 +111,15 @@ const ProfileForm = ({ session }: { session: Session }) => {
       duration: 5000,
     });
 
+    // Update session
+    await update();
+
     // Reset form
-    reset();
+    reset({
+      name: values.name,
+      username: values.username,
+      image: null,
+    });
 
     // Refresh router
     router.refresh();
