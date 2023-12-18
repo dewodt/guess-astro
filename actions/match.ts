@@ -53,10 +53,10 @@ export const MatchAction = async (formData: FormData) => {
     .where(eq(astronomicalObject.id, answer.id));
 
   // Check if answer is correct
-  const isWin = data.name === answer.answer;
-  const result = isWin ? "win" : "lose";
-  const title = isWin ? "Correct!" : "Incorrect!";
-  const description = isWin
+  const isCorrect = data.name === answer.answer;
+  const result = isCorrect ? "correct" : "incorrect";
+  const title = isCorrect ? "Correct!" : "Incorrect!";
+  const description = isCorrect
     ? "Click next question or quit to the main menu!"
     : `Correct answer is ${data.name}. Click next question or quit to the main menu!`;
 
@@ -72,7 +72,7 @@ export const MatchAction = async (formData: FormData) => {
     ok: true,
     title: title,
     description: description,
-    isWin: isWin,
+    isCorrect: isCorrect,
     correctAnswerImageUrl: data.imageAnswerUrl,
   };
 };

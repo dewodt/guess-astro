@@ -26,7 +26,7 @@ export const getLeaderboardData = async (
       and(
         eq(match.userId, user.id),
         eq(match.mode, mode),
-        eq(match.result, "win")
+        eq(match.result, "correct")
       )
     )
     .groupBy(user.id, user.username)

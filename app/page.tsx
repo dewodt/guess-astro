@@ -62,7 +62,7 @@ const Home = () => {
       icon: <BarChart3 className="h-8 w-8 stroke-primary" />,
       title: "Statistics",
       description:
-        "See your statistics like score, current streak, highest streak, rank, win rate, and more!",
+        "See your statistics like score, current streak, highest streak, rank, accuracy, and more!",
     },
     {
       icon: <ScrollText className="h-8 w-8 stroke-primary" />,

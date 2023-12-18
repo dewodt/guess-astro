@@ -11,4 +11,4 @@ export const allowedImagesTypes = [
 export const modes = ["constellation", "messier"] as const;
 
 // Match result enum
-export const matchResults = ["win", "lose"] as const;
+export const matchResults = ["correct", "incorrect"] as const;

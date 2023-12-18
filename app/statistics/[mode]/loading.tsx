@@ -2,7 +2,7 @@ import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const StatisticsLoadingPage = () => {
-  // Score, Leaderboard Rank, Current Streak, Highest Streak, Win Rate, Match Played
+  // Score, Leaderboard Rank, Current Streak, Highest Streak, Accuracy, Match Played
   const data = [
     {
       title: "Score",
@@ -11,16 +11,16 @@ const StatisticsLoadingPage = () => {
       title: "Leaderboard Rank",
     },
     {
+      title: "Accuracy",
+    },
+    {
       title: "Current Streak",
     },
     {
-      title: "Highest Streak",
-    },
-    {
-      title: "Win Rate",
-    },
-    {
       title: "Match Played",
+    },
+    {
+      title: "Highest Streak",
     },
   ];
 

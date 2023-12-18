@@ -39,10 +39,10 @@ export function fetchTasksTableColumnDefs(
 
         return (
           <div className="flex items-center">
-            {result === "win" ? (
+            {result === "correct" ? (
               <Badge variant="green">Correct</Badge>
             ) : (
-              <Badge variant="destructive">Wrong</Badge>
+              <Badge variant="destructive">Incorrect</Badge>
             )}
           </div>
         );
@@ -66,7 +66,7 @@ export const filterableColumns: DataTableFilterableColumn<Match>[] = [
     id: "result",
     title: "Result",
     options: matchResults.map((result) => ({
-      label: result === "win" ? "Correct" : "Wrong",
+      label: result === "correct" ? "Correct" : "Incorrect",
       value: result,
     })),
   },

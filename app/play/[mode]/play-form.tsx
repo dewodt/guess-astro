@@ -115,7 +115,7 @@ const PlayForm = ({
 
     // Response not error
     // Toasts
-    if (res.isWin) {
+    if (res.isCorrect) {
       toast({
         variant: "success",
         title: res.title,

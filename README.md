@@ -35,7 +35,7 @@ Note that cloning the repository and running `npm run dev` will not work because
 
 - Great user interface with light/night mode option.
 - Every match, the question is randomized and the image is also rotated randomly to make it more challenging.
-- Statistics to see your score, rank, current streak, highest streak, win rate, and total match played in each mode.
+- Statistics to see your score, rank, current streak, highest streak, accuracy, and total match played in each mode.
 - Leaderboard to see top ranks in each mode.
 - Settings to change your username or profile picture.
 - And many more features coming soon.

@@ -77,7 +77,9 @@ export const dataTableSearchParamsSchema = z.object({
       const results = str.split(".") as string[];
       if (results.length > 2) return false;
 
-      return results.every((result) => result === "win" || result === "lose");
+      return results.every(
+        (result) => result === "correct" || result === "incorrect"
+      );
     }),
   createdAt: z
     .string()

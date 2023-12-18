@@ -10,7 +10,7 @@ import { match, user } from "@/db/schema";
 import { getShortMonth } from "@/lib/utils";
 
 // Get users data statistics of a certain mode
-// Return score, leaderboard rank, current streak, highest streak, win rate, match played
+// Return score, leaderboard rank, current streak, highest streak, accuracy, match played
 export const getStatisticsData = async (
   mode: ModesType
 ): Promise<StatisticsData> => {
@@ -37,7 +37,7 @@ export const getStatisticsData = async (
       and(
         eq(match.userId, user.id),
         eq(match.mode, mode),
-        eq(match.result, "win")
+        eq(match.result, "correct")
       )
     )
     .groupBy(user.id, user.username)
@@ -63,8 +63,8 @@ export const getStatisticsData = async (
   // Get current streak
   let currentStreak = 0;
   for (let i = 0; i < matches.length; i++) {
-    // Found atleast 1 lose, exit.
-    if (matches[i].result === "lose") {
+    // Found atleast 1 incorrect, exit.
+    if (matches[i].result === "incorrect") {
       break;
     }
     // Add more streak
@@ -75,8 +75,8 @@ export const getStatisticsData = async (
   let highestStreak = 0;
   let temp = 0;
   for (let j = 0; j < matches.length; j++) {
-    // Found atleast 1 lose, reset temp.
-    if (matches[j].result === "lose") {
+    // Found atleast 1 incorrect, reset temp.
+    if (matches[j].result === "incorrect") {
       temp = 0;
     } else {
       // Add more streak
@@ -92,8 +92,8 @@ export const getStatisticsData = async (
   // Get number of match played
   const matchPlayed = matches.length;
 
-  // Get win rate
-  const winRate =
+  // Get accuracy
+  const accuracy =
     matchPlayed !== 0 ? `${((score / matchPlayed) * 100).toFixed(2)}%` : "0%";
 
   // Get chart data
@@ -105,9 +105,9 @@ export const getStatisticsData = async (
     };
   });
 
-  // Count win matches per month
+  // Count correct matches per month
   matches.forEach((m) => {
-    if (m.result === "win" && m.createdAt) {
+    if (m.result === "correct" && m.createdAt) {
       const month = m.createdAt.getMonth();
       chartData[month].score += 1;
     }
@@ -125,8 +125,8 @@ export const getStatisticsData = async (
         value: rank.toString(),
       },
       {
-        title: "Win Rate",
-        value: winRate,
+        title: "Accuracy",
+        value: accuracy,
       },
       {
         title: "Match Played",

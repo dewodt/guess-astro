@@ -15,7 +15,7 @@ import {
 export const modeEnum = pgEnum("mode", ["constellation", "messier"]);
 
 // Match result enum
-export const resultEnum = pgEnum("result", ["win", "lose"]);
+export const resultEnum = pgEnum("result", ["correct", "incorrect"]);
 
 // Schemas
 // User schema (also for nextauth)
