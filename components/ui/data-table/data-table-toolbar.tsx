@@ -22,7 +22,7 @@ export function DataTableToolbar<TData>({
   const [isPending, startTransition] = React.useTransition();
 
   return (
-    <div className="flex w-full flex-1 flex-col gap-3 overflow-auto sm:flex-row sm:items-center">
+    <div className="flex w-full flex-1 flex-col gap-3 overflow-auto p-1 sm:flex-row sm:items-center">
       {/* Filters */}
       {filterableColumns.length > 0 &&
         filterableColumns.map((column) => {

@@ -19,7 +19,7 @@ export function DataTableLoading({
 }: DataTableLoadingProps) {
   return (
     <div className="w-full space-y-3 overflow-auto">
-      <div className="flex w-full flex-1 flex-col gap-3 overflow-auto sm:flex-row sm:items-center">
+      <div className="flex w-full flex-1 flex-col gap-3 overflow-auto p-1 sm:flex-row sm:items-center">
         <Skeleton className="h-10 w-full sm:w-[260px]" />
         <Skeleton className="h-10 w-full border-dashed sm:w-[91px]" />
       </div>
