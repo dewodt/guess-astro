@@ -63,7 +63,7 @@ export function DatePickerWithRange<TData, TValue>({
                 format(dateRange.from, "LLL dd, y")
               )
             ) : (
-              <span>Pick a date</span>
+              <span>Pick date range</span>
             )}
           </Button>
         </PopoverTrigger>
@@ -72,7 +72,7 @@ export function DatePickerWithRange<TData, TValue>({
             initialFocus
             mode="range"
             defaultMonth={dateRange?.from}
-            numberOfMonths={2}
+            numberOfMonths={1}
             selected={dateRange}
             onSelect={(newDateRange) => {
               // Update calendar component
