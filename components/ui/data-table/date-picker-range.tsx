@@ -48,7 +48,7 @@ export function DatePickerWithRange<TData, TValue>({
             id="date"
             variant={"outline"}
             className={cn(
-              "w-full justify-start text-left font-normal sm:w-[260px]",
+              "w-full justify-start px-3 text-left font-normal sm:w-[250px]",
               !dateRange && "text-muted-foreground"
             )}
           >
