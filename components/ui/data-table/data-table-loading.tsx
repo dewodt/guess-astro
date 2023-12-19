@@ -50,18 +50,18 @@ export function DataTableLoading({
         </Table>
       </div>
       <div className="flex w-full flex-col items-center justify-center gap-4 overflow-auto px-2 py-1 sm:flex-row sm:gap-6 lg:gap-8">
-        <div className="flex items-center space-x-2">
-          <Skeleton className="h-8 w-[100px]" />
-          <Skeleton className="h-8 w-[70px]" />
+        <div className="flex items-center space-x-3">
+          <Skeleton className="h-5 w-[100px]" />
+          <Skeleton className="h-10 w-[70px]" />
         </div>
         <div className="flex w-[100px] items-center justify-center text-sm font-medium">
           <Skeleton className="h-5 w-20" />
         </div>
-        <div className="flex items-center space-x-2">
-          <Skeleton className="hidden h-8 w-8 lg:block" />
-          <Skeleton className="h-8 w-8" />
-          <Skeleton className="h-8 w-8" />
-          <Skeleton className="hidden h-8 w-8 lg:block" />
+        <div className="flex items-center space-x-3">
+          <Skeleton className="hidden h-10 w-10 lg:block" />
+          <Skeleton className="h-10 w-10" />
+          <Skeleton className="h-10 w-10" />
+          <Skeleton className="hidden h-10 w-10 lg:block" />
         </div>
       </div>
     </div>
