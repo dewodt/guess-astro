@@ -2,13 +2,14 @@
 
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { usePathname } from "next/navigation";
 import { ThemeProvider } from "next-themes";
 import NavBar from "@/components/ui/navbar";
 import Footer from "@/components/ui/footer";
 import { Toaster } from "@/components/ui/toaster";
 import { SessionProvider } from "next-auth/react";
+import { PHProvider, PostHogPageview } from "@/lib/posthog-client";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,23 +29,28 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <html lang="en" className={`${inter.variable}`}>
-      <SessionProvider>
-        <ThemeProvider attribute="class" defaultTheme="light">
-          <body
-            className={`flex min-h-screen flex-col bg-background font-inter ${
-              navBarExpanded && "overflow-hidden"
-            }`}
-          >
-            <NavBar
-              navBarExpanded={navBarExpanded}
-              setNavBarExpanded={setNavBarExpanded}
-            />
-            {children}
-            <Footer />
-            <Toaster />
-          </body>
-        </ThemeProvider>
-      </SessionProvider>
+      <Suspense>
+        <PostHogPageview />
+      </Suspense>
+      <PHProvider>
+        <SessionProvider>
+          <ThemeProvider attribute="class" defaultTheme="light">
+            <body
+              className={`flex min-h-screen flex-col bg-background font-inter ${
+                navBarExpanded && "overflow-hidden"
+              }`}
+            >
+              <NavBar
+                navBarExpanded={navBarExpanded}
+                setNavBarExpanded={setNavBarExpanded}
+              />
+              {children}
+              <Footer />
+              <Toaster />
+            </body>
+          </ThemeProvider>
+        </SessionProvider>
+      </PHProvider>
     </html>
   );
 };
