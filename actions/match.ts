@@ -10,6 +10,7 @@ import {
   getZodParseErrorPaths,
   getZodParseErrorDescription,
 } from "@/lib/utils";
+import PostHogClient from "@/lib/posthog-server";
 
 export const MatchAction = async (formData: FormData) => {
   // Get session
@@ -66,6 +67,19 @@ export const MatchAction = async (formData: FormData) => {
     astronomicalObjectId: answer.id,
     mode: answer.mode,
     result: result,
+  });
+
+  // Initialize posthog client
+  const posthogClient = PostHogClient();
+
+  // Send data to PostHog
+  posthogClient.capture({
+    distinctId: session.id,
+    event: "match answered",
+    properties: {
+      mode: answer.mode,
+      result: result,
+    },
   });
 
   return {
