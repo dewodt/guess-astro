@@ -9,6 +9,7 @@ import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 import DiscordProvider from "next-auth/providers/discord";
 import { resend } from "@/lib/resend";
+import PostHogClient from "./posthog-server";
 import SignInEmail from "@/emails/sign-in";
 import WelcomeEmail from "@/emails/welcome";
 
@@ -104,9 +105,13 @@ export const authOptions: AuthOptions = {
     },
   },
   events: {
-    async signIn({ isNewUser, user }) {
-      // Send welcome email
+    async signIn({ isNewUser, user, account }) {
+      // Initialize posthog client
+      const posthogClient = PostHogClient();
+
+      // If user is new
       if (isNewUser && user.email) {
+        // Send welcome email
         try {
           await resend.emails.send({
             from: process.env.EMAIL_FROM as string,
@@ -117,7 +122,25 @@ export const authOptions: AuthOptions = {
         } catch (error) {
           console.log({ error });
         }
+
+        // Send sign up event to PostHog
+        posthogClient.capture({
+          distinctId: user.id,
+          event: "user signed up",
+          properties: {
+            provider: account?.provider,
+          },
+        });
       }
+
+      // Send sign in event to posthog
+      posthogClient.capture({
+        distinctId: user.id,
+        event: "user signed in",
+        properties: {
+          provider: account?.provider,
+        },
+      });
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
