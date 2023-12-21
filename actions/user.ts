@@ -7,6 +7,7 @@ import { db } from "@/lib/drizzle";
 import { eq, ne, and, sql } from "drizzle-orm";
 import { user } from "@/db/schema";
 import { uploadAvatar } from "@/lib/cloudinary";
+import PostHogClient from "@/lib/posthog-server";
 import {
   getZodParseErrorPaths,
   getZodParseErrorDescription,
@@ -95,6 +96,15 @@ export const UserAction = async (formData: FormData) => {
       })
       .where(eq(user.id, session.id));
   }
+
+  // Initialize posthog client
+  const posthogClient = PostHogClient();
+
+  // Send data to PostHog user updated his/her profile
+  posthogClient.capture({
+    distinctId: session.id,
+    event: "user_updated_profile",
+  });
 
   return {
     ok: true,
