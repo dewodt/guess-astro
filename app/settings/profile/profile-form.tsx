@@ -121,6 +121,9 @@ const ProfileForm = ({ session }: { session: Session }) => {
       image: null,
     });
 
+    // Update PostHog identity
+    router.replace("/settings/profile?phState=identify");
+
     // Refresh router
     router.refresh();
   };

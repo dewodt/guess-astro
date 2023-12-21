@@ -9,7 +9,11 @@ import NavBar from "@/components/ui/navbar";
 import Footer from "@/components/ui/footer";
 import { Toaster } from "@/components/ui/toaster";
 import { SessionProvider } from "next-auth/react";
-import { PHProvider, PostHogPageview } from "@/lib/posthog-client";
+import {
+  PHProvider,
+  PostHogIdentifyOrReset,
+  PostHogPageview,
+} from "@/lib/posthog-client";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -29,11 +33,12 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <html lang="en" className={`${inter.variable}`}>
-      <Suspense>
-        <PostHogPageview />
-      </Suspense>
-      <PHProvider>
-        <SessionProvider>
+      <SessionProvider>
+        <PHProvider>
+          <Suspense>
+            <PostHogPageview />
+            <PostHogIdentifyOrReset />
+          </Suspense>
           <ThemeProvider attribute="class" defaultTheme="light">
             <body
               className={`flex min-h-screen flex-col bg-background font-inter ${
@@ -49,8 +54,8 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
               <Toaster />
             </body>
           </ThemeProvider>
-        </SessionProvider>
-      </PHProvider>
+        </PHProvider>
+      </SessionProvider>
     </html>
   );
 };

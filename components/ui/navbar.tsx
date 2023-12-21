@@ -170,7 +170,7 @@ const NavBar = ({
                   {/* Sign Out */}
                   <DropdownMenuItem
                     className="text-destructive focus:text-destructive"
-                    onClick={() => signOut()}
+                    onClick={() => signOut({ callbackUrl: "/?phState=reset" })}
                   >
                     <LogOut className="mr-2 h-4 w-4" />
                     Sign Out

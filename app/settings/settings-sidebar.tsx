@@ -39,7 +39,7 @@ const SettingsSidebar = () => {
 
             {/* Sign Out */}
             <li
-              onClick={() => signOut({ callbackUrl: "/" })}
+              onClick={() => signOut({ callbackUrl: "/?phState=reset" })}
               className="flex w-full cursor-pointer flex-row items-center gap-2 rounded-md p-3 font-medium text-destructive duration-300 ease-in-out hover:bg-muted"
             >
               <LogOut className="h-5 w-5" />

@@ -5,7 +5,10 @@ import { signOut } from "next-auth/react";
 
 export const SignOutButton = () => {
   return (
-    <Button size="lg" onClick={() => signOut()}>
+    <Button
+      size="lg"
+      onClick={() => signOut({ callbackUrl: "/?phState=reset" })}
+    >
       Sign Out
     </Button>
   );

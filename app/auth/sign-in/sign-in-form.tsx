@@ -53,7 +53,7 @@ const SignInForm = () => {
     // Disable redirect to prevent hard refresh, so we use router.push() & router.refresh()
     const res = await signIn("email", {
       email: values.email,
-      callbackUrl: "/",
+      callbackUrl: "/?phState=identify",
       redirect: false,
     });
 
@@ -75,7 +75,7 @@ const SignInForm = () => {
       description: "Email sent. Please check your inbox.",
       duration: 5000,
     });
-    router.push("/verify-request");
+    router.push("/auth/verify-request");
     router.refresh();
   };
 
@@ -120,7 +120,15 @@ const SignInForm = () => {
         </form>
       </Form>
 
-      <Separator />
+      {/* Separator */}
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <Separator />
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-background px-2 text-muted-foreground">Or</span>
+        </div>
+      </div>
 
       {/* OAuth */}
       {/* Google */}
@@ -130,7 +138,12 @@ const SignInForm = () => {
         size="lg"
         className="flex w-full flex-row items-center gap-3"
         disabled={isSubmitting}
-        onClick={() => signIn("google", { redirect: true, callbackUrl: "/" })}
+        onClick={() =>
+          signIn("google", {
+            redirect: true,
+            callbackUrl: "/?phState=identify",
+          })
+        }
       >
         <Google size={20} />
         Continue with Google
@@ -143,7 +156,12 @@ const SignInForm = () => {
         size="lg"
         className="flex w-full flex-row items-center gap-3"
         disabled={isSubmitting}
-        onClick={() => signIn("discord", { redirect: true, callbackUrl: "/" })}
+        onClick={() =>
+          signIn("discord", {
+            redirect: true,
+            callbackUrl: "/?phState=identify",
+          })
+        }
       >
         <Discord size={20} />
         Continue with Discord

@@ -112,7 +112,9 @@ const RegisterForm = ({ session }: { session: Session }) => {
     });
 
     // Redirect to home
-    router.push("/");
+    router.replace("/?phState=identify");
+
+    // Refresh router
     router.refresh();
   };
 
