@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import {
   Command,
   CommandEmpty,
@@ -72,11 +72,9 @@ const PlayForm = ({
 
   // Submit handler
   const onSubmit = async (data: z.infer<typeof MatchAnswerSchema>) => {
-    // Initiate loading state
-    toast({
-      variant: "default",
-      title: "Loading",
-      description: "Please wait...",
+    // Initiate loading toast
+    const loadingToast = toast.loading("Loading...", {
+      description: "Please wait",
       duration: Infinity,
     });
 
@@ -89,14 +87,12 @@ const PlayForm = ({
     // Call server action
     const res = await MatchAction(formData);
 
+    // Remove loading toast
+    toast.dismiss(loadingToast);
+
     // Response is error
     if (!res.ok) {
-      toast({
-        variant: "destructive",
-        title: res.title,
-        description: res.description,
-        duration: 5000,
-      });
+      toast.error(res.title, { description: res.description });
 
       // If error paths is not available, return
       if (!res.errorPaths) return;
@@ -116,19 +112,9 @@ const PlayForm = ({
     // Response not error
     // Toasts
     if (res.isCorrect) {
-      toast({
-        variant: "success",
-        title: res.title,
-        description: res.description,
-        duration: 5000,
-      });
+      toast.success(res.title, { description: res.description });
     } else {
-      toast({
-        variant: "destructive",
-        title: res.title,
-        description: res.description,
-        duration: 5000,
-      });
+      toast.error(res.title, { description: res.description });
     }
 
     // New game state

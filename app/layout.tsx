@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { ThemeProvider } from "next-themes";
 import NavBar from "@/components/ui/navbar";
 import Footer from "@/components/ui/footer";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 import { SessionProvider } from "next-auth/react";
 import {
   PHProvider,
@@ -51,7 +51,11 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
               />
               {children}
               <Footer />
-              <Toaster />
+              <Toaster
+                richColors={true}
+                closeButton={true}
+                position="top-center"
+              />
             </body>
           </ThemeProvider>
         </PHProvider>

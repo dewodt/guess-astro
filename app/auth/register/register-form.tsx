@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { Loader2, Trash2, UserCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { registerOrUpdateUserSchema } from "@/lib/zod";
 import * as z from "zod";
@@ -30,9 +30,6 @@ const RegisterForm = ({ session }: { session: Session }) => {
 
   // Session
   const { update } = useSession();
-
-  // Toast initailization
-  const { toast } = useToast();
 
   // File input ref
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -59,10 +56,8 @@ const RegisterForm = ({ session }: { session: Session }) => {
     values: z.infer<typeof registerOrUpdateUserSchema>
   ) => {
     // Initiate loading toast
-    toast({
-      variant: "default",
-      title: "Loading",
-      description: "Please wait...",
+    const loadingToast = toast.loading("Loading...", {
+      description: "Please wait",
       duration: Infinity,
     });
 
@@ -75,14 +70,12 @@ const RegisterForm = ({ session }: { session: Session }) => {
     // Send request
     const res = await UserAction(formData);
 
+    // Remove loading toast
+    toast.dismiss(loadingToast);
+
     // Error response
     if (!res.ok) {
-      toast({
-        variant: "destructive",
-        title: res.title,
-        description: res.description,
-        duration: 5000,
-      });
+      toast.error(res.title, { description: res.description });
 
       // Return if there's no error paths
       if (!res.errorPaths) return;
@@ -100,16 +93,12 @@ const RegisterForm = ({ session }: { session: Session }) => {
     }
 
     // Success response
+    
     // Update session
     await update();
 
     // Show success toast
-    toast({
-      variant: "success",
-      title: "Success",
-      description: res.description,
-      duration: 5000,
-    });
+    toast.success(res.title, { description: res.description });
 
     // Redirect to home
     router.replace("/?phState=identify");

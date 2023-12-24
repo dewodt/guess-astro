@@ -7,7 +7,7 @@ import { signIn } from "next-auth/react";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { Separator } from "@/components/ui/separator";
 import * as z from "zod";
 import { signInSchema } from "@/lib/zod";
@@ -26,9 +26,6 @@ const SignInForm = () => {
   // Router
   const router = useRouter();
 
-  // Toast initailization
-  const { toast } = useToast();
-
   // Form Hooks
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -42,10 +39,8 @@ const SignInForm = () => {
   // Form Submit Handler (After validated with zod)
   const onSubmit = async (values: z.infer<typeof signInSchema>) => {
     // Initiate loading toast
-    toast({
-      variant: "default",
-      title: "Loading",
-      description: "Please wait...",
+    const loadingToast = toast.loading("Loading...", {
+      description: "Please wait",
       duration: Infinity,
     });
 
@@ -57,24 +52,24 @@ const SignInForm = () => {
       redirect: false,
     });
 
+    // Remove loading toast
+    toast.dismiss(loadingToast);
+
     // Error
     if (!res?.ok) {
-      toast({
-        variant: "destructive",
-        title: "Error",
+      toast.error("Error", {
         description: "Error sign in with email. Please try again.",
-        duration: 5000,
       });
+
       return;
     }
 
     // Success
-    toast({
-      variant: "success",
-      title: "Success",
+    toast.success("Success", {
       description: "Email sent. Please check your inbox.",
-      duration: 5000,
     });
+
+    // Redirect to verify request page
     router.push("/auth/verify-request");
     router.refresh();
   };
