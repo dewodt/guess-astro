@@ -93,7 +93,7 @@ const RegisterForm = ({ session }: { session: Session }) => {
     }
 
     // Success response
-    
+
     // Update session
     await update();
 
