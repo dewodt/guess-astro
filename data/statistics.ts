@@ -3,7 +3,7 @@ import "server-only";
 import { StatisticsData } from "@/types/data";
 import { ModesType } from "@/types/constants";
 import { db } from "@/lib/drizzle";
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, isNotNull, sql } from "drizzle-orm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth-options";
 import { match, user } from "@/db/schema";
@@ -32,6 +32,7 @@ export const getStatisticsData = async (
       ),
     })
     .from(user)
+    .where(isNotNull(user.username))
     .leftJoin(
       match,
       and(

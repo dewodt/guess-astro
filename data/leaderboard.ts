@@ -3,7 +3,7 @@ import "server-only";
 import { LeaderboardData } from "@/types/data";
 import { ModesType } from "@/types/constants";
 import { db } from "@/lib/drizzle";
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, isNotNull, sql } from "drizzle-orm";
 import { match, user } from "@/db/schema";
 
 // Get leaderboard data
@@ -21,6 +21,7 @@ export const getLeaderboardData = async (
       score: sql<number>`count(${match.id})`.as("score"),
     })
     .from(user)
+    .where(isNotNull(user.username))
     .leftJoin(
       match,
       and(
