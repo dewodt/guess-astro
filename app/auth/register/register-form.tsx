@@ -1,5 +1,6 @@
 "use client";
 
+import { uploadAvatar } from "@/actions/upload-avatar";
 import { UserAction } from "@/actions/user";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -13,13 +14,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { registerOrUpdateUserSchema } from "@/lib/zod";
+import { avatarSchema, registerOrUpdateUserSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Trash2, UserCircle2 } from "lucide-react";
 import { type Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -40,7 +41,7 @@ const RegisterForm = ({ session }: { session: Session }) => {
     defaultValues: {
       name: session.name ?? "",
       username: session.username ?? "",
-      image: null,
+      image: session.image,
     },
   });
   const {
@@ -48,8 +49,12 @@ const RegisterForm = ({ session }: { session: Session }) => {
     handleSubmit,
     setValue,
     setError,
+    clearErrors,
     formState: { isSubmitting, isSubmitSuccessful }, // isSubmitSuccessful: Onetime submit, no reset.
   } = form;
+
+  // Image Upload Loading State
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   // Form Submit Handler (After validated with zod)
   const onSubmit = async (
@@ -57,7 +62,7 @@ const RegisterForm = ({ session }: { session: Session }) => {
   ) => {
     // Initiate loading toast
     const loadingToast = toast.loading("Loading...", {
-      description: "Please wait",
+      description: "Updating profile",
       duration: Infinity,
     });
 
@@ -65,7 +70,7 @@ const RegisterForm = ({ session }: { session: Session }) => {
     const formData = new FormData();
     formData.append("username", values.username);
     formData.append("name", values.name);
-    values.image && formData.append("image", values.image as File | "DELETE");
+    values.image && formData.append("image", values.image);
 
     // Send request
     const res = await UserAction(formData);
@@ -107,6 +112,55 @@ const RegisterForm = ({ session }: { session: Session }) => {
     router.refresh();
   };
 
+  const onUploadAvatar = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Reset previous errors
+    clearErrors("image");
+
+    // If no files, return
+    const file = e.target.files![0];
+    if (!file) return;
+
+    // Validate image
+    const zodResult = avatarSchema.safeParse(file);
+    if (!zodResult.success) {
+      // Set error to first error message
+      setError("image", { message: zodResult.error.errors[0].message });
+      return;
+    }
+
+    // Create form data
+    const formData = new FormData();
+    formData.append("userId", session.id);
+    formData.append("file", file);
+
+    // Set loading state
+    setIsUploadingImage(true);
+    const loadingToast = toast.loading("Loading...", {
+      description: "Uploading image",
+      duration: Infinity,
+    });
+
+    // Upload file
+    const imageUrl = await uploadAvatar(formData);
+
+    // Reset loading state
+    toast.dismiss(loadingToast);
+    setIsUploadingImage(false);
+
+    // If upload fails
+    if (!imageUrl) {
+      toast.error("Error", { description: "Failed to upload image" });
+      return;
+    }
+
+    // Upload succeeded
+    toast.success("Success", { description: "Image uploaded successfully" });
+    setValue("image", imageUrl, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  };
+
   // If not loading
   return (
     <Card className="w-full max-w-md shadow-lg">
@@ -129,89 +183,64 @@ const RegisterForm = ({ session }: { session: Session }) => {
               control={control}
               name="image"
               render={({ field: { onChange }, ...field }) => {
-                const uploadedAvatar = form.getValues("image");
-                const uploadedAvatarUrl =
-                  uploadedAvatar === null // Initial state, taken from session
-                    ? (session?.image as string)
-                    : uploadedAvatar === "DELETE" // File is deleted
-                    ? ""
-                    : URL.createObjectURL(uploadedAvatar); // New file is uploaded
+                const uploadedAvatarUrl = form.getValues("image") ?? "";
 
                 return (
                   <FormItem>
                     <FormLabel>Avatar</FormLabel>
-                    <div className="flex flex-row items-center gap-4">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                       {/* Avatar Preview */}
-                      <div
-                        className={`${
-                          isSubmitting || isSubmitSuccessful
+                      <Avatar
+                        onClick={() =>
+                          !isSubmitting &&
+                          !isUploadingImage &&
+                          fileInputRef!.current!.click()
+                        }
+                        className={`h-20 w-20 ${
+                          isSubmitting || isUploadingImage
                             ? "cursor-not-allowed"
                             : "cursor-pointer"
                         }`}
                       >
-                        <Avatar
-                          onClick={() => fileInputRef!.current!.click()}
-                          className={`h-20 w-20 ${
-                            (isSubmitting || isSubmitSuccessful) &&
-                            "pointer-events-none"
-                          }`}
-                        >
-                          <AvatarImage
-                            src={uploadedAvatarUrl}
-                            alt="Avatar Upload Preview"
-                            className="object-cover object-center"
-                          />
-                          <AvatarFallback>
-                            <UserCircle2 className="h-full w-full stroke-gray-500 stroke-1" />
-                          </AvatarFallback>
-                        </Avatar>
-                      </div>
+                        <AvatarImage
+                          src={uploadedAvatarUrl}
+                          alt="Avatar Upload Preview"
+                          className="object-cover object-center"
+                        />
+                        <AvatarFallback>
+                          <UserCircle2 className="h-full w-full stroke-gray-500 stroke-1" />
+                        </AvatarFallback>
+                      </Avatar>
 
-                      {/* File Upload */}
-                      <FormControl>
-                        <div
-                          className={`${
-                            (isSubmitting || isSubmitSuccessful) &&
-                            "cursor-not-allowed"
-                          }`}
-                        >
+                      <div className="flex flex-row gap-4">
+                        {/* File Upload */}
+                        <FormControl>
                           <Input
                             type="file"
                             accept="image/*"
-                            readOnly={isSubmitting || isSubmitSuccessful}
-                            className={`cursor-pointer ${
-                              (isSubmitting || isSubmitSuccessful) &&
-                              "pointer-events-none"
-                            }`}
-                            onChange={(e) => {
-                              onChange(e.target.files![0] ?? null);
-                            }}
                             ref={fileInputRef}
+                            disabled={isSubmitting || isUploadingImage}
+                            onChange={onUploadAvatar}
                             {...field}
                           />
-                        </div>
-                      </FormControl>
+                        </FormControl>
 
-                      {/* File Delete */}
-                      <div
-                        className={`${
-                          isSubmitting || isSubmitSuccessful
-                            ? "cursor-not-allowed"
-                            : "cursor-pointer"
-                        }`}
-                      >
+                        {/* File Delete */}
                         <Button
-                          type="reset"
                           variant="destructive"
                           size="icon"
                           className="flex-none"
                           disabled={
-                            uploadedAvatar === "DELETE" || // Current avatar / file is deleted
-                            (uploadedAvatar === null && !session?.image) || // Initial state and there's no image in current session
                             isSubmitting ||
-                            isSubmitSuccessful // Submitting form
+                            isUploadingImage ||
+                            !uploadedAvatarUrl
                           }
-                          onClick={() => setValue("image", "DELETE")}
+                          onClick={() =>
+                            setValue("image", null, {
+                              shouldDirty: true,
+                              shouldValidate: true,
+                            })
+                          }
                         >
                           <Trash2 className="h-5 w-5" />
                         </Button>
@@ -223,31 +252,29 @@ const RegisterForm = ({ session }: { session: Session }) => {
               }}
             />
 
+            {/* Readonly Email Input */}
+            {/* Don't register it to React Hook Form because we don't want to send to BE */}
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input
+                  type="text"
+                  placeholder="Email"
+                  value={session.email}
+                  disabled={true}
+                />
+              </FormControl>
+            </FormItem>
             {/* Username */}
             <FormField
               control={control}
+              disabled={isSubmitting}
               name="username"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <div
-                      className={`${
-                        (isSubmitting || isSubmitSuccessful) &&
-                        "cursor-not-allowed"
-                      }`}
-                    >
-                      <Input
-                        type="text"
-                        placeholder="Username"
-                        readOnly={isSubmitting || isSubmitSuccessful}
-                        className={`${
-                          (isSubmitting || isSubmitSuccessful) &&
-                          "pointer-events-none"
-                        }`}
-                        {...field}
-                      />
-                    </div>
+                    <Input type="text" placeholder="Username" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -257,28 +284,13 @@ const RegisterForm = ({ session }: { session: Session }) => {
             {/* Name */}
             <FormField
               control={control}
+              disabled={isSubmitting}
               name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <div
-                      className={`${
-                        (isSubmitting || isSubmitSuccessful) &&
-                        "cursor-not-allowed"
-                      }`}
-                    >
-                      <Input
-                        type="text"
-                        placeholder="Name"
-                        readOnly={isSubmitting || isSubmitSuccessful}
-                        className={`${
-                          (isSubmitting || isSubmitSuccessful) &&
-                          "pointer-events-none"
-                        }`}
-                        {...field}
-                      />
-                    </div>
+                    <Input type="text" placeholder="Name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -291,7 +303,7 @@ const RegisterForm = ({ session }: { session: Session }) => {
               className="w-full"
               size="lg"
               type="submit"
-              disabled={isSubmitting || isSubmitSuccessful}
+              disabled={isSubmitting || isUploadingImage}
             >
               {isSubmitting && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
