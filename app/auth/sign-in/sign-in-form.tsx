@@ -81,20 +81,13 @@ const SignInForm = () => {
           {/* Email */}
           <FormField
             control={control}
+            disabled={isSubmitting}
             name="email"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <div className={`${isSubmitting && "cursor-not-allowed"}`}>
-                    <Input
-                      type="email"
-                      placeholder="Email"
-                      readOnly={isSubmitting}
-                      className={`${isSubmitting && "pointer-events-none"}`}
-                      {...field}
-                    />
-                  </div>
+                  <Input type="email" placeholder="Email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
