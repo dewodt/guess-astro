@@ -6,7 +6,7 @@ export default function PostHogClient() {
     process.env.NEXT_PUBLIC_POSTHOG_KEY as string,
     {
       host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-      flushAt: 1,
+      flushAt: process.env.NODE_ENV === "production" ? 1 : 0, // Flush only in production
       flushInterval: 0,
     }
   );
