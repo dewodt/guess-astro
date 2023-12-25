@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { History } from "lucide-react";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const HistorySidebar = () => {
   const pathname = usePathname();

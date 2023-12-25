@@ -1,6 +1,6 @@
-import { type Metadata } from "next";
 import SignInForm from "./sign-in-form";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { type Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Sign In | Guess Astro",

@@ -1,16 +1,16 @@
 "use server";
 
-import { getServerSession, type Session } from "next-auth";
+import { astronomicalObject, match } from "@/db/schema";
 import { authOptions } from "@/lib/auth-options";
 import { db } from "@/lib/drizzle";
-import { MatchAnswerSchema } from "@/lib/zod";
-import { astronomicalObject, match } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import PostHogClient from "@/lib/posthog-server";
 import {
   getZodParseErrorPaths,
   getZodParseErrorDescription,
 } from "@/lib/utils";
-import PostHogClient from "@/lib/posthog-server";
+import { MatchAnswerSchema } from "@/lib/zod";
+import { eq } from "drizzle-orm";
+import { getServerSession, type Session } from "next-auth";
 
 export const MatchAction = async (formData: FormData) => {
   // Get session

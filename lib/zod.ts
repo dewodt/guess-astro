@@ -1,5 +1,5 @@
-import * as z from "zod";
 import { maxImageSize, allowedImagesTypes, modes } from "./constants";
+import * as z from "zod";
 
 // Sign in user
 export const signInSchema = z.object({

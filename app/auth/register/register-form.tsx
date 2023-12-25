@@ -1,18 +1,8 @@
 "use client";
 
-import { useRef } from "react";
-import { useSession } from "next-auth/react";
-import { type Session } from "next-auth";
-import { useRouter } from "next/navigation";
-import { Loader2, Trash2, UserCircle2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
+import { UserAction } from "@/actions/user";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { registerOrUpdateUserSchema } from "@/lib/zod";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Form,
@@ -22,7 +12,17 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { UserAction } from "@/actions/user";
+import { Input } from "@/components/ui/input";
+import { registerOrUpdateUserSchema } from "@/lib/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2, Trash2, UserCircle2 } from "lucide-react";
+import { type Session } from "next-auth";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useRef } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
 
 const RegisterForm = ({ session }: { session: Session }) => {
   // Router

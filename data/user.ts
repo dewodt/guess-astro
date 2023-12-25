@@ -1,9 +1,8 @@
-import "server-only";
-
-import { UserDetailData } from "@/types/data";
-import { db } from "@/lib/drizzle";
-import { eq, sql } from "drizzle-orm";
 import { user } from "@/db/schema";
+import { db } from "@/lib/drizzle";
+import { UserDetailData } from "@/types/data";
+import { eq, sql } from "drizzle-orm";
+import "server-only";
 
 // Get user data for user detail page from user's username (CASE INSENSITIVE)
 // Return username, full name, and profile picture, joined date.

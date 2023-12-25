@@ -1,6 +1,6 @@
-import { type Metadata } from "next";
 import { SignOutButton } from "./sign-out-button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { type Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Sign Out | Guess Astro",

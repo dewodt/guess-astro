@@ -1,11 +1,15 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
-import { useRef, useEffect } from "react";
-import type { SetStateAction, Dispatch } from "react";
-import { usePathname } from "next/navigation";
-import { useTheme } from "next-themes";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import { Button } from "./button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+} from "./dropdown-menu";
 import {
   Menu,
   X,
@@ -17,17 +21,13 @@ import {
   BarChart3,
   History,
 } from "lucide-react";
-import { Button } from "./button";
 import { signOut, useSession } from "next-auth/react";
-import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  DropdownMenuItem,
-} from "./dropdown-menu";
+import { useTheme } from "next-themes";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useRef, useEffect } from "react";
+import type { SetStateAction, Dispatch } from "react";
 
 const NavBar = ({
   navBarExpanded,

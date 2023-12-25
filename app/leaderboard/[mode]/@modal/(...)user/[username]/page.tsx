@@ -1,9 +1,9 @@
-import { getUserDetailData } from "@/data/user";
-import { notFound } from "next/navigation";
-import { getFormattedDate } from "@/lib/utils";
-import { UserCircle2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { getUserDetailData } from "@/data/user";
+import { getFormattedDate } from "@/lib/utils";
+import { UserCircle2 } from "lucide-react";
+import { notFound } from "next/navigation";
 
 // Force dynamic page
 export const dynamic = "force-dynamic";

@@ -1,10 +1,9 @@
-import "server-only";
-
-import { GameData } from "@/types/data";
-import { ModesType } from "@/types/constants";
-import { db } from "@/lib/drizzle";
-import { asc, eq, sql } from "drizzle-orm";
 import { astronomicalObject } from "@/db/schema";
+import { db } from "@/lib/drizzle";
+import { ModesType } from "@/types/constants";
+import { GameData } from "@/types/data";
+import { asc, eq, sql } from "drizzle-orm";
+import "server-only";
 
 // Get game data (generate game data)
 export const getGameData = async (mode: ModesType): Promise<GameData> => {

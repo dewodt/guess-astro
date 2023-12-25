@@ -1,10 +1,9 @@
-import "server-only";
-
-import { LeaderboardData } from "@/types/data";
-import { ModesType } from "@/types/constants";
-import { db } from "@/lib/drizzle";
-import { and, desc, eq, isNotNull, sql } from "drizzle-orm";
 import { match, user } from "@/db/schema";
+import { db } from "@/lib/drizzle";
+import { ModesType } from "@/types/constants";
+import { LeaderboardData } from "@/types/data";
+import { and, desc, eq, isNotNull, sql } from "drizzle-orm";
+import "server-only";
 
 // Get leaderboard data
 // return Rank, Username, Score

@@ -1,4 +1,3 @@
-import { AdapterAccount } from "next-auth/adapters";
 import { relations, sql } from "drizzle-orm";
 import {
   pgTable,
@@ -9,6 +8,7 @@ import {
   pgEnum,
   uuid,
 } from "drizzle-orm/pg-core";
+import { AdapterAccount } from "next-auth/adapters";
 
 // Enums
 // Mode enum

@@ -1,9 +1,5 @@
-import { type Metadata } from "next";
-import { getTitleCase } from "@/lib/utils";
-import { ModesType } from "@/types/constants";
-import { getLeaderboardData } from "@/data/leaderboard";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { LeaderboardRow } from "./leaderboard-row";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -12,6 +8,10 @@ import {
   TableHead,
   TableHeader,
 } from "@/components/ui/table";
+import { getLeaderboardData } from "@/data/leaderboard";
+import { getTitleCase } from "@/lib/utils";
+import { ModesType } from "@/types/constants";
+import { type Metadata } from "next";
 
 // Generate dynamic metadata
 export const generateMetadata = ({

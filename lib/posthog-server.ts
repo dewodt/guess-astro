@@ -1,6 +1,5 @@
-import "server-only";
-
 import { PostHog } from "posthog-node";
+import "server-only";
 
 export default function PostHogClient() {
   const posthogClient = new PostHog(

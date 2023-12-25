@@ -1,11 +1,5 @@
-import * as React from "react";
-import type { DataTableFilterableColumn } from "@/types/data-table";
-import {
-  flexRender,
-  type ColumnDef,
-  type Table as TanstackTable,
-} from "@tanstack/react-table";
-
+import { DataTablePagination } from "./data-table-pagination";
+import { DataTableToolbar } from "./data-table-toolbar";
 import {
   Table,
   TableBody,
@@ -14,9 +8,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-import { DataTablePagination } from "./data-table-pagination";
-import { DataTableToolbar } from "./data-table-toolbar";
+import type { DataTableFilterableColumn } from "@/types/data-table";
+import {
+  flexRender,
+  type ColumnDef,
+  type Table as TanstackTable,
+} from "@tanstack/react-table";
+import * as React from "react";
 
 interface DataTableProps<TData, TValue> {
   dataTable: TanstackTable<TData>;

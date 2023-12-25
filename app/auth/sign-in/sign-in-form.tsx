@@ -1,18 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import Google from "@/components/icons/google";
 import Discord from "@/components/icons/discord";
-import { signIn } from "next-auth/react";
-import { Loader2 } from "lucide-react";
+import Google from "@/components/icons/google";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import { Separator } from "@/components/ui/separator";
-import * as z from "zod";
-import { signInSchema } from "@/lib/zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -21,6 +11,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { signInSchema } from "@/lib/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
 
 const SignInForm = () => {
   // Router

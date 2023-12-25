@@ -1,16 +1,14 @@
 "use client";
 
-import * as React from "react";
-import { type Match } from "@/db/schema";
-import { type ColumnDef } from "@tanstack/react-table";
-
-import { useDataTable } from "@/components/ui/data-table/use-data-table";
-import { DataTable } from "@/components/ui/data-table/data-table";
-
 import {
   fetchTasksTableColumnDefs,
   filterableColumns,
 } from "./table-column-def";
+import { DataTable } from "@/components/ui/data-table/data-table";
+import { useDataTable } from "@/components/ui/data-table/use-data-table";
+import { type Match } from "@/db/schema";
+import { type ColumnDef } from "@tanstack/react-table";
+import * as React from "react";
 
 interface HistoryTableShellProps {
   data: Match[];

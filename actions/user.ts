@@ -1,17 +1,17 @@
 "use server";
 
-import { getServerSession, type Session } from "next-auth";
-import { authOptions } from "@/lib/auth-options";
-import { registerOrUpdateUserSchema } from "@/lib/zod";
-import { db } from "@/lib/drizzle";
-import { eq, ne, and, sql } from "drizzle-orm";
 import { user } from "@/db/schema";
+import { authOptions } from "@/lib/auth-options";
 import { uploadAvatar } from "@/lib/cloudinary";
+import { db } from "@/lib/drizzle";
 import PostHogClient from "@/lib/posthog-server";
 import {
   getZodParseErrorPaths,
   getZodParseErrorDescription,
 } from "@/lib/utils";
+import { registerOrUpdateUserSchema } from "@/lib/zod";
+import { eq, ne, and, sql } from "drizzle-orm";
+import { getServerSession, type Session } from "next-auth";
 
 export const UserAction = async (formData: FormData) => {
   // Get session

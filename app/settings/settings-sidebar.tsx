@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Settings, User, LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const SettingsSidebar = () => {
   const pathname = usePathname();

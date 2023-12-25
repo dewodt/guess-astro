@@ -1,5 +1,5 @@
-import { type Metadata } from "next";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { type Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Verify Request | Guess Astro",

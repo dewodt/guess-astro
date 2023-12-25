@@ -1,9 +1,9 @@
-import { type Metadata } from "next";
+import { HistoryTableShell } from "./table-shell";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { getHistoryData } from "@/data/history";
 import { getTitleCase } from "@/lib/utils";
 import { ModesType } from "@/types/constants";
-import { HistoryTableShell } from "./table-shell";
-import { getHistoryData } from "@/data/history";
+import { type Metadata } from "next";
 
 // Force dynamic page
 export const dynamic = "force-dynamic";

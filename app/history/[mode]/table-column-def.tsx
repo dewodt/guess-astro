@@ -1,13 +1,12 @@
 "use client";
 
-import { type Match } from "@/db/schema";
-import type { DataTableFilterableColumn } from "@/types/data-table";
-import { type ColumnDef } from "@tanstack/react-table";
-
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table/data-table-column-header";
+import { type Match } from "@/db/schema";
 import { matchResults } from "@/lib/constants";
 import { getFormattedDate } from "@/lib/utils";
+import type { DataTableFilterableColumn } from "@/types/data-table";
+import { type ColumnDef } from "@tanstack/react-table";
 
 export function fetchTasksTableColumnDefs(
   isPending: boolean,

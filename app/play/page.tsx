@@ -1,5 +1,3 @@
-import Link from "next/link";
-import { type Metadata } from "next";
 import {
   Card,
   CardContent,
@@ -7,7 +5,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { type Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Play | Guess Astro",

@@ -1,10 +1,10 @@
-import { notFound } from "next/navigation";
-import { type Metadata } from "next";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { getUserDetailData } from "@/data/user";
 import { getFormattedDate } from "@/lib/utils";
 import { UserCircle2 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { type Metadata } from "next";
+import { notFound } from "next/navigation";
 
 // Generate dynamic metadata
 export const generateMetadata = async ({

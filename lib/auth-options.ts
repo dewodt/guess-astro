@@ -1,17 +1,16 @@
-import "server-only";
-
-import { eq } from "drizzle-orm";
-import { db } from "@/lib/drizzle";
-import { user as userSchema } from "@/db/schema";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { type AuthOptions } from "next-auth";
-import EmailProvider from "next-auth/providers/email";
-import GoogleProvider from "next-auth/providers/google";
-import DiscordProvider from "next-auth/providers/discord";
-import { resend } from "@/lib/resend";
 import PostHogClient from "./posthog-server";
+import { user as userSchema } from "@/db/schema";
 import SignInEmail from "@/emails/sign-in";
 import WelcomeEmail from "@/emails/welcome";
+import { db } from "@/lib/drizzle";
+import { resend } from "@/lib/resend";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import { eq } from "drizzle-orm";
+import { type AuthOptions } from "next-auth";
+import DiscordProvider from "next-auth/providers/discord";
+import EmailProvider from "next-auth/providers/email";
+import GoogleProvider from "next-auth/providers/google";
+import "server-only";
 
 export const authOptions: AuthOptions = {
   adapter: DrizzleAdapter(db),

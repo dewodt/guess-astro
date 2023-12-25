@@ -1,7 +1,6 @@
 "use client";
 
-import * as React from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useDebounce } from "./use-debounce";
 import type {
   DataTableFilterableColumn,
   DataTableSearchableColumn,
@@ -20,8 +19,8 @@ import {
   type SortingState,
   type VisibilityState,
 } from "@tanstack/react-table";
-
-import { useDebounce } from "./use-debounce";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import * as React from "react";
 
 interface UseDataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

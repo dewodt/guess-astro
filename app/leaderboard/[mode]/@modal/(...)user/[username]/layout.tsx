@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
 
 const UserDetailModalLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();

@@ -1,13 +1,12 @@
-import "server-only";
-
-import { StatisticsData } from "@/types/data";
-import { ModesType } from "@/types/constants";
+import { match, user } from "@/db/schema";
+import { authOptions } from "@/lib/auth-options";
 import { db } from "@/lib/drizzle";
+import { getShortMonth } from "@/lib/utils";
+import { ModesType } from "@/types/constants";
+import { StatisticsData } from "@/types/data";
 import { and, desc, eq, isNotNull, sql } from "drizzle-orm";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth-options";
-import { match, user } from "@/db/schema";
-import { getShortMonth } from "@/lib/utils";
+import "server-only";
 
 // Get users data statistics of a certain mode
 // Return score, leaderboard rank, current streak, highest streak, accuracy, match played

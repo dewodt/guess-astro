@@ -1,8 +1,8 @@
-import { type Metadata } from "next";
+import PlayForm from "./play-form";
+import { getGameData } from "@/data/game";
 import { getRandomInt, getTitleCase } from "@/lib/utils";
 import type { ModesType } from "@/types/constants";
-import { getGameData } from "@/data/game";
-import PlayForm from "./play-form";
+import { type Metadata } from "next";
 
 // Force dynamic page
 export const dynamic = "force-dynamic";

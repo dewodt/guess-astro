@@ -1,9 +1,9 @@
-import { type Metadata } from "next";
-import { getTitleCase } from "@/lib/utils";
-import { getStatisticsData } from "@/data/statistics";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { ModesType } from "@/types/constants";
 import { StatisticsChart } from "./statistics-chart";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { getStatisticsData } from "@/data/statistics";
+import { getTitleCase } from "@/lib/utils";
+import { ModesType } from "@/types/constants";
+import { type Metadata } from "next";
 
 // Force dynamic page
 export const dynamic = "force-dynamic";

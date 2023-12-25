@@ -1,10 +1,10 @@
 "use client";
 
+import { useSession } from "next-auth/react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import posthog from "posthog-js";
 import { PostHogProvider, usePostHog } from "posthog-js/react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import { useSession } from "next-auth/react";
 
 if (
   typeof window !== "undefined" &&

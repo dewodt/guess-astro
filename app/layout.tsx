@@ -1,19 +1,19 @@
 "use client";
 
 import "./globals.css";
-import { Inter } from "next/font/google";
-import { useState, useEffect, Suspense } from "react";
-import { usePathname } from "next/navigation";
-import { ThemeProvider } from "next-themes";
-import NavBar from "@/components/ui/navbar";
 import Footer from "@/components/ui/footer";
+import NavBar from "@/components/ui/navbar";
 import { Toaster } from "@/components/ui/sonner";
-import { SessionProvider } from "next-auth/react";
 import {
   PHProvider,
   PostHogIdentifyOrReset,
   PostHogPageview,
 } from "@/lib/posthog-client";
+import { SessionProvider } from "next-auth/react";
+import { ThemeProvider } from "next-themes";
+import { Inter } from "next/font/google";
+import { usePathname } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
 
 const inter = Inter({
   subsets: ["latin"],

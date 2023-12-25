@@ -1,7 +1,7 @@
-import { type Metadata } from "next";
 import RegisterForm from "./register-form";
-import { getServerSession, type Session } from "next-auth";
 import { authOptions } from "@/lib/auth-options";
+import { type Metadata } from "next";
+import { getServerSession, type Session } from "next-auth";
 
 export const metadata: Metadata = {
   title: "Register | Guess Astro",
