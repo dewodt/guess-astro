@@ -2,7 +2,6 @@
 
 import { user } from "@/db/schema";
 import { authOptions } from "@/lib/auth-options";
-import { uploadAvatar } from "@/lib/cloudinary";
 import { db } from "@/lib/drizzle";
 import PostHogClient from "@/lib/posthog-server";
 import {
@@ -68,34 +67,14 @@ export const UserAction = async (formData: FormData) => {
   }
 
   // Update user data
-  if (userFormData.image) {
-    // User's avatar is updated
-    // Upload avatar to cloudinary
-    const imageUrl =
-      userFormData.image === "DELETE"
-        ? null
-        : await uploadAvatar(session.id, userFormData.image);
-
-    // Update database
-    await db
-      .update(user)
-      .set({
-        name: userFormData.name,
-        username: userFormData.username,
-        image: imageUrl,
-      })
-      .where(eq(user.id, session.id));
-  } else {
-    // User's avatar is not updated
-    // Update database
-    await db
-      .update(user)
-      .set({
-        name: userFormData.name,
-        username: userFormData.username,
-      })
-      .where(eq(user.id, session.id));
-  }
+  await db
+    .update(user)
+    .set({
+      name: userFormData.name,
+      username: userFormData.username,
+      image: userFormData.image,
+    })
+    .where(eq(user.id, session.id));
 
   // Initialize posthog client
   const posthogClient = PostHogClient();
@@ -109,6 +88,6 @@ export const UserAction = async (formData: FormData) => {
   return {
     ok: true,
     title: "Success",
-    description: "User data is updated successfully",
+    description: "Profile updated successfully",
   };
 };

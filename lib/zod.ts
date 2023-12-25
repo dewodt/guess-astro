@@ -1,4 +1,9 @@
-import { maxImageSize, allowedImagesTypes, modes } from "./constants";
+import {
+  maxImageSize,
+  allowedImagesTypes,
+  modes,
+  allowedImageHosts,
+} from "./constants";
 import * as z from "zod";
 
 // Sign in user
@@ -7,10 +12,6 @@ export const signInSchema = z.object({
 });
 
 // Register or update user data
-// Image states:
-// 1. File: User uploaded a new image
-// 2. "DELETE": User deleted the image
-// 3. null: User didn't upload a new image
 export const registerOrUpdateUserSchema = z.object({
   name: z.string().min(1, "Name is required"),
   username: z
@@ -22,19 +23,24 @@ export const registerOrUpdateUserSchema = z.object({
       "Username can only contain alphanumeric characters"
     ),
   image: z
-    .custom<File | "DELETE">()
-    .refine((file) => {
-      if (file === "DELETE") return true;
-
-      return file!.size <= maxImageSize;
-    }, `File size should be less than 5 MB`)
-    .refine((file) => {
-      if (file === "DELETE") return true;
-
-      return allowedImagesTypes.includes(file!.type);
-    }, "Only these types are allowed .jpg, .jpeg, .png and .webp")
+    .string()
+    .url("Invalid url")
+    .refine(
+      (str) => allowedImageHosts.some((host) => str.startsWith(host)),
+      "Invalid host url"
+    )
     .nullable(),
 });
+
+// Avatar Schema
+export const avatarSchema = z
+  .custom<File>()
+  .refine((file) => {
+    return file.size <= maxImageSize;
+  }, `File size should be less than 5 MB`)
+  .refine((file) => {
+    return allowedImagesTypes.includes(file.type);
+  }, "Only these types are allowed .jpg, .jpeg, .png and .webp");
 
 // MatchAnswerSchema
 export const MatchAnswerSchema = z.object({
