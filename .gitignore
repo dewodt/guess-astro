@@ -37,3 +37,9 @@ next-env.d.ts
 
 # react email
 .react-email
+
+# Cypress examples
+cypress/e2e/1-getting-started
+cypress/e2e/2-advanced-examples
+cypress/component/ComponentName.cy.tsx
+cypress/fixtures/example.json
