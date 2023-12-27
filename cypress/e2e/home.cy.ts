@@ -64,21 +64,22 @@ describe("Home Page", () => {
           "Review your gameplay trajectory effortlessly so that you can analyze the matches you've ever played.",
       },
     ];
+
     cy.get('[data-cy="features-list"]')
       .children()
       .should("have.length", expectedFeatures.length);
 
     cy.get('[data-cy="features-list"]')
       .children()
-      .each((el, index) => {
-        cy.wrap(el).find("svg").should("be.visible");
+      .each(($el, index) => {
+        cy.wrap($el).find("svg").should("be.visible");
 
-        cy.wrap(el)
+        cy.wrap($el)
           .find("h3")
           .should("be.visible")
           .and("have.text", expectedFeatures[index].title);
 
-        cy.wrap(el)
+        cy.wrap($el)
           .find("p")
           .should("be.visible")
           .and("have.text", expectedFeatures[index].description);

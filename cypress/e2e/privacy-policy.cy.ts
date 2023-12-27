@@ -49,20 +49,20 @@ describe("Privacy Policy Page", () => {
 
     cy.get('[data-cy="privacy-policy-section"]')
       .children()
-      .each((el, index) => {
+      .each(($el, index) => {
         if (index === 0) {
-          cy.wrap(el)
+          cy.wrap($el)
             .find("h1")
             .should("be.visible")
             .and("have.text", expectedPrivacyPolicy[index].title);
         } else {
-          cy.wrap(el)
+          cy.wrap($el)
             .find("h2")
             .should("be.visible")
             .and("have.text", expectedPrivacyPolicy[index].title);
         }
 
-        cy.wrap(el)
+        cy.wrap($el)
           .find("p")
           .should("be.visible")
           .and("have.text", expectedPrivacyPolicy[index].description);

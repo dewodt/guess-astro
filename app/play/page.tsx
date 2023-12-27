@@ -57,15 +57,24 @@ const PlayMenuPage = () => {
     <main className="flex flex-auto  items-center justify-center p-6 py-12 sm:p-12 lg:p-24">
       <section className="flex max-w-5xl flex-col gap-6 lg:gap-8">
         <div className="flex flex-col gap-3 lg:gap-4">
-          <h1 className="text-center text-3xl font-bold lg:text-5xl">
+          <h1
+            data-cy="play-title"
+            className="text-center text-3xl font-bold lg:text-5xl"
+          >
             Choose Gamemode!
           </h1>
-          <p className="text-center text-base text-muted-foreground lg:text-xl">
+          <p
+            data-cy="play-description"
+            className="text-center text-base text-muted-foreground lg:text-xl"
+          >
             You can choose between multiple gamemode to memorize different
             astronomical objects.
           </p>
         </div>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:gap-8">
+        <div
+          data-cy="play-options"
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:gap-8"
+        >
           {modes.map((mode, index) => {
             return (
               <Link key={index} href={mode.playUrl}>
