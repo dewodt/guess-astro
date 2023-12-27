@@ -36,12 +36,18 @@ const AboutPage = () => {
       <section className="max-w-2xl">
         <Card className="flex flex-col gap-2 p-8 shadow-lg lg:gap-5 lg:p-10">
           <CardHeader className="p-0">
-            <h1 className="text-center text-2xl font-bold leading-none tracking-tight lg:text-4xl lg:leading-none">
+            <h1
+              data-cy="mission-title"
+              className="text-center text-2xl font-bold leading-none tracking-tight lg:text-4xl lg:leading-none"
+            >
               Mission
             </h1>
           </CardHeader>
           <CardContent className="p-0">
-            <p className="text-justify text-base lg:text-xl">
+            <p
+              data-cy="mission-description"
+              className="text-justify text-base lg:text-xl"
+            >
               Help students memorize astronomical objects to prepare for
               astronomy national/international science olympiad.
             </p>
@@ -53,14 +59,21 @@ const AboutPage = () => {
       <section className="max-w-2xl">
         <Card className="flex flex-col gap-2 p-8 shadow-lg lg:gap-5 lg:p-10">
           <CardHeader className="p-0">
-            <h1 className="text-center text-2xl font-bold leading-none tracking-tight lg:text-4xl lg:leading-none">
+            <h1
+              data-cy="contact-title"
+              className="text-center text-2xl font-bold leading-none tracking-tight lg:text-4xl lg:leading-none"
+            >
               Contact
             </h1>
           </CardHeader>
           <CardContent className="p-0">
-            <p className="text-justify text-base lg:text-xl">
+            <p
+              data-cy="contact-description"
+              className="text-justify text-base lg:text-xl"
+            >
               This app is{" "}
               <Link
+                data-cy="contact-repo"
                 href="https://github.com/dewodt/guess-astro"
                 target="_blank"
               >
@@ -73,7 +86,11 @@ const AboutPage = () => {
               </Link>
               . If you have any feedback, suggestion, inquiries, or anything you
               want to tell me, please feel free to contact me at{" "}
-              <Link href="mailto:dewantorotriatmojo@gmail.com" target="_blank">
+              <Link
+                data-cy="contact-email"
+                href="mailto:dewantorotriatmojo@gmail.com"
+                target="_blank"
+              >
                 <Button
                   variant="link"
                   className="h-fit p-0 text-base lg:text-xl"

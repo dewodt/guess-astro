@@ -131,19 +131,12 @@ const Home = () => {
               key={index}
               className="flex w-full flex-row gap-5 p-5 shadow-lg sm:w-[calc(50%-12px)] lg:w-[calc(50%-16px)]"
             >
-              <CardContent
-                data-cy={`feature-icon-${index}`}
-                className="flex items-center p-0"
-              >
+              <CardContent className="flex items-center p-0">
                 {feature.icon}
               </CardContent>
               <CardHeader className="justify-center p-0">
-                <CardTitle data-cy={`feature-title-${index}`}>
-                  {feature.title}
-                </CardTitle>
-                <CardDescription data-cy={`feature-description-${index}`}>
-                  {feature.description}
-                </CardDescription>
+                <CardTitle>{feature.title}</CardTitle>
+                <CardDescription>{feature.description}</CardDescription>
               </CardHeader>
             </Card>
           ))}

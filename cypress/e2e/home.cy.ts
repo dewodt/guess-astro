@@ -71,19 +71,15 @@ describe("Home Page", () => {
     cy.get('[data-cy="features-list"]')
       .children()
       .each((el, index) => {
-        cy.wrap(el).should("be.visible");
+        cy.wrap(el).find("svg").should("be.visible");
 
         cy.wrap(el)
-          .find(`[data-cy="feature-icon-${index}"]`)
-          .should("be.visible");
-
-        cy.wrap(el)
-          .find(`[data-cy="feature-title-${index}"]`)
+          .find("h3")
           .should("be.visible")
           .and("have.text", expectedFeatures[index].title);
 
         cy.wrap(el)
-          .find(`[data-cy="feature-description-${index}"]`)
+          .find("p")
           .should("be.visible")
           .and("have.text", expectedFeatures[index].description);
       });
