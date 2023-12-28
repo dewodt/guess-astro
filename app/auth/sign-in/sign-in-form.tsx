@@ -85,17 +85,23 @@ const SignInForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel data-cy="sign-in-email-label">Email</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="Email" {...field} />
+                  <Input
+                    data-cy="sign-in-email-input"
+                    type="email"
+                    placeholder="Email"
+                    {...field}
+                  />
                 </FormControl>
-                <FormMessage />
+                <FormMessage data-cy="sign-in-email-message" />
               </FormItem>
             )}
           />
 
           {/* Submit Button */}
           <Button
+            data-cy="sign-in-email-button"
             variant="default"
             className="w-full"
             size="lg"
@@ -109,18 +115,19 @@ const SignInForm = () => {
       </Form>
 
       {/* Separator */}
-      <div className="relative">
+      <div className="relative" data-cy="sign-in-separator">
         <div className="absolute inset-0 flex items-center">
           <Separator />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">Or</span>
+          <span className="bg-background px-2 text-muted-foreground">or</span>
         </div>
       </div>
 
       {/* OAuth */}
       {/* Google */}
       <Button
+        data-cy="sign-in-google-button"
         variant="secondary"
         type="button"
         size="lg"
@@ -139,6 +146,7 @@ const SignInForm = () => {
 
       {/* Discord */}
       <Button
+        data-cy="sign-in-discord-button"
         variant="secondary"
         type="button"
         size="lg"

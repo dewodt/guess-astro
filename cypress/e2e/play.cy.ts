@@ -59,7 +59,8 @@ describe("Play Page", () => {
     }
   });
 
-  it("Should redirect to game page if user is logged in and clicked one of the mode", () => {
+  it.skip("Should redirect to game page if user is logged in and clicked one of the mode", () => {
     // To do: mock login
+    // cy.loginByGoogleApi();
   });
 });

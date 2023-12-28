@@ -69,6 +69,7 @@
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "cypress": "^13.6.1",
+    "cypress-v10-preserve-cookie": "^1.2.1",
     "drizzle-kit": "^0.19.13",
     "encoding": "^0.1.13",
     "eslint-plugin-cypress": "^2.15.1",

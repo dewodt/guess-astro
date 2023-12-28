@@ -34,7 +34,10 @@ const SignInPage = async () => {
       <Card className="w-full max-w-sm shadow-lg">
         {/* Title */}
         <CardHeader>
-          <h1 className="text-center text-3xl font-bold text-primary">
+          <h1
+            data-cy="sign-in-title"
+            className="text-center text-3xl font-bold text-primary"
+          >
             Sign In
           </h1>
         </CardHeader>
