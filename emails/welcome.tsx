@@ -40,13 +40,13 @@ const WelcomeEmail = () => {
         <Body className="bg-white">
           <Container className="mx-auto pb-12 pt-5">
             {/* Logo Section */}
-            <Section className="mx-auto mb-2">
+            <Section className="mx-auto">
               <Img
                 src="https://astro.dewodt.com/guess-astro-full.png"
                 alt="Guess Astro Logo"
                 className="mx-auto rounded-md"
-                width={300}
-                height={158}
+                width={266}
+                height={100}
               />
             </Section>
 
