@@ -95,7 +95,7 @@ const Home = () => {
             Here at Guess Astro we help you memorize astronomical objects to
             prepare for Astronomy National/International Science Olympiad!
           </p>
-          <Link data-cy="hero-anchor" href="/play">
+          <Link data-cy="hero-link" href="/play">
             <Button size="lg">
               Play Now
               <ArrowRight className="ml-1 h-5 w-5" />

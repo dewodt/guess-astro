@@ -20,7 +20,7 @@ describe("Home Page", () => {
       );
 
     // Start button
-    cy.get('[data-cy="hero-anchor')
+    cy.get('[data-cy="hero-link"]')
       .should("be.visible")
       .should("have.attr", "href", "/play")
       .and("have.text", "Play Now");

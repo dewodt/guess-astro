@@ -8,6 +8,7 @@ const Footer = () => {
       <div className="flex flex-row gap-8 sm:gap-12">
         {/* About */}
         <Link
+          data-cy="footer-about"
           href="/about"
           className="font-medium text-muted-foreground xl:hover:text-foreground"
         >
@@ -16,6 +17,7 @@ const Footer = () => {
 
         {/* Privacy policy */}
         <Link
+          data-cy="footer-privacy-policy"
           href="/privacy-policy"
           className="font-medium text-muted-foreground xl:hover:text-foreground"
         >
@@ -24,7 +26,10 @@ const Footer = () => {
       </div>
 
       {/* Copyright */}
-      <p className="text-center font-medium text-muted-foreground">
+      <p
+        data-cy="footer-copyright"
+        className="text-center font-medium text-muted-foreground"
+      >
         Copyright © {year} Guess Astro
       </p>
     </footer>
