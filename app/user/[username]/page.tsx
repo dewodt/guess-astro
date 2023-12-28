@@ -1,3 +1,4 @@
+import { openGraphTemplate, twitterTemplate } from "@/app/layout";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { getUserDetailData } from "@/data/user";
@@ -20,27 +21,13 @@ export const generateMetadata = async ({
 
   return {
     title: `User Detail ${userDetailData.username} | Guess Astro`,
-    description:
-      "Guess Astro is a website to help students memorize astronomical objects for astronomy national science olympiad.",
-    metadataBase: new URL("https://astro.dewodt.com"),
-    generator: "Next.js",
-    applicationName: "Guess Astro",
-    keywords: ["Guess Astro", "Astronomy", "Game"],
-    category: "education",
     openGraph: {
+      ...openGraphTemplate,
       title: `User Detail ${userDetailData.username} | Guess Astro`,
-      description:
-        "Guess Astro is a website to help students memorize astronomical objects for astronomy national science olympiad.",
-      url: "https://astro.dewodt.com/",
-      siteName: "Guess Astro",
-      locale: "en_US",
-      type: "website",
     },
     twitter: {
-      card: "summary_large_image",
+      ...twitterTemplate,
       title: `User Detail ${userDetailData.username} | Guess Astro`,
-      description:
-        "Guess Astro is a website to help students memorize astronomical objects for astronomy national science olympiad.",
     },
   };
 };

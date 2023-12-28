@@ -1,30 +1,17 @@
+import { openGraphTemplate, twitterTemplate } from "@/app/layout";
 import { Button } from "@/components/ui/button";
 import { type Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Guess Astro",
-  description:
-    "Guess Astro is a website to help students memorize astronomical objects for astronomy national science olympiad.",
-  metadataBase: new URL("https://astro.dewodt.com"),
-  generator: "Next.js",
-  applicationName: "Guess Astro",
-  keywords: ["Guess Astro", "Astronomy", "Game"],
-  category: "education",
   openGraph: {
+    ...openGraphTemplate,
     title: "Privacy Policy | Guess Astro",
-    description:
-      "Guess Astro is a website to help students memorize astronomical objects for astronomy national science olympiad.",
-    url: "https://astro.dewodt.com/",
-    siteName: "Guess Astro",
-    locale: "en_US",
-    type: "website",
   },
   twitter: {
-    card: "summary_large_image",
+    ...twitterTemplate,
     title: "Privacy Policy | Guess Astro",
-    description:
-      "Guess Astro is a website to help students memorize astronomical objects for astronomy national science olympiad.",
   },
 };
 
