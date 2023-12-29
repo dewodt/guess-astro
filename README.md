@@ -33,6 +33,7 @@ Note that cloning the repository and running `npm run dev` will not work because
 - tanstack/react-table (Headless Table UI)
 - React DayPicker (Date Picker Component)
 - date-fns (Date Utility Library)
+- cypress (End to End & Component Testing)
 
 # ✨ Cool Features
 

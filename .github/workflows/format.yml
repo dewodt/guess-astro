@@ -1,10 +1,10 @@
-name: Lint (ESLint & Prettier)
+name: ESLint & Prettier Formatter
 
 on: push
 
 jobs:
-  run-linters:
-    name: Run linters
+  run-formatter:
+    name: Run Formatter
     runs-on: ubuntu-latest
 
     steps:
@@ -20,7 +20,7 @@ jobs:
       - name: Install Node.js dependencies
         run: npm ci
 
-      - name: Run linters
+      - name: Run Formatter
         uses: wearerequired/lint-action@v2
         with:
           auto_fix: true
