@@ -1,6 +1,6 @@
 import PlayForm from "./play-form";
-import { openGraphTemplate, twitterTemplate } from "@/app/layout";
 import { getGameData } from "@/data/game";
+import { openGraphTemplate, twitterTemplate } from "@/lib/metadata";
 import { getRandomInt, getTitleCase } from "@/lib/utils";
 import type { ModesType } from "@/types/constants";
 import { type Metadata } from "next";

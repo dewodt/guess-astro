@@ -1,6 +1,6 @@
 import { SignOutButton } from "./sign-out-button";
-import { openGraphTemplate, twitterTemplate } from "@/app/layout";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { openGraphTemplate, twitterTemplate } from "@/lib/metadata";
 import { type Metadata } from "next";
 
 export const metadata: Metadata = {

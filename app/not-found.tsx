@@ -1,6 +1,6 @@
-import { openGraphTemplate, twitterTemplate } from "@/app/layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { openGraphTemplate, twitterTemplate } from "@/lib/metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 

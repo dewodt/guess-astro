@@ -1,6 +1,6 @@
 import SignInForm from "./sign-in-form";
-import { openGraphTemplate, twitterTemplate } from "@/app/layout";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { openGraphTemplate, twitterTemplate } from "@/lib/metadata";
 import { type Metadata } from "next";
 
 export const metadata: Metadata = {

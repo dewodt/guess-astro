@@ -1,5 +1,5 @@
-import { openGraphTemplate, twitterTemplate } from "@/app/layout";
 import { Button } from "@/components/ui/button";
+import { openGraphTemplate, twitterTemplate } from "@/lib/metadata";
 import { type Metadata } from "next";
 import Link from "next/link";
 

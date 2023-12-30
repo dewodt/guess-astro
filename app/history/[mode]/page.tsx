@@ -1,7 +1,7 @@
 import { HistoryTableShell } from "./table-shell";
-import { openGraphTemplate, twitterTemplate } from "@/app/layout";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { getHistoryData } from "@/data/history";
+import { openGraphTemplate, twitterTemplate } from "@/lib/metadata";
 import { getTitleCase } from "@/lib/utils";
 import { ModesType } from "@/types/constants";
 import { type Metadata } from "next";

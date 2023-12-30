@@ -1,6 +1,6 @@
 import RegisterForm from "./register-form";
-import { openGraphTemplate, twitterTemplate } from "@/app/layout";
 import { authOptions } from "@/lib/auth-options";
+import { openGraphTemplate, twitterTemplate } from "@/lib/metadata";
 import { type Metadata } from "next";
 import { getServerSession, type Session } from "next-auth";
 

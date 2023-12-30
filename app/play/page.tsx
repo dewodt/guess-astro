@@ -1,4 +1,3 @@
-import { openGraphTemplate, twitterTemplate } from "@/app/layout";
 import {
   Card,
   CardContent,
@@ -6,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { openGraphTemplate, twitterTemplate } from "@/lib/metadata";
 import { type Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";

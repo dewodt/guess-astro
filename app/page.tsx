@@ -1,4 +1,3 @@
-import { openGraphTemplate, twitterTemplate } from "@/app/layout";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -7,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { openGraphTemplate, twitterTemplate } from "@/lib/metadata";
 import {
   ArrowRight,
   BarChart3,

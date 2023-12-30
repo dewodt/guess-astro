@@ -1,7 +1,7 @@
 import { StatisticsChart } from "./statistics-chart";
-import { openGraphTemplate, twitterTemplate } from "@/app/layout";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { getStatisticsData } from "@/data/statistics";
+import { openGraphTemplate, twitterTemplate } from "@/lib/metadata";
 import { getTitleCase } from "@/lib/utils";
 import { ModesType } from "@/types/constants";
 import { type Metadata } from "next";

@@ -1,7 +1,7 @@
-import { openGraphTemplate, twitterTemplate } from "@/app/layout";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { getUserDetailData } from "@/data/user";
+import { openGraphTemplate, twitterTemplate } from "@/lib/metadata";
 import { getFormattedDate } from "@/lib/utils";
 import { UserCircle2 } from "lucide-react";
 import { type Metadata } from "next";

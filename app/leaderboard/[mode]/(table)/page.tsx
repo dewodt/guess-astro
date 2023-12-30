@@ -1,5 +1,4 @@
 import { LeaderboardRow } from "./leaderboard-row";
-import { openGraphTemplate, twitterTemplate } from "@/app/layout";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Table,
@@ -10,6 +9,7 @@ import {
   TableHeader,
 } from "@/components/ui/table";
 import { getLeaderboardData } from "@/data/leaderboard";
+import { openGraphTemplate, twitterTemplate } from "@/lib/metadata";
 import { getTitleCase } from "@/lib/utils";
 import { ModesType } from "@/types/constants";
 import { type Metadata } from "next";
