@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 export const LeaderboardRow = ({
   children,
   href,
+  ...props
 }: {
   children: React.ReactNode;
   href: string;
@@ -14,7 +15,11 @@ export const LeaderboardRow = ({
   const router = useRouter();
 
   return (
-    <TableRow onClick={() => router.push(href)} className="cursor-pointer">
+    <TableRow
+      onClick={() => router.push(href)}
+      className="cursor-pointer"
+      {...props}
+    >
       {children}
     </TableRow>
   );

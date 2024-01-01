@@ -55,7 +55,12 @@ const LeaderboardPage = async ({
     <main className="w-full">
       <Card className="h-fit w-full shadow-lg">
         <CardHeader>
-          <h2 className="text-2xl font-bold text-primary">{modeTitle} Mode</h2>
+          <h2
+            data-cy="leaderboard-title"
+            className="text-2xl font-bold text-primary"
+          >
+            {modeTitle} Mode
+          </h2>
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
@@ -63,9 +68,22 @@ const LeaderboardPage = async ({
               {/* Header */}
               <TableHeader>
                 <TableRow>
-                  <TableHead className="pl-10 pr-6 text-center">Rank</TableHead>
-                  <TableHead className="w-full px-6">Username</TableHead>
-                  <TableHead className="pl-6 pr-10 text-center">
+                  <TableHead
+                    data-cy="leaderboard-table-header-0"
+                    className="pl-10 pr-6 text-center"
+                  >
+                    Rank
+                  </TableHead>
+                  <TableHead
+                    data-cy="leaderboard-table-header-1"
+                    className="w-full px-6"
+                  >
+                    Username
+                  </TableHead>
+                  <TableHead
+                    data-cy="leaderboard-table-header-2"
+                    className="pl-6 pr-10 text-center"
+                  >
                     Score
                   </TableHead>
                 </TableRow>
@@ -76,16 +94,26 @@ const LeaderboardPage = async ({
                 {data.map((user, idx) => {
                   return (
                     <LeaderboardRow
+                      data-cy={`leaderboard-table-body-${idx}`}
                       key={user.id}
                       href={`/user/${user.username}`}
                     >
-                      <TableCell className="pl-10 pr-6 text-center font-medium">
+                      <TableCell
+                        data-cy={`leaderboard-table-body-${idx}-0`}
+                        className="pl-10 pr-6 text-center font-medium"
+                      >
                         {idx + 1}
                       </TableCell>
-                      <TableCell className="w-full px-6">
+                      <TableCell
+                        data-cy={`leaderboard-table-body-${idx}-1`}
+                        className="w-full px-6"
+                      >
                         {user.username}
                       </TableCell>
-                      <TableCell className="pl-6 pr-10 text-center">
+                      <TableCell
+                        data-cy={`leaderboard-table-body-${idx}-2`}
+                        className="pl-6 pr-10 text-center"
+                      >
                         {user.score}
                       </TableCell>
                     </LeaderboardRow>

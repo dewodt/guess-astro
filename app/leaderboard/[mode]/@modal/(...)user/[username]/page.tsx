@@ -28,12 +28,18 @@ const UserDetailModalPage = async ({
       {/* Header */}
       <DialogHeader className="flex flex-col items-center gap-2">
         {/* Title */}
-        <DialogTitle className="self-start text-2xl font-bold text-primary">
+        <DialogTitle
+          data-cy="leaderboard-modal-title"
+          className="self-start text-2xl font-bold text-primary"
+        >
           User Detail
         </DialogTitle>
 
         {/* Profile Picture */}
-        <Avatar className="h-60 w-60 self-center sm:h-72 sm:w-72">
+        <Avatar
+          data-cy="leaderboard-modal-avatar"
+          className="h-60 w-60 self-center sm:h-72 sm:w-72"
+        >
           <AvatarImage
             src={userDetailData.image!}
             alt={`${userDetailData.username} Profile Picture`}
@@ -48,20 +54,44 @@ const UserDetailModalPage = async ({
       {/* Data */}
       <div className="flex flex-col items-start gap-2">
         <div className="flex flex-col items-start gap-1">
-          <h3 className="text-base font-semibold">Username</h3>
-          <h4 className="text-sm text-muted-foreground">
+          <h3
+            data-cy="leaderboard-modal-username-title"
+            className="text-base font-semibold"
+          >
+            Username
+          </h3>
+          <h4
+            data-cy="leaderboard-modal-username-detail"
+            className="text-sm text-muted-foreground"
+          >
             {userDetailData.username}
           </h4>
         </div>
         <div className="flex flex-col items-start gap-1">
-          <h3 className="text-base font-semibold">Name</h3>
-          <h4 className="text-sm text-muted-foreground">
+          <h3
+            data-cy="leaderboard-modal-name-title"
+            className="text-base font-semibold"
+          >
+            Name
+          </h3>
+          <h4
+            data-cy="leaderboard-modal-name-detail"
+            className="text-sm text-muted-foreground"
+          >
             {userDetailData.name}
           </h4>
         </div>
         <div className="flex flex-col items-start gap-1">
-          <h3 className="text-base font-semibold">Signed up at</h3>
-          <h4 className="text-sm text-muted-foreground">
+          <h3
+            data-cy="leaderboard-modal-signed-up-at-title"
+            className="text-base font-semibold"
+          >
+            Signed up at
+          </h3>
+          <h4
+            data-cy="leaderboard-modal-signed-up-at-detail"
+            className="text-sm text-muted-foreground"
+          >
             {getFormattedDate(userDetailData.createdAt!)}
           </h4>
         </div>

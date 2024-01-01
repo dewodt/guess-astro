@@ -35,6 +35,7 @@ const LeaderboardSidebar = () => {
               return (
                 <li key={mode.path}>
                   <Link
+                    data-cy={`leaderboard-sidebar-${mode.title.toLowerCase()}`}
                     href={mode.path}
                     className={cn(
                       "flex w-full items-center gap-2 rounded-md p-3 duration-300 ease-in-out",
