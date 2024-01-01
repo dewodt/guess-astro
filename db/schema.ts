@@ -103,6 +103,7 @@ export const match = pgTable("match", {
     }),
 });
 
+export type User = typeof user.$inferInsert;
 export type Match = typeof match.$inferInsert;
 
 // Relation Declarations

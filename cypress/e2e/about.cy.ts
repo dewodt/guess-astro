@@ -4,8 +4,8 @@ describe("About Page", () => {
     cy.visit("/about");
   });
 
-  // Mission section
-  it("Successfully render mission section", () => {
+  it("Successfully render about page", () => {
+    // Mission
     cy.get('[data-cy="mission-title"]')
       .should("be.visible")
       .and("have.text", "Mission");
@@ -15,10 +15,8 @@ describe("About Page", () => {
         "have.text",
         "Help students memorize astronomical objects to prepare for astronomy national/international science olympiad."
       );
-  });
 
-  // Contact section
-  it("Successfully render contact section", () => {
+    // Contact
     cy.get('[data-cy="contact-title"]')
       .should("be.visible")
       .and("have.text", "Contact");
