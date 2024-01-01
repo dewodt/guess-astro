@@ -40,7 +40,11 @@ export function DataTableFacetedFilter<TData, TValue>({
       {variant === "popover" ? (
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="border-dashed px-3">
+            <Button
+              data-cy="history-faceted-filter-trigger"
+              variant="outline"
+              className="border-dashed px-3"
+            >
               <PlusCircle className="mr-2 h-4 w-4" />
               {title}
               {selectedValues?.size > 0 && (
@@ -87,6 +91,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     const isSelected = selectedValues.has(option.value);
                     return (
                       <CommandItem
+                        data-cy={`history-faceted-filter-option-${option.value}`}
                         key={option.value}
                         onSelect={() => {
                           if (isSelected) {

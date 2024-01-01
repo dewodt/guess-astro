@@ -26,26 +26,41 @@ export function DataTablePagination<TData>({
   return (
     <div className="flex flex-col items-center gap-4 overflow-auto px-2 py-1 sm:flex-row sm:gap-6 lg:gap-8">
       <div className="flex items-center space-x-3">
-        <p className="whitespace-nowrap text-sm font-medium">Rows per page</p>
+        <p
+          data-cy="history-table-rows-per-page-text"
+          className="whitespace-nowrap text-sm font-medium"
+        >
+          Rows per page
+        </p>
         <Select
           value={`${table.getState().pagination.pageSize}`}
           onValueChange={(value) => {
             table.setPageSize(Number(value));
           }}
         >
-          <SelectTrigger className="h-10 w-[70px]">
+          <SelectTrigger
+            data-cy="history-table-rows-per-page-trigger"
+            className="h-10 w-[70px]"
+          >
             <SelectValue placeholder={table.getState().pagination.pageSize} />
           </SelectTrigger>
           <SelectContent side="top">
             {pageSizeOptions.map((pageSize) => (
-              <SelectItem key={pageSize} value={`${pageSize}`}>
+              <SelectItem
+                data-cy={`history-table-rows-per-page-option-${pageSize}`}
+                key={pageSize}
+                value={`${pageSize}`}
+              >
                 {pageSize}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
       </div>
-      <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+      <div
+        data-cy="history-table-page-of"
+        className="flex w-[100px] items-center justify-center text-sm font-medium"
+      >
         Page{" "}
         {table.getPageCount() === 0
           ? 0
@@ -54,6 +69,7 @@ export function DataTablePagination<TData>({
       </div>
       <div className="flex items-center space-x-3">
         <Button
+          data-cy="history-button-first-page"
           aria-label="Go to first page"
           variant="outline"
           size="icon"
@@ -64,6 +80,7 @@ export function DataTablePagination<TData>({
           <ChevronsLeft className="h-5 w-5" aria-hidden="true" />
         </Button>
         <Button
+          data-cy="history-button-previous-page"
           aria-label="Go to previous page"
           variant="outline"
           size="icon"
@@ -73,6 +90,7 @@ export function DataTablePagination<TData>({
           <ChevronLeft className="h-5 w-5" aria-hidden="true" />
         </Button>
         <Button
+          data-cy="history-button-next-page"
           aria-label="Go to next page"
           variant="outline"
           size="icon"
@@ -82,6 +100,7 @@ export function DataTablePagination<TData>({
           <ChevronRight className="h-5 w-5" aria-hidden="true" />
         </Button>
         <Button
+          data-cy="history-button-last-page"
           aria-label="Go to last page"
           variant="outline"
           size="icon"

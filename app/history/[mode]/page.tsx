@@ -51,7 +51,12 @@ const HistoryDetailPage = async ({
     <main className="w-full">
       <Card className="h-fit w-full shadow-lg">
         <CardHeader>
-          <h2 className="text-2xl font-bold text-primary">{modeTitle} Mode</h2>
+          <h2
+            data-cy="history-title"
+            className="text-2xl font-bold text-primary"
+          >
+            {modeTitle} Mode
+          </h2>
         </CardHeader>
         <CardContent>
           <HistoryTableShell data={allHistory} pageCount={pageCount} />

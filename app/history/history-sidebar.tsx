@@ -36,6 +36,7 @@ const HistorySidebar = () => {
                 <li key={mode.path}>
                   <Link
                     href={mode.path}
+                    data-cy={`history-sidebar-${mode.title.toLowerCase()}`}
                     className={cn(
                       "flex w-full items-center gap-2 rounded-md p-3 duration-300 ease-in-out",
                       pathname.startsWith(mode.path)

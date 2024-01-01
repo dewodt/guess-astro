@@ -44,6 +44,7 @@ export function DatePickerWithRange<TData, TValue>({
       <Popover>
         <PopoverTrigger asChild>
           <Button
+            data-cy="history-date-picker-trigger"
             id="date"
             variant={"outline"}
             className={cn(
@@ -68,6 +69,7 @@ export function DatePickerWithRange<TData, TValue>({
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
           <Calendar
+            data-cy="history-date-picker-calendar"
             initialFocus
             mode="range"
             defaultMonth={dateRange?.from}

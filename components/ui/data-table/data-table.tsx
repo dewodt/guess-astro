@@ -34,13 +34,16 @@ export function DataTable<TData, TValue>({
         filterableColumns={filterableColumns}
       />
       <div className="rounded-md border">
-        <Table className="table-fixed">
+        <Table data-cy="history-table" className="table-fixed">
           <TableHeader>
             {dataTable.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
+                {headerGroup.headers.map((header, colIdx) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      data-cy={`history-table-header-${colIdx}`}
+                      key={header.id}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -55,13 +58,16 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {dataTable.getRowModel().rows?.length ? (
-              dataTable.getRowModel().rows.map((row) => (
+              dataTable.getRowModel().rows.map((row, rowIdx) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                  {row.getVisibleCells().map((cell, colIdx) => (
+                    <TableCell
+                      data-cy={`history-table-body-${rowIdx}-${colIdx}`}
+                      key={cell.id}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

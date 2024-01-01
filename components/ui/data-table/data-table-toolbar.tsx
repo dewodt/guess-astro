@@ -53,6 +53,7 @@ export function DataTableToolbar<TData>({
       {/* Reset button */}
       {isFiltered && (
         <Button
+          data-cy="history-reset-filters"
           aria-label="Reset filters"
           variant="secondary"
           className="px-3"

@@ -29,6 +29,7 @@ export function DataTableColumnHeader<TData, TValue>({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
+            data-cy="history-sort-trigger"
             aria-label={
               column.getIsSorted() === "desc"
                 ? `Sorted descending. Click to sort ascending.`
@@ -52,6 +53,7 @@ export function DataTableColumnHeader<TData, TValue>({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
           <DropdownMenuItem
+            data-cy="history-sort-ascending"
             aria-label="Sort ascending"
             onClick={() => column.toggleSorting(false)}
           >
@@ -62,6 +64,7 @@ export function DataTableColumnHeader<TData, TValue>({
             Asc
           </DropdownMenuItem>
           <DropdownMenuItem
+            data-cy="history-sort-descending"
             aria-label="Sort descending"
             onClick={() => column.toggleSorting(true)}
           >
