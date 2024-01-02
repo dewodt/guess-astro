@@ -8,6 +8,7 @@ describe("History Mode Page", () => {
   before(() => {
     // Seed database (include reset) once
     cy.task("db:seed");
+    cy.wait(5000);
   });
 
   beforeEach(() => {
@@ -38,6 +39,9 @@ describe("History Mode Page", () => {
       cy.visit(`/history/${mode}`);
 
       // Sidebar
+      cy.get('[data-cy="history-sidebar-title"]')
+        .should("be.visible")
+        .and("have.text", "History");
       cy.get(`[data-cy="history-sidebar-${mode}"]`)
         .should("be.visible")
         .should("have.attr", "href", `/history/${mode}`)

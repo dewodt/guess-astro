@@ -26,7 +26,12 @@ const HistorySidebar = () => {
         <CardHeader>
           <div className="flex flex-row items-center gap-2">
             <History className="h-6 w-6 stroke-primary" />
-            <h1 className="text-2xl font-bold text-primary">History</h1>
+            <h1
+              data-cy="history-sidebar-title"
+              className="text-2xl font-bold text-primary"
+            >
+              History
+            </h1>
           </div>
         </CardHeader>
         <CardContent>

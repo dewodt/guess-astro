@@ -6,6 +6,7 @@ describe("Statistics Mode Page", () => {
   before(() => {
     // Non mutating, seed once
     cy.task("db:seed");
+    cy.wait(5000);
   });
 
   beforeEach(() => {
@@ -74,6 +75,9 @@ describe("Statistics Mode Page", () => {
       cy.visit(`/statistics/${mode}`);
 
       // Sidebar
+      cy.get('[data-cy="statistics-sidebar-title"]')
+        .should("be.visible")
+        .and("have.text", "Statistics");
       cy.get(`[data-cy="statistics-sidebar-${mode}"]`)
         .should("be.visible")
         .should("have.attr", "href", `/statistics/${mode}`)

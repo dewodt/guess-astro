@@ -6,6 +6,7 @@ describe("Leaderboard Mode Page", () => {
   // Non mutating page, once is enough
   before(() => {
     cy.task("db:seed");
+    cy.wait(5000);
   });
 
   // Expected leaderboard data from the seed
@@ -142,6 +143,9 @@ describe("Leaderboard Mode Page", () => {
       cy.visit(`/leaderboard/${mode}`);
 
       // Sidebar
+      cy.get('[data-cy="leaderboard-sidebar-title"]')
+        .should("be.visible")
+        .and("have.text", "Leaderboard");
       cy.get(`[data-cy="leaderboard-sidebar-${mode}"]`)
         .should("be.visible")
         .should("have.attr", "href", `/leaderboard/${mode}`)
@@ -179,7 +183,7 @@ describe("Leaderboard Mode Page", () => {
     });
   });
 
-  it.only("Should render modal and intercept route successfully when table row is clicked", () => {
+  it("Should render modal and intercept route successfully when table row is clicked", () => {
     modes.forEach((mode) => {
       // Visit the leaderboard page
       cy.visit(`/leaderboard/${mode}`);

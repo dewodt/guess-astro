@@ -26,7 +26,12 @@ const LeaderboardSidebar = () => {
         <CardHeader>
           <div className="flex flex-row items-center gap-2">
             <ScrollText className="h-6 w-6 stroke-primary" />
-            <h1 className="text-2xl font-bold text-primary">Leaderboard</h1>
+            <h1
+              data-cy="leaderboard-sidebar-title"
+              className="text-2xl font-bold text-primary"
+            >
+              Leaderboard
+            </h1>
           </div>
         </CardHeader>
         <CardContent>
