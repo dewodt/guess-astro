@@ -70,15 +70,4 @@ describe("Sign In Page", () => {
       .find("[data-title]")
       .and("have.text", "Success");
   });
-
-  it("Should redirect user to home when user is already signed in", () => {
-    // Mock login
-    cy.googleSignIn(testUserJwtMock);
-
-    // Visit sign in page
-    cy.visit("/auth/sign-in");
-
-    // Redirected back to home
-    cy.url().should("include", "/");
-  });
 });

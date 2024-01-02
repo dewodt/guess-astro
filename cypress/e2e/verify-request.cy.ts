@@ -15,6 +15,4 @@ describe("Verify Request Page", () => {
         "To complete the verification process, please check your email inbox for a verification link from us. If you don't see the email in your inbox, please also check your spam folder."
       );
   });
-
-  it.skip("Should redirect user to home page if user is signed in", () => {});
 });

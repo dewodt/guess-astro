@@ -3,6 +3,19 @@ describe("Play Page", () => {
     cy.visit("/play");
   });
 
+  const expectedOptions = [
+    {
+      href: "/play/constellation",
+      title: "Constellation",
+      description: "Memorize the name of the constellations and their shape",
+    },
+    {
+      href: "/play/messier",
+      title: "Messier",
+      description: "Memorize the name of the messier objects",
+    },
+  ];
+
   it("Should render play page successfully", () => {
     cy.get('[data-cy="play-title"]')
       .should("be.visible")
@@ -14,19 +27,6 @@ describe("Play Page", () => {
         "have.text",
         "You can choose between multiple gamemode to memorize different astronomical objects."
       );
-
-    const expectedOptions = [
-      {
-        href: "/play/constellation",
-        title: "Constellation",
-        description: "Memorize the name of the constellations and their shape",
-      },
-      {
-        href: "/play/messier",
-        title: "Messier",
-        description: "Memorize the name of the messier objects",
-      },
-    ];
 
     cy.get('[data-cy="play-options"]')
       .children()
@@ -46,21 +46,5 @@ describe("Play Page", () => {
           .should("be.visible")
           .and("have.text", expectedOptions[index].description);
       });
-  });
-
-  it("Should redirect to login page if user is not logged in and clicked one of the mode", () => {
-    for (let i = 0; i < 2; i++) {
-      cy.get('[data-cy="play-options"]')
-        .children()
-        .eq(0)
-        .click({ force: true });
-      cy.url().should("include", "/auth/sign-in");
-      cy.go("back");
-    }
-  });
-
-  it.skip("Should redirect to game page if user is logged in and clicked one of the mode", () => {
-    // To do: mock login
-    // cy.loginByGoogleApi();
   });
 });

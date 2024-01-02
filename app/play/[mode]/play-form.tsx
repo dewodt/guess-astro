@@ -130,12 +130,18 @@ const PlayForm = ({
     <section className="flex w-full max-w-[420px] flex-col gap-4 lg:gap-6">
       <div className="flex flex-col gap-2">
         {/* Title */}
-        <h1 className="text-2xl font-bold lg:text-3xl">
+        <h1
+          data-cy="play-mode-title"
+          className="text-2xl font-bold lg:text-3xl"
+        >
           Guess the {question.mode} object!
         </h1>
 
         {/* Short description */}
-        <p className="text-base text-muted-foreground lg:text-lg">
+        <p
+          data-cy="play-mode-description"
+          className="text-base text-muted-foreground lg:text-lg"
+        >
           Select one of the options from the dropdown!
         </p>
       </div>
@@ -143,6 +149,7 @@ const PlayForm = ({
       {/* Question Image */}
       <div className="aspect-square w-full rounded-full shadow-xl">
         <Image
+          data-cy="play-mode-image"
           src={imageUrl}
           className="aspect-square w-full rounded-full object-cover object-center"
           style={{ rotate: rotateDeg }}
@@ -164,13 +171,16 @@ const PlayForm = ({
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 {/* Label */}
-                <FormLabel>Your Answer</FormLabel>
+                <FormLabel data-cy="play-mode-popover-label">
+                  Your Answer
+                </FormLabel>
 
                 {/* Trigger */}
                 <Popover open={open} onOpenChange={setOpen}>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
+                        data-cy="play-mode-popover-trigger"
                         variant="outline"
                         role="combobox"
                         className={cn(
@@ -193,15 +203,23 @@ const PlayForm = ({
                   <PopoverContent className="popover-content-width-same-as-its-trigger p-0">
                     <Command>
                       {/* Place holder */}
-                      <CommandInput placeholder="Search object..." />
+                      <CommandInput
+                        data-cy="play-mode-popover-input"
+                        placeholder="Search object..."
+                      />
 
                       {/* Search not found */}
-                      <CommandEmpty>No object found.</CommandEmpty>
+                      <CommandEmpty data-cy="play-mode-popover-not-found">
+                        No object found.
+                      </CommandEmpty>
 
                       {/* Options */}
                       <CommandGroup className="max-h-28 overflow-y-auto">
                         {options.map((option) => (
                           <CommandItem
+                            data-cy={`play-mode-popover-option-${option.name
+                              .replaceAll(" ", "-")
+                              .toLowerCase()}`}
                             value={option.name}
                             key={option.name}
                             onSelect={() => {
@@ -233,6 +251,7 @@ const PlayForm = ({
           <div className="flex flex-row gap-4">
             {/* Back to Menu */}
             <Link
+              data-cy="play-mode-quit"
               href="/play"
               className={cn(
                 "w-1/2",
@@ -253,6 +272,7 @@ const PlayForm = ({
             {/* Submit or Next question */}
             {!isAnswered ? (
               <Button
+                data-cy="play-mode-submit"
                 className="w-1/2"
                 size="lg"
                 type="submit"
@@ -265,6 +285,7 @@ const PlayForm = ({
               </Button>
             ) : (
               <Button
+                data-cy="play-mode-next"
                 className="w-1/2"
                 size="lg"
                 type="button"
