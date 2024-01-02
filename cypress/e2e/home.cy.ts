@@ -4,8 +4,8 @@ describe("Home Page", () => {
     cy.visit("/");
   });
 
-  // Hero section
-  it("Successfully render hero section", () => {
+  it("Successfully render home page", () => {
+    // Hero section
     // Title
     cy.get('[data-cy="hero-title"]')
       .should("be.visible")
@@ -27,10 +27,8 @@ describe("Home Page", () => {
 
     // Image
     cy.get('[data-cy="hero-image"]').should("be.visible");
-  });
 
-  // Features section
-  it("Successfully render features section", () => {
+    // Features section
     // Title
     cy.get('[data-cy="features-title"]')
       .should("be.visible")

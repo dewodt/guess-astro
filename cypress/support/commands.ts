@@ -1,12 +1,12 @@
-import { jwtObjectMock } from "../fixtures/jwt";
 import "cypress-v10-preserve-cookie";
 import { encode } from "next-auth/jwt";
+import { type JWT } from "next-auth/jwt/types";
 
-Cypress.Commands.add("googleSignIn", () => {
-  cy.session("74607127-c007-4a95-bb74-857e931a205f", async () => {
+Cypress.Commands.add("googleSignIn", (jwtMock) => {
+  cy.session(jwtMock.id, async () => {
     // Decode jwt object to string
     const jwtStr = await encode({
-      token: jwtObjectMock,
+      token: jwtMock,
       secret: Cypress.env("NEXTAUTH_SECRET"),
     });
 
@@ -33,7 +33,7 @@ Cypress.Commands.add("signOut", () => {
 declare global {
   namespace Cypress {
     interface Chainable {
-      googleSignIn(): void;
+      googleSignIn(jwtMock: JWT): void;
       signOut(): void;
     }
   }

@@ -1,4 +1,5 @@
 import { modes } from "../../lib/constants";
+import { testUserJwtMock } from "../fixtures/jwt";
 import { matchSeed } from "../fixtures/match";
 import { getFormattedDate, getTitleCase } from "./../../lib/utils";
 
@@ -10,7 +11,7 @@ describe("History Mode Page", () => {
 
   beforeEach(() => {
     // Login to google every tests
-    cy.googleSignIn();
+    cy.googleSignIn(testUserJwtMock);
   });
 
   // Default (no filters) expected after render

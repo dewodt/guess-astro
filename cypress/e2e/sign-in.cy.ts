@@ -1,3 +1,5 @@
+import { testUserJwtMock } from "../fixtures/jwt";
+
 describe("Sign In Page", () => {
   beforeEach(() => {
     cy.visit("/auth/sign-in");
@@ -69,7 +71,14 @@ describe("Sign In Page", () => {
       .and("have.text", "Success");
   });
 
-  it.skip("Should redirect user to home when user is already signed in", () => {
+  it("Should redirect user to home when user is already signed in", () => {
     // Mock login
+    cy.googleSignIn(testUserJwtMock);
+
+    // Visit sign in page
+    cy.visit("/auth/sign-in");
+
+    // Redirected back to home
+    cy.url().should("include", "/");
   });
 });
