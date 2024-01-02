@@ -166,7 +166,10 @@ const RegisterForm = ({ session }: { session: Session }) => {
     <Card className="w-full max-w-md shadow-lg">
       {/* Title */}
       <CardHeader>
-        <h1 className="text-center text-3xl font-bold text-primary">
+        <h1
+          data-cy="register-title"
+          className="text-center text-3xl font-bold text-primary"
+        >
           Register
         </h1>
       </CardHeader>
@@ -187,10 +190,13 @@ const RegisterForm = ({ session }: { session: Session }) => {
 
                 return (
                   <FormItem>
-                    <FormLabel>Avatar</FormLabel>
+                    <FormLabel data-cy="register-avatar-label">
+                      Avatar
+                    </FormLabel>
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                       {/* Avatar Preview */}
                       <Avatar
+                        data-cy="register-avatar-preview"
                         onClick={() =>
                           !isSubmitting &&
                           !isUploadingImage &&
@@ -216,6 +222,7 @@ const RegisterForm = ({ session }: { session: Session }) => {
                         {/* File Upload */}
                         <FormControl>
                           <Input
+                            data-cy="register-avatar-input"
                             type="file"
                             accept="image/*"
                             ref={fileInputRef}
@@ -227,6 +234,8 @@ const RegisterForm = ({ session }: { session: Session }) => {
 
                         {/* File Delete */}
                         <Button
+                          data-cy="register-avatar-delete"
+                          type="button"
                           variant="destructive"
                           size="icon"
                           className="flex-none"
@@ -246,7 +255,7 @@ const RegisterForm = ({ session }: { session: Session }) => {
                         </Button>
                       </div>
                     </div>
-                    <FormMessage />
+                    <FormMessage data-cy="register-avatar-message" />
                   </FormItem>
                 );
               }}
@@ -255,9 +264,10 @@ const RegisterForm = ({ session }: { session: Session }) => {
             {/* Readonly Email Input */}
             {/* Don't register it to React Hook Form because we don't want to send to BE */}
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel data-cy="register-email-label">Email</FormLabel>
               <FormControl>
                 <Input
+                  data-cy="register-email-input"
                   type="text"
                   placeholder="Email"
                   value={session.email}
@@ -265,6 +275,7 @@ const RegisterForm = ({ session }: { session: Session }) => {
                 />
               </FormControl>
             </FormItem>
+
             {/* Username */}
             <FormField
               control={control}
@@ -272,11 +283,18 @@ const RegisterForm = ({ session }: { session: Session }) => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel data-cy="register-username-label">
+                    Username
+                  </FormLabel>
                   <FormControl>
-                    <Input type="text" placeholder="Username" {...field} />
+                    <Input
+                      data-cy="register-username-input"
+                      type="text"
+                      placeholder="Username"
+                      {...field}
+                    />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage data-cy="register-username-message" />
                 </FormItem>
               )}
             />
@@ -288,17 +306,23 @@ const RegisterForm = ({ session }: { session: Session }) => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel data-cy="register-name-label">Name</FormLabel>
                   <FormControl>
-                    <Input type="text" placeholder="Name" {...field} />
+                    <Input
+                      data-cy="register-name-input"
+                      type="text"
+                      placeholder="Name"
+                      {...field}
+                    />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage data-cy="register-name-message" />
                 </FormItem>
               )}
             />
 
             {/* Submit Button */}
             <Button
+              data-cy="register-submit"
               variant="default"
               className="w-full"
               size="lg"

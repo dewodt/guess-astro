@@ -76,7 +76,7 @@ describe("Play Mode Page", () => {
       // Intercept to create loading time
       cy.intercept("POST", `/play/${mode}`, (req) => {
         req.on("response", (res) => {
-          res.setDelay(4500);
+          res.setDelay(5000);
         });
       }).as("loader");
 

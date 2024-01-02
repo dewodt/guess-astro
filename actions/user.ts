@@ -34,7 +34,7 @@ export const UserAction = async (formData: FormData) => {
 
     return {
       ok: false,
-      title: "Invalid Submission Data.",
+      title: "Error",
       description: description,
       errorPaths: errorPaths,
     };
@@ -55,7 +55,7 @@ export const UserAction = async (formData: FormData) => {
   if (data) {
     return {
       ok: false,
-      title: "Invalid Submission Data.",
+      title: "Error",
       description: `Username "${userFormData.username}" is not available`,
       errorPaths: [
         {
