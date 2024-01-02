@@ -176,7 +176,12 @@ const ProfileForm = ({ session }: { session: Session }) => {
       <CardHeader>
         <div className="flex flex-row items-center gap-2">
           <User className="h-6 w-6 stroke-primary" />
-          <h2 className="text-2xl font-bold text-primary">Profile</h2>
+          <h2
+            data-cy="settings-profile-title"
+            className="text-2xl font-bold text-primary"
+          >
+            Profile
+          </h2>
         </div>
       </CardHeader>
       <CardContent>
@@ -194,10 +199,13 @@ const ProfileForm = ({ session }: { session: Session }) => {
 
                 return (
                   <FormItem>
-                    <FormLabel>Avatar</FormLabel>
+                    <FormLabel data-cy="settings-profile-avatar-label">
+                      Avatar
+                    </FormLabel>
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                       {/* Avatar Preview */}
                       <Avatar
+                        data-cy="settings-profile-avatar-preview"
                         onClick={() =>
                           !isSubmitting &&
                           !isUploadingImage &&
@@ -223,6 +231,7 @@ const ProfileForm = ({ session }: { session: Session }) => {
                         {/* File Upload */}
                         <FormControl>
                           <Input
+                            data-cy="settings-profile-avatar-input"
                             type="file"
                             accept="image/*"
                             ref={fileInputRef}
@@ -234,6 +243,8 @@ const ProfileForm = ({ session }: { session: Session }) => {
 
                         {/* File Delete */}
                         <Button
+                          data-cy="settings-profile-avatar-delete"
+                          type="button"
                           variant="destructive"
                           size="icon"
                           className="flex-none"
@@ -253,7 +264,7 @@ const ProfileForm = ({ session }: { session: Session }) => {
                         </Button>
                       </div>
                     </div>
-                    <FormMessage />
+                    <FormMessage data-cy="settings-profile-avatar-message" />
                   </FormItem>
                 );
               }}
@@ -262,9 +273,12 @@ const ProfileForm = ({ session }: { session: Session }) => {
             {/* Readonly Email Input */}
             {/* Don't register it to React Hook Form because we don't want to send to BE */}
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel data-cy="settings-profile-email-label">
+                Email
+              </FormLabel>
               <FormControl>
                 <Input
+                  data-cy="settings-profile-email-input"
                   type="text"
                   placeholder="Email"
                   value={session.email}
@@ -280,11 +294,18 @@ const ProfileForm = ({ session }: { session: Session }) => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel data-cy="settings-profile-username-label">
+                    Username
+                  </FormLabel>
                   <FormControl>
-                    <Input type="text" placeholder="Username" {...field} />
+                    <Input
+                      data-cy="settings-profile-username-input"
+                      type="text"
+                      placeholder="Username"
+                      {...field}
+                    />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage data-cy="settings-profile-username-message" />
                 </FormItem>
               )}
             />
@@ -296,17 +317,25 @@ const ProfileForm = ({ session }: { session: Session }) => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel data-cy="settings-profile-name-label">
+                    Name
+                  </FormLabel>
                   <FormControl>
-                    <Input type="text" placeholder="Name" {...field} />
+                    <Input
+                      data-cy="settings-profile-name-input"
+                      type="text"
+                      placeholder="Name"
+                      {...field}
+                    />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage data-cy="settings-profile-name-message" />
                 </FormItem>
               )}
             />
 
             {/* Submit Button */}
             <Button
+              data-cy="settings-profile-submit"
               variant="default"
               className="w-full"
               size="lg"

@@ -16,7 +16,12 @@ const SettingsSidebar = () => {
         <CardHeader>
           <div className="flex flex-row items-center gap-2">
             <Settings className="h-6 w-6 stroke-primary" />
-            <h1 className="text-2xl font-bold text-primary">Settings</h1>
+            <h1
+              data-cy="settings-sidebar-title"
+              className="text-2xl font-bold text-primary"
+            >
+              Settings
+            </h1>
           </div>
         </CardHeader>
         <CardContent>
@@ -24,6 +29,7 @@ const SettingsSidebar = () => {
             {/* Profile */}
             <li>
               <Link
+                data-cy="settings-sidebar-profile"
                 href="/settings/profile"
                 className={cn(
                   "flex w-full items-center gap-2 rounded-md p-3 duration-300 ease-in-out",
@@ -39,6 +45,7 @@ const SettingsSidebar = () => {
 
             {/* Sign Out */}
             <li
+              data-cy="settings-sidebar-sign-out"
               onClick={() => signOut({ callbackUrl: "/?phState=reset" })}
               className="flex w-full cursor-pointer flex-row items-center gap-2 rounded-md p-3 font-medium text-destructive duration-300 ease-in-out hover:bg-muted"
             >

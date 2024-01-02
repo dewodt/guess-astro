@@ -107,14 +107,22 @@ describe("Register Page", () => {
       cy.get('[data-cy="register-submit"]').should("be.disabled");
 
       // After loading state
-      cy.wait("@loader");
+      cy.wait("@loader").then((interception) => {
+        const body = interception.response!.body as string;
+        const idx = body.indexOf("https://res.cloudinary.com");
+        const interceptedImageUrl = body.slice(idx, body.length - 2);
+
+        // Assert src
+        cy.get('[data-cy="register-avatar-preview"]', {
+          timeout: 10000,
+        })
+          .find("img")
+          .should("have.attr", "src", interceptedImageUrl);
+      });
       cy.get(".toaster")
         .eq(0)
         .find("[data-title]")
         .should("have.text", "Success");
-      cy.get('[data-cy="register-avatar-preview"]', { timeout: 10000 })
-        .find("img")
-        .should("have.attr", "src");
       cy.get('[data-cy="register-avatar-input"]').should("not.be.disabled");
       cy.get('[data-cy="register-avatar-delete"]').should("not.be.disabled");
       cy.get('[data-cy="register-submit"]').should("not.be.disabled");
@@ -257,14 +265,20 @@ describe("Register Page", () => {
     cy.get('[data-cy="register-submit"]').should("be.disabled");
 
     // After loading state
-    cy.wait("@imageLoader");
+    cy.wait("@imageLoader").then((interception) => {
+      const body = interception.response!.body as string;
+      const idx = body.indexOf("https://res.cloudinary.com");
+      const interceptedImageUrl = body.slice(idx, body.length - 2);
+
+      // Assert src
+      cy.get('[data-cy="register-avatar-preview"]', { timeout: 10000 })
+        .find("img")
+        .should("have.attr", "src", interceptedImageUrl);
+    });
     cy.get(".toaster")
       .eq(0)
       .find("[data-title]")
       .should("have.text", "Success");
-    cy.get('[data-cy="register-avatar-preview"]', { timeout: 10000 })
-      .find("img")
-      .should("have.attr", "src");
     cy.get('[data-cy="register-avatar-input"]').should("not.be.disabled");
     cy.get('[data-cy="register-avatar-delete"]').should("not.be.disabled");
     cy.get('[data-cy="register-submit"]').should("not.be.disabled");
