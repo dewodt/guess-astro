@@ -4,6 +4,7 @@ import { matchSeed } from "../fixtures/match";
 import { getFormattedDate, getTitleCase } from "./../../lib/utils";
 
 describe("History Mode Page", () => {
+  // Non mutating page, once is enough
   before(() => {
     // Seed database (include reset) once
     cy.task("db:seed");

@@ -3,6 +3,8 @@ import { unregisteredUserJwtMock } from "../fixtures/jwt";
 describe("Register Page", () => {
   // Sign in the user
   beforeEach(() => {
+    // Mutating, Seed DB and Sign in to google every tests to prevent conflict
+    cy.task("db:seed");
     cy.googleSignIn(unregisteredUserJwtMock);
     cy.visit("/auth/register");
   });
@@ -241,7 +243,6 @@ describe("Register Page", () => {
       .and("have.text", "Name is required");
   });
 
-  // The only successfull submit (prevent conflict)
   it("Should be able to register successfully", () => {
     // Intercept & delay to emphasize loading state
     cy.intercept("POST", "/auth/register", (req) => {

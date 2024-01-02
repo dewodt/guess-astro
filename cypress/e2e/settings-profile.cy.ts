@@ -1,8 +1,9 @@
 import { testUserJwtMock } from "../fixtures/jwt";
 
 describe("Settings Profile Page", () => {
-  // Sign in the user
   beforeEach(() => {
+    // Mutating, Seed DB and Sign in to google every tests to prevent conflict
+    cy.task("db:seed");
     cy.googleSignIn(testUserJwtMock);
     cy.visit("/settings/profile");
   });
@@ -272,7 +273,6 @@ describe("Settings Profile Page", () => {
       .and("have.text", "Name is required");
   });
 
-  // The only successfull submit (prevent conflict)
   it("Should be able to update profile successfully", () => {
     // Intercept & delay to emphasize loading state
     cy.intercept("POST", "/settings/profile", (req) => {

@@ -1,5 +1,3 @@
-import { testUserJwtMock } from "../fixtures/jwt";
-
 describe("Sign In Page", () => {
   beforeEach(() => {
     cy.visit("/auth/sign-in");
@@ -56,7 +54,18 @@ describe("Sign In Page", () => {
       "disabled"
     );
     cy.get('[data-cy="sign-in-email-input"]').type("testuserdewodt@gmail.com");
+
+    // Intercept to emphasize the loading state
+    cy.intercept("POST", "/api/auth/signin/email", (req) => {
+      req.on("response", (res) => {
+        res.setDelay(5000);
+      });
+    }).as("loader");
+
+    // Submit
     cy.get('[data-cy="sign-in-email-button"]').click();
+
+    // Loading
     cy.get(".toaster")
       .eq(0)
       .find("[data-title]")
@@ -64,10 +73,10 @@ describe("Sign In Page", () => {
     cy.get('[data-cy="sign-in-email-button"]').should("be.disabled");
     cy.get('[data-cy="sign-in-google-button"]').should("be.disabled");
     cy.get('[data-cy="sign-in-discord-button"]').should("be.disabled");
-    cy.url({ timeout: 30000 }).should("include", "/auth/verify-request");
-    cy.get(".toaster", { timeout: 30000 })
-      .eq(0)
-      .find("[data-title]")
-      .and("have.text", "Success");
+
+    // Success
+    cy.wait("@loader");
+    cy.url().should("include", "/auth/verify-request");
+    cy.get(".toaster").eq(0).find("[data-title]").and("have.text", "Success");
   });
 });

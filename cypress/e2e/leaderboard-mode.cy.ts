@@ -3,6 +3,7 @@ import { getFormattedDate, getTitleCase } from "./../../lib/utils";
 import { userSeed } from "./../fixtures/user";
 
 describe("Leaderboard Mode Page", () => {
+  // Non mutating page, once is enough
   before(() => {
     cy.task("db:seed");
   });

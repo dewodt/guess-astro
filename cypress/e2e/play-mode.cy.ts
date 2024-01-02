@@ -3,7 +3,8 @@ import { testUserJwtMock } from "../fixtures/jwt";
 
 describe("Play Mode Page", () => {
   beforeEach(() => {
-    // Sign in the user
+    // Mutating, Seed DB and Sign in to google every tests to prevent conflict
+    cy.task("db:seed");
     cy.googleSignIn(testUserJwtMock);
   });
 

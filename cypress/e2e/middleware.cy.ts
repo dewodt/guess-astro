@@ -1,6 +1,11 @@
 import { testUserJwtMock, unregisteredUserJwtMock } from "../fixtures/jwt";
 
 describe("Middleware", () => {
+  before(() => {
+    // Non mutating page, once is enough
+    cy.task("db:seed");
+  });
+
   // List of routes to visit
   const neutralRoutes = [
     "/",
