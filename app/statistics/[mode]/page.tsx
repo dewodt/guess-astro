@@ -46,12 +46,24 @@ const StatisticsPage = async ({
       {data.numberData.map((item, idx) => (
         <Card className="h-fit shadow-lg" key={idx}>
           <CardHeader className="px-6 pb-2 pt-6">
-            <h2 className="text-base font-semibold text-primary">
+            <h2
+              data-cy={`statistics-${item.title
+                .replace(" ", "-")
+                .toLowerCase()}-title`}
+              className="text-base font-semibold text-primary"
+            >
               {item.title}
             </h2>
           </CardHeader>
           <CardContent>
-            <p className="text-xl font-bold">{item.value}</p>
+            <p
+              data-cy={`statistics-${item.title
+                .replace(" ", "-")
+                .toLowerCase()}-value`}
+              className="text-xl font-bold"
+            >
+              {item.value}
+            </p>
           </CardContent>
         </Card>
       ))}
@@ -59,11 +71,14 @@ const StatisticsPage = async ({
       {/* Charts Data */}
       <Card className="col-span-full h-fit shadow-lg">
         <CardHeader className="p-6">
-          <h2 className="text-base font-semibold text-primary">
+          <h2
+            data-cy="statistics-current-year-overview-title"
+            className="text-base font-semibold text-primary"
+          >
             Current Year Overview
           </h2>
         </CardHeader>
-        <CardContent>
+        <CardContent data-cy="statistics-current-year-overview-chart">
           <StatisticsChart chartData={data.chartData} />
         </CardContent>
       </Card>

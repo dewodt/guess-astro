@@ -26,7 +26,12 @@ const StatisticsSidebar = () => {
         <CardHeader>
           <div className="flex flex-row items-center gap-2">
             <BarChart3 className="h-6 w-6 stroke-primary" />
-            <h1 className="text-2xl font-bold text-primary">Statistics</h1>
+            <h1
+              data-cy="statistics-sidebar-title"
+              className="text-2xl font-bold text-primary"
+            >
+              Statistics
+            </h1>
           </div>
         </CardHeader>
         <CardContent>
@@ -35,6 +40,7 @@ const StatisticsSidebar = () => {
               return (
                 <li key={mode.path}>
                   <Link
+                    data-cy={`statistics-sidebar-${mode.title.toLowerCase()}`}
                     href={mode.path}
                     className={cn(
                       "flex w-full items-center gap-2 rounded-md p-3 duration-300 ease-in-out",
