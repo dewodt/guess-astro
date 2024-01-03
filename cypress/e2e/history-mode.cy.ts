@@ -47,7 +47,7 @@ describe("History Mode Page", () => {
         .and("have.text", getTitleCase(mode));
 
       // Main section
-      cy.get(`[data-cy="history-title"`).should(
+      cy.get(`[data-cy="history-title"]`).should(
         "have.text",
         `${getTitleCase(mode)} Mode`
       );

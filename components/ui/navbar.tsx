@@ -52,10 +52,10 @@ const NavBar = ({
   const { theme, setTheme } = useTheme();
 
   // Get session
-  const { data: session } = useSession();
+  const { data: session } = NavBar.useSession();
 
-  // Get pathname
-  const pathname = usePathname();
+  // Get pathname (NavBar.usePathname is for mocking in component tests)
+  const pathname = NavBar.usePathname();
 
   // Side Bar background ref
   const sideBarBgRef = useRef<HTMLDivElement>(null);
@@ -82,7 +82,7 @@ const NavBar = ({
   return (
     <nav className="sticky left-0 right-0 top-0 z-40 flex h-20 w-full flex-row items-center justify-between border-b-2 border-b-border bg-background px-5 lg:px-16 xl:h-[90px]">
       {/* Logo Icon */}
-      <Link href="/">
+      <Link data-cy="navbar-logo" href="/">
         <Image
           width={40}
           height={40}
@@ -92,15 +92,19 @@ const NavBar = ({
       </Link>
 
       {/* Menu Icon Button */}
-      <button
+      <Button
+        data-cy="navbar-menu"
+        variant="ghost"
+        size="icon"
         aria-label="Menu"
-        className="block w-fit lg:hidden"
-        onClick={() => setNavBarExpanded(!navBarExpanded)}
+        className="lg:hidden"
+        onClick={() => setNavBarExpanded(true)}
       >
         <Menu size={36} className="stroke-foreground" />
-      </button>
+      </Button>
 
       <div
+        data-cy="navbar-expanded"
         className={`fixed right-0 top-0 z-10 flex h-full w-[230px] flex-col gap-6 border-l-2 border-l-border bg-background p-5 font-inter text-base duration-300 ease-in-out lg:static lg:h-auto lg:w-auto lg:translate-x-0 lg:flex-row-reverse lg:items-center lg:gap-12 lg:border-none lg:bg-transparent lg:p-0 lg:dark:bg-transparent xl:text-lg ${
           navBarExpanded ? "translate-x-0" : "translate-x-full"
         }`}
@@ -109,6 +113,7 @@ const NavBar = ({
           <div className="flex flex-row items-center gap-6">
             {/* Toggle Light/Dark mode */}
             <Button
+              data-cy="navbar-theme"
               variant="outline"
               size="icon"
               aria-label="Toggle Light/Dark Mode"
@@ -124,7 +129,10 @@ const NavBar = ({
             {/* Profile dropdown when there's session */}
             {session ? (
               <DropdownMenu>
-                <DropdownMenuTrigger className="h-11 w-11 rounded-full border-4 border-transparent hover:border-border data-[state=open]:border-4 data-[state=open]:border-border">
+                <DropdownMenuTrigger
+                  data-cy="navbar-dropdown-trigger"
+                  className="h-11 w-11 rounded-full border-4 border-transparent hover:border-border data-[state=open]:border-4 data-[state=open]:border-border"
+                >
                   {/* Avatar */}
                   <Avatar className="h-full w-full">
                     <AvatarImage
@@ -139,12 +147,14 @@ const NavBar = ({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   {/* Title */}
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuLabel data-cy="navbar-dropdown-title">
+                    My Account
+                  </DropdownMenuLabel>
 
                   <DropdownMenuSeparator />
 
                   {/* Settings */}
-                  <Link href="/settings/profile">
+                  <Link data-cy="navbar-dropdown-settings" href="/settings">
                     <DropdownMenuItem>
                       <Settings className="mr-2 h-4 w-4" />
                       Settings
@@ -152,7 +162,7 @@ const NavBar = ({
                   </Link>
 
                   {/* Statistics */}
-                  <Link href="/statistics/constellation">
+                  <Link data-cy="navbar-dropdown-statistics" href="/statistics">
                     <DropdownMenuItem>
                       <BarChart3 className="mr-2 h-4 w-4" />
                       Statistics
@@ -160,7 +170,7 @@ const NavBar = ({
                   </Link>
 
                   {/* History */}
-                  <Link href="/history/constellation">
+                  <Link data-cy="navbar-dropdown-history" href="/history">
                     <DropdownMenuItem>
                       <History className="mr-2 h-4 w-4" />
                       History
@@ -169,6 +179,7 @@ const NavBar = ({
 
                   {/* Sign Out */}
                   <DropdownMenuItem
+                    data-cy="navbar-dropdown-sign-out"
                     className="text-destructive focus:text-destructive"
                     onClick={() => signOut({ callbackUrl: "/?phState=reset" })}
                   >
@@ -178,7 +189,11 @@ const NavBar = ({
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Link href="/auth/sign-in" aria-label="Sign In">
+              <Link
+                data-cy="navbar-sign-in-desktop"
+                href="/auth/sign-in"
+                aria-label="Sign In"
+              >
                 <Button
                   variant="default"
                   size="lg"
@@ -192,11 +207,12 @@ const NavBar = ({
 
           {/* Close Button */}
           <Button
+            data-cy="navbar-close"
             variant="ghost"
             size="icon"
             aria-label="Close NavBar"
             className="lg:hidden"
-            onClick={() => setNavBarExpanded(!navBarExpanded)}
+            onClick={() => setNavBarExpanded(false)}
           >
             <X size={36} className="stroke-foreground" />
           </Button>
@@ -208,6 +224,7 @@ const NavBar = ({
             return (
               <li key={index} className="py-2">
                 <Link
+                  data-cy={`navbar-link-${path.name.toLowerCase()}`}
                   href={path.url}
                   className={`${
                     pathname.startsWith(path.url)
@@ -225,6 +242,7 @@ const NavBar = ({
         {/* Sign In button when there's no session */}
         {!session && (
           <Link
+            data-cy="navbar-sign-in-mobile"
             href="/auth/sign-in"
             className="self-center"
             aria-label="Sign In"
@@ -243,6 +261,7 @@ const NavBar = ({
       {/* Side bar opaque background */}
       {navBarExpanded && (
         <div
+          data-cy="navbar-opaque"
           ref={sideBarBgRef}
           className="fixed inset-0 z-0 h-full w-full bg-opacity-80 backdrop-blur-sm lg:hidden"
         />
@@ -250,5 +269,9 @@ const NavBar = ({
     </nav>
   );
 };
+
+// For mocking usePathname() hook in component tests
+NavBar.usePathname = usePathname;
+NavBar.useSession = useSession;
 
 export default NavBar;
