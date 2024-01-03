@@ -265,15 +265,8 @@ describe("History Mode Page", () => {
       cy.visit(`/history/${mode}`);
 
       // Trigger rows per page
-      cy.get('[data-cy="history-table-rows-per-page-trigger"]').click({
-        force: true,
-      });
-      cy.get('[data-cy="history-table-rows-per-page-trigger"]').click({
-        force: true,
-      });
-      cy.get('[data-cy="history-table-rows-per-page-option-20"]').click({
-        force: true,
-      });
+      cy.get('[data-cy="history-table-rows-per-page-trigger"]').click();
+      cy.get('[data-cy="history-table-rows-per-page-option-20"]').click();
 
       // Get filtered data
       const filteredDataMode = expectedHistoryModes[mode];
@@ -396,18 +389,13 @@ describe("History Mode Page", () => {
 
       // Trigger faceted filter
       // Filter only correct
-      cy.get('[data-cy="history-faceted-filter-trigger"]').click({
-        force: true,
-      });
-      cy.get('[data-cy="history-faceted-filter-trigger"]').click({
-        force: true,
-      });
+      cy.get('[data-cy="history-faceted-filter-trigger"]').click();
       cy.get('[data-cy="history-faceted-filter-option-correct"]').click();
       cy.get('[data-cy="history-title"]').click();
 
       // Trigger date filter
       // Filter from 8 to 15 current month & year
-      cy.get('[data-cy="history-date-picker-trigger"]').click({ force: true });
+      cy.get('[data-cy="history-date-picker-trigger"]').click();
       cy.get('[data-cy="history-date-picker-calendar"]').contains("8").click();
       cy.get('[data-cy="history-date-picker-calendar"]').contains("15").click();
       cy.get('[data-cy="history-title"]').click();

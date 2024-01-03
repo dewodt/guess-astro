@@ -190,9 +190,7 @@ describe("Leaderboard Mode Page", () => {
 
       for (let i = 0; i < 10; i++) {
         // Click on each row
-        cy.get(`[data-cy="leaderboard-table-body-${i}"]`).click({
-          force: true,
-        });
+        cy.get(`[data-cy="leaderboard-table-body-${i}"]`).click();
 
         // Modal
         cy.get(`[data-cy="leaderboard-modal"]`, { timeout: 15000 }).should(
