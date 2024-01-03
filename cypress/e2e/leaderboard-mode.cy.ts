@@ -3,10 +3,9 @@ import { getFormattedDate, getTitleCase } from "./../../lib/utils";
 import { userSeed } from "./../fixtures/user";
 
 describe("Leaderboard Mode Page", () => {
-  // Non mutating page, once is enough
   before(() => {
+    // Non mutating page, once is enough
     cy.task("db:seed");
-    cy.wait(5000);
   });
 
   // Expected leaderboard data from the seed

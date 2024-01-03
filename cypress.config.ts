@@ -23,7 +23,7 @@ export default defineConfig({
       on("task", {
         // Clear and Seed database with test data
         async "db:seed"() {
-          seedDatabase();
+          await seedDatabase();
 
           return null;
         },

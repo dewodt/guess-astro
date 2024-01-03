@@ -4,7 +4,6 @@ describe("Middleware", () => {
   before(() => {
     // Non mutating page, once is enough
     cy.task("db:seed");
-    cy.wait(5000);
   });
 
   // List of routes to visit

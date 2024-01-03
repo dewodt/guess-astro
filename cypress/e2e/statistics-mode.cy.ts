@@ -6,7 +6,6 @@ describe("Statistics Mode Page", () => {
   before(() => {
     // Non mutating, seed once
     cy.task("db:seed");
-    cy.wait(5000);
   });
 
   beforeEach(() => {

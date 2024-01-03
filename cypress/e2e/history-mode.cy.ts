@@ -8,7 +8,6 @@ describe("History Mode Page", () => {
   before(() => {
     // Seed database (include reset) once
     cy.task("db:seed");
-    cy.wait(5000);
   });
 
   beforeEach(() => {
