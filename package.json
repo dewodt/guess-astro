@@ -3,18 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
     "lint": "next lint",
     "email": "email dev --dir emails --port 8000",
-    "drizzle": "drizzle-kit studio --port 5000 --host 127.0.0.1",
     "drizzle:generate": "drizzle-kit generate:pg",
-    "drizzle:push": "drizzle-kit push:pg",
+    "dev": "next dev",
+    "drizzle:push:development": "env-cmd -f .env.development drizzle-kit push:pg",
+    "drizzle:studio:development": "env-cmd -f .env.development drizzle-kit studio --port 5000 --host 127.0.0.1",
+    "build": "next build",
+    "start": "next start",
+    "drizzle:push:production": "env-cmd -f .env.production drizzle-kit push:pg",
+    "drizzle:studio:production": "env-cmd -f .env.production drizzle-kit studio --port 5000 --host 127.0.0.1",
     "dev:test": "env-cmd -f .env.test next dev",
     "build:test": "env-cmd -f .env.test next build",
     "start:test": "env-cmd -f .env.test next start",
-    "cypress:open": "env-cmd -f .env.test cypress open"
+    "cypress:open": "env-cmd -f .env.test cypress open",
+    "drizzle:push:test": "env-cmd -f .env.test drizzle-kit push:pg",
+    "drizzle:studio:test": "env-cmd -f .env.test drizzle-kit studio --port 5000 --host 127.0.0.1"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^0.3.9",
