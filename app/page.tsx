@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { openGraphTemplate, twitterTemplate } from "@/lib/metadata";
 import {
-  ArrowRight,
+  ArrowRightCircle,
   BarChart3,
   ScrollText,
   Shuffle,
@@ -85,7 +85,7 @@ const Home = () => {
           <Link data-cy="hero-link" href="/play">
             <Button size="lg">
               Play Now
-              <ArrowRight className="ml-1 h-5 w-5" />
+              <ArrowRightCircle className="ml-2 h-5 w-5" />
             </Button>
           </Link>
         </div>
