@@ -80,7 +80,7 @@ const NavBar = ({
   }, [setNavBarExpanded]);
 
   return (
-    <nav className="sticky left-0 right-0 top-0 z-40 flex h-20 w-full flex-row items-center justify-between border-b-2 border-b-border bg-background px-5 lg:px-16 xl:h-[90px]">
+    <header className="sticky left-0 right-0 top-0 z-40 flex h-20 w-full flex-row items-center justify-between border-b-2 border-b-border bg-background px-5 lg:px-16 xl:h-[90px]">
       {/* Logo Icon */}
       <Link data-cy="navbar-logo" href="/">
         <Image
@@ -219,25 +219,27 @@ const NavBar = ({
         </div>
 
         {/* Path lists */}
-        <ul className="flex flex-col lg:flex-row lg:gap-12">
-          {paths.map((path, index) => {
-            return (
-              <li key={index} className="py-2">
-                <Link
-                  data-cy={`navbar-link-${path.name.toLowerCase()}`}
-                  href={path.url}
-                  className={`${
-                    pathname.startsWith(path.url)
-                      ? "font-semibold text-foreground"
-                      : "font-medium text-muted-foreground lg:hover:text-foreground"
-                  }`}
-                >
-                  {path.name}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        <nav>
+          <ul className="flex flex-col lg:flex-row lg:gap-12">
+            {paths.map((path, index) => {
+              return (
+                <li key={index} className="py-2">
+                  <Link
+                    data-cy={`navbar-link-${path.name.toLowerCase()}`}
+                    href={path.url}
+                    className={`${
+                      pathname.startsWith(path.url)
+                        ? "font-semibold text-foreground"
+                        : "font-medium text-muted-foreground lg:hover:text-foreground"
+                    }`}
+                  >
+                    {path.name}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
 
         {/* Sign In button when there's no session */}
         {!session && (
@@ -266,7 +268,7 @@ const NavBar = ({
           className="fixed inset-0 z-0 h-full w-full bg-opacity-80 backdrop-blur-sm lg:hidden"
         />
       )}
-    </nav>
+    </header>
   );
 };
 
