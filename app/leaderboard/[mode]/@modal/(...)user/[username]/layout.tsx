@@ -16,7 +16,7 @@ const UserDetailModalLayout = ({ children }: { children: React.ReactNode }) => {
     >
       <DialogContent
         data-cy="leaderboard-modal"
-        className="flex max-w-xs flex-col rounded-lg sm:max-w-sm"
+        className="flex max-h-[85vh] max-w-xs flex-col overflow-y-auto rounded-lg sm:max-w-sm"
       >
         {children}
       </DialogContent>
