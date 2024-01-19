@@ -7,6 +7,7 @@ loadEnvConfig(projectDir);
 
 export default defineConfig({
   chromeWebSecurity: false,
+  retries: 5,
   env: {
     ...process.env,
   },
