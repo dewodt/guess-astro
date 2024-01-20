@@ -80,7 +80,7 @@ const NavBar = ({
   }, [setNavBarExpanded]);
 
   return (
-    <header className="sticky left-0 right-0 top-0 z-40 flex h-20 w-full flex-row items-center justify-between border-b-2 border-b-border bg-background px-5 lg:px-16 xl:h-[90px]">
+    <header className="sticky left-0 right-0 top-0 z-40 flex h-[90px] w-full flex-row items-center justify-between border-b-2 border-b-border bg-background px-8 lg:px-16">
       {/* Logo Icon */}
       <Link data-cy="navbar-logo" href="/">
         <Image
