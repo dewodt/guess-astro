@@ -10,12 +10,18 @@ import {
 } from "@/lib/utils";
 import { registerOrUpdateUserSchema } from "@/lib/zod";
 import { eq, ne, and, sql } from "drizzle-orm";
-import { getServerSession, type Session } from "next-auth";
+import { getServerSession } from "next-auth";
 
 export const UserAction = async (formData: FormData) => {
-  // Get session
-  // Session is already validated in middleware, safe to assume session is not undefined/null
-  const session = (await getServerSession(authOptions)) as Session;
+  // Get & validate session
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return {
+      ok: false,
+      title: "Error",
+      description: "You are not authenticated",
+    };
+  }
 
   // Create object from form data
   const formObject = {};

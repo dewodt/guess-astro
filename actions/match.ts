@@ -10,12 +10,18 @@ import {
 } from "@/lib/utils";
 import { MatchAnswerSchema } from "@/lib/zod";
 import { eq } from "drizzle-orm";
-import { getServerSession, type Session } from "next-auth";
+import { getServerSession } from "next-auth";
 
 export const MatchAction = async (formData: FormData) => {
-  // Get session
-  // Session is already validated in middleware, safe to assume session is not undefined/null
-  const session = (await getServerSession(authOptions)) as Session;
+  // Get & validate session
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return {
+      ok: false,
+      title: "Error",
+      description: "You are not authenticated",
+    };
+  }
 
   // Create object from form data
   const formObject = {};
@@ -63,7 +69,7 @@ export const MatchAction = async (formData: FormData) => {
 
   // Update score and match data
   await db.insert(match).values({
-    userId: session!.id,
+    userId: session.id,
     astronomicalObjectId: answer.id,
     mode: answer.mode,
     result: result,

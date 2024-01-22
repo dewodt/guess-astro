@@ -139,7 +139,6 @@ const ProfileForm = ({ session }: { session: Session }) => {
 
     // Create form data
     const formData = new FormData();
-    formData.append("userId", session.id);
     formData.append("file", file);
 
     // Set loading state

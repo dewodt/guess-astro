@@ -1,11 +1,16 @@
 "use server";
 
+import { authOptions } from "@/lib/auth-options";
 import { uploadImage } from "@/lib/cloudinary";
 import { avatarSchema } from "@/lib/zod";
+import { getServerSession } from "next-auth";
 
 export const uploadAvatar = async (formData: FormData) => {
-  // userId is passed from session.id and session is already validated in middleware
-  const userId = formData.get("userId") as string;
+  // Get & validate session
+  const session = await getServerSession(authOptions);
+  if (!session) return null;
+
+  const userId = session.id;
   const file = formData.get("file") as Blob;
 
   // Validate file
