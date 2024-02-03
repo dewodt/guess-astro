@@ -23,19 +23,49 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import * as React from "react";
 
 interface UseDataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+  /**
+   * The data for the table
+   * @default []
+   * @type TData[]
+   */
   data: TData[];
+
+  /**
+   * The columns of the table
+   * @default []
+   * @type ColumnDef<TData, TValue>[]
+   */
+  columns: ColumnDef<TData, TValue>[];
+
+  /**
+   * The number of pages in the table
+   * @type number
+   */
   pageCount: number;
-  filterableColumns?: DataTableFilterableColumn<TData>[];
+
+  /**
+   * The searchable columns of the table
+   * @default []
+   * @type {id: keyof TData, title: string}[]
+   * @example searchableColumns={[{ id: "title", title: "titles" }]}
+   */
   searchableColumns?: DataTableSearchableColumn<TData>[];
+
+  /**
+   * The filterable columns of the table. When provided, renders dynamic faceted filters, and the advancedFilter prop is ignored.
+   * @default []
+   * @type {id: keyof TData, title: string, options: { label: string, value: string, icon?: React.ComponentType<{ className?: string }> }[]}[]
+   * @example filterableColumns={[{ id: "status", title: "Status", options: ["todo", "in-progress", "done", "canceled"]}]}
+   */
+  filterableColumns?: DataTableFilterableColumn<TData>[];
 }
 
 export function useDataTable<TData, TValue>({
-  columns,
   data,
+  columns,
   pageCount,
-  filterableColumns = [],
   searchableColumns = [],
+  filterableColumns = [],
 }: UseDataTableProps<TData, TValue>) {
   const router = useRouter();
   const pathname = usePathname();
@@ -69,14 +99,41 @@ export function useDataTable<TData, TValue>({
     },
     [searchParams]
   );
+  // Initial column filters
+  const initialColumnFilters: ColumnFiltersState = React.useMemo(() => {
+    return Array.from(searchParams.entries()).reduce<ColumnFiltersState>(
+      (filters, [key, value]) => {
+        const filterableColumn = filterableColumns.find(
+          (column) => column.id === key
+        );
+        const searchableColumn = searchableColumns.find(
+          (column) => column.id === key
+        );
+
+        if (filterableColumn) {
+          filters.push({
+            id: key,
+            value: value.split("."),
+          });
+        } else if (searchableColumn) {
+          filters.push({
+            id: key,
+            value: [value],
+          });
+        }
+
+        return filters;
+      },
+      []
+    );
+  }, [filterableColumns, searchableColumns, searchParams]);
 
   // Table states
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
+  const [columnFilters, setColumnFilters] =
+    React.useState<ColumnFiltersState>(initialColumnFilters);
 
   // Handle server-side pagination
   const [{ pageIndex, pageSize }, setPagination] =
@@ -157,7 +214,7 @@ export function useDataTable<TData, TValue>({
       page: 1,
     };
 
-    // Get all values
+    // Handle debounced searchable column filters
     for (const column of debouncedSearchableColumnFilters) {
       if (typeof column.value === "string") {
         Object.assign(newParamsObject, {
@@ -166,29 +223,7 @@ export function useDataTable<TData, TValue>({
       }
     }
 
-    // Remove deleted values
-    for (const key of searchParams.keys()) {
-      if (
-        searchableColumns.find((column) => column.id === key) &&
-        !debouncedSearchableColumnFilters.find((column) => column.id === key)
-      ) {
-        Object.assign(newParamsObject, { [key]: null });
-      }
-    }
-
-    // Push with new params
-    router.push(`${pathname}?${createQueryString(newParamsObject)}`);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(debouncedSearchableColumnFilters)]);
-
-  React.useEffect(() => {
-    // Initialize new params
-    const newParamsObject = {
-      page: 1,
-    };
-
-    // Get all values
+    // Handle filterable column filters
     for (const column of filterableColumnFilters) {
       if (typeof column.value === "object" && Array.isArray(column.value)) {
         Object.assign(newParamsObject, { [column.id]: column.value.join(".") });
@@ -198,18 +233,27 @@ export function useDataTable<TData, TValue>({
     // Remove deleted values
     for (const key of searchParams.keys()) {
       if (
-        filterableColumns.find((column) => column.id === key) &&
-        !filterableColumnFilters.find((column) => column.id === key)
+        (searchableColumns.find((column) => column.id === key) &&
+          !debouncedSearchableColumnFilters.find(
+            (column) => column.id === key
+          )) ||
+        (filterableColumns.find((column) => column.id === key) &&
+          !filterableColumnFilters.find((column) => column.id === key))
       ) {
         Object.assign(newParamsObject, { [key]: null });
       }
     }
 
-    // Push with new params
+    // After cumulating all the changes, push new params
     router.push(`${pathname}?${createQueryString(newParamsObject)}`);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(filterableColumnFilters)]);
+  }, [
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(debouncedSearchableColumnFilters),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(filterableColumnFilters),
+  ]);
 
   const dataTable = useReactTable({
     data,
