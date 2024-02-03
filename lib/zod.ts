@@ -8,14 +8,19 @@ import * as z from "zod";
 
 // Sign in user
 export const signInSchema = z.object({
-  email: z.string({ required_error: "Email is required" }).email(),
+  email: z
+    .string({ required_error: "Email is required" }) // Handle null
+    .min(1, "Email is required") // Handle empty string
+    .email(),
 });
 
 // Register or update user data
 export const registerOrUpdateUserSchema = z.object({
-  name: z.string({ required_error: "Name is required" }),
+  name: z
+    .string({ required_error: "Name is required" }) // Handle null
+    .min(1, "Name is required"), // Handle empty string
   username: z
-    .string()
+    .string({ required_error: "Username must be at least 3 characters" })
     .min(3, "Username must be at least 3 characters")
     .max(30, "Username must be at most 30 characters")
     .regex(
@@ -44,11 +49,13 @@ export const avatarSchema = z
 
 // MatchAnswerSchema
 export const MatchAnswerSchema = z.object({
-  id: z.string({ required_error: "ID is required" }),
+  id: z
+    .string({ required_error: "ID is required" }) // Handle null
+    .min(1, "ID is required"), // Handle empty string
   mode: z.enum(modes),
-  answer: z.string({
-    required_error: "Please select an answer",
-  }),
+  answer: z
+    .string({ required_error: "Please select an answer" }) // Handle null
+    .min(1, "Please select an answer"), // Handle empty string,
 });
 
 // Search Params Schema for data-table
