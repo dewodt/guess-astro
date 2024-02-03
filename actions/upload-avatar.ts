@@ -10,19 +10,18 @@ export const uploadAvatar = async (formData: FormData) => {
   const session = await getServerSession(authOptions);
   if (!session) return null;
 
-  const userId = session.id;
-  const file = formData.get("file") as Blob;
-
   // Validate file
-  const zodResult = avatarSchema.safeParse(file);
+  const rawFile = formData.get("file");
+  const zodResult = avatarSchema.safeParse(rawFile);
   if (!zodResult.success) return null;
 
-  // Folder name
+  // File data
+  const file = zodResult.data;
   const folderName = "guess-astro/user";
+  const fileName = session.id;
 
-  // Delete image
-  // fileName = userId
-  const imageUrl = await uploadImage(folderName, userId, file);
+  // Upload image
+  const imageUrl = await uploadImage({ file, folderName, fileName });
 
   return imageUrl;
 };

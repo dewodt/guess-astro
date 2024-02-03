@@ -1,39 +1,45 @@
-import { createHash } from "crypto";
+import { type UploadApiOptions, v2 as cloudinary } from "cloudinary";
 import "server-only";
 
+interface UploadImageProps {
+  folderName: string;
+  fileName: string;
+  file: Blob;
+}
+
 // Upload avatar image
-export const uploadImage = async (
-  folderName: string,
-  fileName: string,
-  file: Blob
-) => {
-  const cloudinaryEndPoint = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`;
-  const timestamp = Math.floor(Date.now() / 1000);
-
-  const hash = createHash("sha1");
-  const str = `folder=${folderName}&public_id=${fileName}&timestamp=${timestamp}${process.env.CLOUDINARY_API_SECRET}`;
-  hash.update(str);
-  const signature = hash.digest("hex");
-
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("api_key", process.env.CLOUDINARY_API_KEY as string);
-  formData.append("signature", signature);
-  formData.append("folder", folderName);
-  formData.append("public_id", fileName);
-  formData.append("timestamp", timestamp + "");
-
-  const res = await fetch(cloudinaryEndPoint, {
-    method: "POST",
-    body: formData,
+export const uploadImage = async ({
+  file,
+  folderName,
+  fileName,
+}: UploadImageProps): Promise<string | null> => {
+  // Cloudinary Configuration
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true,
   });
 
-  // Fail upload
-  if (!res.ok) return null;
+  // Options
+  const options: UploadApiOptions = {
+    folder: folderName,
+    public_id: fileName,
+    overwrite: true,
+  };
 
-  // Success upload
-  const resJSON = await res.json();
-  const imageUrl = resJSON.secure_url as string;
+  // Cloudinary accepts base64 url
+  // Convert blob to base64
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const base64 = `data:${file.type};base64,${buffer.toString("base64")}`;
 
-  return imageUrl;
+  // Upload image
+  try {
+    const result = await cloudinary.uploader.upload(base64, options);
+    // Success (secure_url uses https)
+    return result.secure_url;
+  } catch (error) {
+    // Error
+    return null;
+  }
 };
