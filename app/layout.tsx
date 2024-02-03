@@ -10,8 +10,11 @@ const inter = Inter({
 });
 
 export const viewport: Viewport = {
-  themeColor: "white",
   colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
 };
 
 export const metadata: Metadata = {
@@ -20,6 +23,13 @@ export const metadata: Metadata = {
   generator: "Next.js",
   applicationName: "Guess Astro",
   keywords: ["Guess Astro", "Astronomy", "Game"],
+  authors: [
+    {
+      name: "Dewantoro Triatmojo",
+      url: "https://dewodt.com",
+    },
+  ],
+  creator: "Dewantoro Triatmojo",
   category: "education",
   metadataBase: new URL("https://astro.dewodt.com"),
   manifest: "https://astro.dewodt.com/manifest.webmanifest",
