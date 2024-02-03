@@ -8,12 +8,12 @@ import * as z from "zod";
 
 // Sign in user
 export const signInSchema = z.object({
-  email: z.string().email(),
+  email: z.string({ required_error: "Email is required" }).email(),
 });
 
 // Register or update user data
 export const registerOrUpdateUserSchema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z.string({ required_error: "Name is required" }),
   username: z
     .string()
     .min(3, "Username must be at least 3 characters")
@@ -44,7 +44,7 @@ export const avatarSchema = z
 
 // MatchAnswerSchema
 export const MatchAnswerSchema = z.object({
-  id: z.string(),
+  id: z.string({ required_error: "ID is required" }),
   mode: z.enum(modes),
   answer: z.string({
     required_error: "Please select an answer",

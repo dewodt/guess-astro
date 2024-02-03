@@ -99,6 +99,7 @@ const Home = () => {
             width={400}
             height={400}
             className="w-[200px] lg:w-[420px]"
+            priority
           />
         </div>
       </section>

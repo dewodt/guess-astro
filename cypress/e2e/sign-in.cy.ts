@@ -30,7 +30,10 @@ describe("Sign In Page", () => {
     // Required email
     cy.get('[data-cy="sign-in-email-button"]').click();
     cy.get('[data-cy="sign-in-email-button"]').click();
-    cy.get('[data-cy="sign-in-email-message"]').should("have.text", "Required");
+    cy.get('[data-cy="sign-in-email-message"]').should(
+      "have.text",
+      "Email is required"
+    );
   });
 
   it("Should trigger invalid email when using email sign in", () => {

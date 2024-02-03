@@ -37,25 +37,3 @@ export const uploadImage = async (
 
   return imageUrl;
 };
-
-// Delete avatar image
-// export const deleteImage = async (publicId: string): Promise<void> => {
-//   const cloudinaryEndPoint = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/destroy`;
-//   const timestamp = Math.floor(Date.now() / 1000);
-
-//   const hash = createHash("sha1");
-//   const str = `public_id=${publicId}&timestamp=${timestamp}${process.env.CLOUDINARY_API_SECRET}`;
-//   hash.update(str);
-//   const signature = hash.digest("hex");
-
-//   const formData = new FormData();
-//   formData.append("api_key", process.env.CLOUDINARY_API_KEY as string);
-//   formData.append("signature", signature);
-//   formData.append("public_id", publicId);
-//   formData.append("timestamp", timestamp + "");
-
-//   await fetch(cloudinaryEndPoint, {
-//     method: "POST",
-//     body: formData,
-//   });
-// };
