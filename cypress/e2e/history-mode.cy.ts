@@ -106,8 +106,12 @@ describe("History Mode Page", () => {
       // Trigger date filter
       // Filter from 8 to 15 current month & year
       cy.get('[data-cy="history-date-picker-trigger"]').click();
-      cy.get('[data-cy="history-date-picker-calendar"]').contains("8").click();
-      cy.get('[data-cy="history-date-picker-calendar"]').contains("15").click();
+      cy.get('[data-cy="history-date-picker-calendar"]')
+        .contains(/^8$/)
+        .click();
+      cy.get('[data-cy="history-date-picker-calendar"]')
+        .contains(/^15$/)
+        .click();
       cy.get('[data-cy="history-title"]').click();
 
       // Get filtered data
@@ -395,8 +399,12 @@ describe("History Mode Page", () => {
       // Trigger date filter
       // Filter from 8 to 15 current month & year
       cy.get('[data-cy="history-date-picker-trigger"]').click();
-      cy.get('[data-cy="history-date-picker-calendar"]').contains("8").click();
-      cy.get('[data-cy="history-date-picker-calendar"]').contains("15").click();
+      cy.get('[data-cy="history-date-picker-calendar"]')
+        .contains(/^8$/)
+        .click();
+      cy.get('[data-cy="history-date-picker-calendar"]')
+        .contains(/^15$/)
+        .click();
       cy.get('[data-cy="history-title"]').click();
 
       // Trigger date sort ascending (default is descending)

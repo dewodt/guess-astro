@@ -50,7 +50,7 @@ const RegisterForm = ({ session }: { session: Session }) => {
     setValue,
     setError,
     clearErrors,
-    formState: { isSubmitting, isSubmitSuccessful }, // isSubmitSuccessful: Onetime submit, no reset.
+    formState: { isSubmitting },
   } = form;
 
   // Image Upload Loading State
