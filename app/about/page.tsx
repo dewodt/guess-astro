@@ -63,13 +63,9 @@ const AboutPage = () => {
                 data-cy="contact-repo"
                 href="https://github.com/dewodt/guess-astro"
                 target="_blank"
+                className="font-medium text-primary underline-offset-4 hover:underline"
               >
-                <Button
-                  variant="link"
-                  className="h-fit p-0 text-base lg:text-xl"
-                >
-                  open source
-                </Button>
+                open source
               </Link>
               . If you have any feedback, suggestion, inquiries, or anything you
               want to tell me, please feel free to contact me at{" "}
@@ -77,13 +73,9 @@ const AboutPage = () => {
                 data-cy="contact-email"
                 href="mailto:dewantorotriatmojo@gmail.com"
                 target="_blank"
+                className="font-medium text-primary underline-offset-4 hover:underline"
               >
-                <Button
-                  variant="link"
-                  className="h-fit p-0 text-base lg:text-xl"
-                >
-                  this email.
-                </Button>
+                this email.
               </Link>
             </p>
           </CardContent>

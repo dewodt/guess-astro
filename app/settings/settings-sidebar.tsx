@@ -44,13 +44,14 @@ const SettingsSidebar = () => {
             </li>
 
             {/* Sign Out */}
-            <li
-              data-cy="settings-sidebar-sign-out"
-              onClick={() => signOut({ callbackUrl: "/?phState=reset" })}
-              className="flex w-full cursor-pointer flex-row items-center gap-2 rounded-md p-3 font-medium text-destructive duration-300 ease-in-out hover:bg-muted"
-            >
-              <LogOut className="h-5 w-5" />
-              Sign Out
+            <li data-cy="settings-sidebar-sign-out">
+              <button
+                onClick={() => signOut({ callbackUrl: "/?phState=reset" })}
+                className="flex w-full flex-row items-center gap-2 rounded-md p-3 font-medium text-destructive duration-300 ease-in-out hover:bg-muted"
+              >
+                <LogOut className="h-5 w-5" />
+                Sign Out
+              </button>
             </li>
           </ul>
         </CardContent>

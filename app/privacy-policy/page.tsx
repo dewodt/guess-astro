@@ -95,10 +95,12 @@ const PrivacyPolicyPage = () => {
           <p className="text-justify text-base lg:text-lg">
             If you have any questions, concerns, or requests related to this
             Privacy Policy or how we handle your data, please contact us at {}
-            <Link href="mailto:dewantorotriatmojo@gmail.com" target="_blank">
-              <Button variant="link" className="h-fit p-0 text-base lg:text-lg">
-                this email.
-              </Button>
+            <Link
+              href="mailto:dewantorotriatmojo@gmail.com"
+              target="_blank"
+              className="font-medium text-primary underline-offset-4 hover:underline"
+            >
+              this email.
             </Link>
           </p>
         </div>

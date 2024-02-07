@@ -16,7 +16,13 @@ export const LeaderboardRow = ({
 
   return (
     <TableRow
+      // Click mouse navigation
       onClick={() => router.push(href)}
+      // Handle keyboard navigation
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") router.push(href);
+      }}
       className="cursor-pointer"
       {...props}
     >

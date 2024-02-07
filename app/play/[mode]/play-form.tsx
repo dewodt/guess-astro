@@ -259,6 +259,7 @@ const PlayForm = ({
               )}
             >
               <Button
+                tabIndex={-1}
                 type="button"
                 variant="secondary"
                 size="lg"

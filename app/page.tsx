@@ -84,7 +84,7 @@ const Home = () => {
               prepare for Astronomy National/International Science Olympiad!
             </p>
             <Link data-cy="hero-link" href="/play">
-              <Button size="lg">
+              <Button tabIndex={-1} size="lg">
                 Play Now
                 <ArrowRightCircle className="ml-2 h-5 w-5" />
               </Button>

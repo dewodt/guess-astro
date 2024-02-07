@@ -82,7 +82,7 @@ const NavBar = ({
   return (
     <header className="sticky left-0 right-0 top-0 z-40 flex h-[90px] w-full flex-row items-center justify-between border-b-2 border-b-border bg-background px-8 lg:px-16">
       {/* Logo Icon */}
-      <Link data-cy="navbar-logo" href="/">
+      <Link tabIndex={1} data-cy="navbar-logo" href="/">
         <Image
           width={40}
           height={40}
@@ -113,6 +113,7 @@ const NavBar = ({
           <div className="flex flex-row items-center gap-6">
             {/* Toggle Light/Dark mode */}
             <Button
+              tabIndex={4}
               data-cy="navbar-theme"
               variant="outline"
               size="icon"
@@ -130,6 +131,7 @@ const NavBar = ({
             {session ? (
               <DropdownMenu>
                 <DropdownMenuTrigger
+                  tabIndex={5}
                   data-cy="navbar-dropdown-trigger"
                   className="h-11 w-11 rounded-full border-4 border-transparent hover:border-border data-[state=open]:border-4 data-[state=open]:border-border"
                 >
@@ -190,11 +192,13 @@ const NavBar = ({
               </DropdownMenu>
             ) : (
               <Link
+                tabIndex={5}
                 data-cy="navbar-sign-in-desktop"
                 href="/auth/sign-in"
                 aria-label="Sign In"
               >
                 <Button
+                  tabIndex={-1}
                   variant="default"
                   size="lg"
                   className="hidden font-semibold lg:flex"
@@ -225,6 +229,7 @@ const NavBar = ({
               return (
                 <li key={index} className="py-2">
                   <Link
+                    tabIndex={index + 2}
                     data-cy={`navbar-link-${path.name.toLowerCase()}`}
                     href={path.url}
                     className={`${
@@ -241,9 +246,10 @@ const NavBar = ({
           </ul>
         </nav>
 
-        {/* Sign In button when there's no session */}
+        {/* Mobile sign In button when there's no session */}
         {!session && (
           <Link
+            tabIndex={-1}
             data-cy="navbar-sign-in-mobile"
             href="/auth/sign-in"
             className="self-center"

@@ -32,7 +32,9 @@ const AuthErrorPage = () => {
               try again soon.
             </p>
             <Link href="/auth/sign-in">
-              <Button size="lg">Try Again</Button>
+              <Button tabIndex={-1} size="lg">
+                Try Again
+              </Button>
             </Link>
           </CardContent>
         </Card>

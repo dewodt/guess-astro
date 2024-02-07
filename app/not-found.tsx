@@ -32,7 +32,9 @@ const NotFoundPage = () => {
               bellow to go to the home page!
             </p>
             <Link href="/">
-              <Button size="lg">Return Home</Button>
+              <Button tabIndex={-1} size="lg">
+                Return Home
+              </Button>
             </Link>
           </CardContent>
         </Card>

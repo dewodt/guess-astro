@@ -194,28 +194,29 @@ const RegisterForm = ({ session }: { session: Session }) => {
                     </FormLabel>
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                       {/* Avatar Preview */}
-                      <Avatar
-                        data-cy="register-avatar-preview"
+                      <button
+                        type="button"
+                        disabled={isSubmitting || isUploadingImage}
                         onClick={() =>
                           !isSubmitting &&
                           !isUploadingImage &&
                           fileInputRef!.current!.click()
                         }
-                        className={`h-20 w-20 ${
-                          isSubmitting || isUploadingImage
-                            ? "cursor-not-allowed"
-                            : "cursor-pointer"
-                        }`}
                       >
-                        <AvatarImage
-                          src={uploadedAvatarUrl}
-                          alt="Avatar Upload Preview"
-                          className="object-cover object-center"
-                        />
-                        <AvatarFallback>
-                          <UserCircle2 className="h-full w-full stroke-gray-500 stroke-1" />
-                        </AvatarFallback>
-                      </Avatar>
+                        <Avatar
+                          data-cy="settings-profile-avatar-preview"
+                          className="h-20 w-20"
+                        >
+                          <AvatarImage
+                            src={uploadedAvatarUrl}
+                            alt="Avatar Upload Preview"
+                            className="object-cover object-center"
+                          />
+                          <AvatarFallback>
+                            <UserCircle2 className="h-full w-full stroke-gray-500 stroke-1" />
+                          </AvatarFallback>
+                        </Avatar>
+                      </button>
 
                       <div className="flex flex-row gap-4">
                         {/* File Upload */}
