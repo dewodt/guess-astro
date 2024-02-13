@@ -43,9 +43,9 @@ describe("Leaderboard Mode Page", () => {
       },
       {
         rank: "6",
-        username: "user6",
+        username: "user10",
         score: "0",
-        ...userSeed.find((user) => user.username === "user6"),
+        ...userSeed.find((user) => user.username === "user10"),
       },
       {
         rank: "7",
@@ -61,15 +61,15 @@ describe("Leaderboard Mode Page", () => {
       },
       {
         rank: "9",
-        username: "user10",
+        username: "user13",
         score: "0",
-        ...userSeed.find((user) => user.username === "user10"),
+        ...userSeed.find((user) => user.username === "user13"),
       },
       {
         rank: "10",
-        username: "user9",
+        username: "user14",
         score: "0",
-        ...userSeed.find((user) => user.username === "user9"),
+        ...userSeed.find((user) => user.username === "user14"),
       },
     ],
     messier: [
@@ -105,33 +105,33 @@ describe("Leaderboard Mode Page", () => {
       },
       {
         rank: "6",
-        username: "user12",
+        username: "user1",
         score: "0",
-        ...userSeed.find((user) => user.username === "user12"),
+        ...userSeed.find((user) => user.username === "user1"),
       },
       {
         rank: "7",
-        username: "user4",
-        score: "0",
-        ...userSeed.find((user) => user.username === "user4"),
-      },
-      {
-        rank: "8",
         username: "user10",
         score: "0",
         ...userSeed.find((user) => user.username === "user10"),
       },
       {
-        rank: "9",
-        username: "user9",
+        rank: "8",
+        username: "user11",
         score: "0",
-        ...userSeed.find((user) => user.username === "user9"),
+        ...userSeed.find((user) => user.username === "user11"),
+      },
+      {
+        rank: "9",
+        username: "user12",
+        score: "0",
+        ...userSeed.find((user) => user.username === "user12"),
       },
       {
         rank: "10",
-        username: "user3",
+        username: "user13",
         score: "0",
-        ...userSeed.find((user) => user.username === "user3"),
+        ...userSeed.find((user) => user.username === "user13"),
       },
     ],
   };

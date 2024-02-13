@@ -4,20 +4,12 @@ import { db } from "@/lib/drizzle";
 import { getShortMonth } from "@/lib/utils";
 import { ModesType } from "@/types/constants";
 import { StatisticsData } from "@/types/data";
-import { and, desc, eq, isNotNull, sql } from "drizzle-orm";
-import { getServerSession } from "next-auth";
+import { subDays, subMonths } from "date-fns";
+import { and, desc, eq, gte, isNotNull, sql } from "drizzle-orm";
+import { type Session, getServerSession } from "next-auth";
 import "server-only";
 
-// Get users data statistics of a certain mode
-// Return score, leaderboard rank, current streak, highest streak, accuracy, match played
-export const getStatisticsData = async (
-  mode: ModesType
-): Promise<StatisticsData> => {
-  // Get user's session
-  // User's session is already validated via middleware.
-  const session = await getServerSession(authOptions);
-
-  // Get user's leaderboard rank and score
+const getScoreAndRank = async (userId: string, mode: ModesType) => {
   // Need to compare to other user's data but not fetch all user's data (waste of resource)
   // Subquery to get all user's rank and score
   // Left join and group by user id and username to count the score
@@ -25,8 +17,8 @@ export const getStatisticsData = async (
     .select({
       id: user.id,
       username: user.username,
-      score: sql<number>`count(${match.id})`.as("score"),
-      rank: sql<number>`rank() over (order by count(${match.id}) desc, ${user.username} asc)`.as(
+      score: sql<string>`count(${match.id})`.as("score"),
+      rank: sql<string>`rank() over (order by count(${match.id}) desc, ${user.username} asc)`.as(
         "rank"
       ),
     })
@@ -41,76 +33,166 @@ export const getStatisticsData = async (
       )
     )
     .groupBy(user.id, user.username)
-    .orderBy(desc(sql<number>`count(${match.id})`))
     .as("sq");
+
   // Query to get specific user's rank and score
-  const userLeaderboard = db.select().from(sq).where(eq(sq.id, session!.id));
+  const promise = db.select().from(sq).where(eq(sq.id, userId));
 
-  // Get user's matches, total match played, streak, current streak, and chart graph.
-  // Don't need to compare to other user's data
-  const userMatches = db
-    .select({ id: match.id, result: match.result, createdAt: match.createdAt })
+  return promise;
+};
+
+const getHighestAndCurrentStreak = async (userId: string, mode: ModesType) => {
+  // GET STREAK
+  // Get user match of a certain mode
+  const userMatchesMode = db
+    .select()
     .from(match)
-    .where(and(eq(match.userId, session!.id), eq(match.mode, mode)))
-    .orderBy(desc(match.createdAt));
+    .where(and(eq(match.userId, userId), eq(match.mode, mode)))
+    .as("userMatchesMode");
 
-  // Fetch data paralelly to reduce wait time and because data is independent of each other
-  const [matches, [{ score, rank }]] = await Promise.all([
-    userMatches,
-    userLeaderboard,
+  // Get user's streak
+  const sq = db
+    .select({
+      createdAt: userMatchesMode.createdAt,
+      result: userMatchesMode.result,
+      grp: sql<string>`ROW_NUMBER() OVER (ORDER BY ${userMatchesMode.createdAt}) - ROW_NUMBER() OVER (PARTITION BY ${userMatchesMode.result} ORDER BY ${userMatchesMode.createdAt})`.as(
+        "grp"
+      ),
+    })
+    .from(userMatchesMode)
+    .as("sq");
+
+  // Get streak count
+  const streaks = db
+    .select({
+      id: sql<string>`ROW_NUMBER() OVER (ORDER BY MIN(${sq.createdAt}))`.as(
+        "id"
+      ),
+      count: sql<string>`COUNT(*)`.as("count"),
+      result: sq.result,
+    })
+    .from(sq)
+    .groupBy(sq.grp, sq.result)
+    .orderBy(desc(sql`id`))
+    .as("streaks");
+
+  // Get highest streak query
+  const highestStreakPromise = db
+    .select({
+      highestStreak: sql<string>`MAX(${streaks.count})`.as("highestStreak"),
+    })
+    .from(streaks);
+
+  // Get current streak query
+  const currentStreakPromise = db
+    .select({
+      currentStreak: sql<string>`
+        CASE
+          WHEN ${streaks.result} = 'correct' THEN ${streaks.count}
+          ELSE 0
+        END
+    `.as("currentStreak"),
+    })
+    .from(streaks)
+    .orderBy(desc(sql`id`))
+    .limit(1);
+
+  return Promise.all([highestStreakPromise, currentStreakPromise]);
+};
+
+const getChartData = async (userId: string, mode: ModesType) => {
+  // Get last 12 months score data
+  const dateNow = new Date();
+  const dateLast12Months = subDays(
+    subMonths(dateNow, 11), // Current month is included
+    dateNow.getDate() - 1 // Get first day of the month
+  );
+
+  // Get month and score
+  const chartPromise = db
+    .select({
+      month: sql<string>`to_char(${match.createdAt}, 'Mon')`.as("month"),
+      score: sql<string>`count(${match.id})`.as("score"),
+    })
+    .from(match)
+    .where(
+      and(
+        eq(match.userId, userId),
+        eq(match.mode, mode),
+        eq(match.result, "correct"),
+        gte(match.createdAt, dateLast12Months)
+      )
+    )
+    .groupBy(sql`month`);
+
+  return chartPromise;
+};
+
+const getMatchPlayed = async (userId: string, mode: ModesType) => {
+  const matchPlayedPromise = db
+    .select({
+      matchPlayed: sql<string>`count(${match.id})`.as("matchPlayed"),
+    })
+    .from(match)
+    .where(and(eq(match.userId, userId), eq(match.mode, mode)));
+
+  return matchPlayedPromise;
+};
+
+// Return score, leaderboard rank, current streak, highest streak, accuracy, match played
+export const getStatisticsData = async (
+  mode: ModesType
+): Promise<StatisticsData> => {
+  // Get user's session
+  // User's session is already validated via middleware.
+  const session = (await getServerSession(authOptions)) as Session;
+
+  // Parallelize all queries
+  const [
+    [tempScoreRank],
+    [[tempHighestStreak], [tempCurrentStreak]],
+    tempChartData,
+    [tempMatchPlayed],
+  ] = await Promise.all([
+    getScoreAndRank(session.id, mode),
+    getHighestAndCurrentStreak(session.id, mode),
+    getChartData(session.id, mode),
+    getMatchPlayed(session.id, mode),
   ]);
 
-  // Get current streak
-  let currentStreak = 0;
-  for (let i = 0; i < matches.length; i++) {
-    // Found atleast 1 incorrect, exit.
-    if (matches[i].result === "incorrect") {
-      break;
+  // Get score and rank
+  const score = parseInt(tempScoreRank.score);
+  const rank = parseInt(tempScoreRank.rank);
+
+  // Get match played
+  const matchPlayed = parseInt(tempMatchPlayed.matchPlayed);
+
+  // Get highest and current streak
+  const highestStreak = tempHighestStreak.highestStreak ?? 0;
+  const currentStreak = tempCurrentStreak ? tempCurrentStreak.currentStreak : 0;
+
+  // Calculate accuracy
+  const accuracy = (matchPlayed == 0 ? 0 : (score / matchPlayed) * 100).toFixed(
+    2
+  );
+
+  // Fill in missing months with 0 score & parse to integer
+  const dateNow = new Date();
+  const dateLast12Months = subDays(
+    subMonths(dateNow, 11), // Current month is included
+    dateNow.getDate() - 1 // Get first day of the month
+  );
+  const chartData = Array.from({ length: 12 }, (_, i) => i).map((_, i) => {
+    const monthIdx = (dateLast12Months.getMonth() + i) % 12;
+    const monthString = getShortMonth(monthIdx);
+    const monthData = tempChartData.find((data) => data.month === monthString);
+    if (!monthData) {
+      return { month: monthString, score: 0 };
     }
-    // Add more streak
-    currentStreak += 1;
-  }
-
-  // Get highest streak
-  let highestStreak = 0;
-  let temp = 0;
-  for (let j = 0; j < matches.length; j++) {
-    // Found atleast 1 incorrect, reset temp.
-    if (matches[j].result === "incorrect") {
-      temp = 0;
-    } else {
-      // Add more streak
-      temp += 1;
-    }
-
-    // Update highest streak
-    if (temp > highestStreak) {
-      highestStreak = temp;
-    }
-  }
-
-  // Get number of match played
-  const matchPlayed = matches.length;
-
-  // Get accuracy
-  const accuracy =
-    matchPlayed !== 0 ? `${((score / matchPlayed) * 100).toFixed(2)}%` : "0%";
-
-  // Get chart data
-  // Initialize chart array with 0 score
-  const chartData = Array.from({ length: 12 }, (_, i) => {
     return {
-      month: getShortMonth(i),
-      score: 0,
+      month: monthString,
+      score: parseInt(monthData.score),
     };
-  });
-
-  // Count correct matches per month
-  matches.forEach((m) => {
-    if (m.result === "correct" && m.createdAt) {
-      const month = m.createdAt.getMonth();
-      chartData[month].score += 1;
-    }
   });
 
   return {
@@ -126,7 +208,7 @@ export const getStatisticsData = async (
       },
       {
         title: "Accuracy",
-        value: accuracy,
+        value: `${accuracy}%`,
       },
       {
         title: "Match Played",

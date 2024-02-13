@@ -106,10 +106,10 @@ describe("Statistics Mode Page", () => {
     });
 
     // Chart
-    cy.get('[data-cy="statistics-current-year-overview-title"]')
+    cy.get('[data-cy="statistics-last-12-months-title"]')
       .should("be.visible")
-      .and("have.text", "Current Year Overview");
-    cy.get('[data-cy="statistics-current-year-overview-chart"]')
+      .and("have.text", "Last 12 Months");
+    cy.get('[data-cy="statistics-last-12-months-chart"]')
       .find("svg")
       .should("be.visible");
   });

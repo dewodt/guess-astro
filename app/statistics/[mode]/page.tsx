@@ -72,13 +72,13 @@ const StatisticsPage = async ({
       <Card className="col-span-full h-fit shadow-lg">
         <CardHeader className="p-6">
           <h2
-            data-cy="statistics-current-year-overview-title"
+            data-cy="statistics-last-12-months-title"
             className="text-base font-semibold text-primary"
           >
-            Current Year Overview
+            Last 12 Months
           </h2>
         </CardHeader>
-        <CardContent data-cy="statistics-current-year-overview-chart">
+        <CardContent data-cy="statistics-last-12-months-chart">
           <StatisticsChart chartData={data.chartData} />
         </CardContent>
       </Card>

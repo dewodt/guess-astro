@@ -204,7 +204,7 @@ const RegisterForm = ({ session }: { session: Session }) => {
                         }
                       >
                         <Avatar
-                          data-cy="settings-profile-avatar-preview"
+                          data-cy="register-avatar-preview"
                           className="h-20 w-20"
                         >
                           <AvatarImage

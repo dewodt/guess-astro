@@ -30,7 +30,7 @@ export const getLeaderboardData = async (
       )
     )
     .groupBy(user.id, user.username)
-    .orderBy(desc(sql<number>`count(${match.id})`))
+    .orderBy(desc(sql`score`), user.username)
     .limit(10);
 
   return leaderboard;

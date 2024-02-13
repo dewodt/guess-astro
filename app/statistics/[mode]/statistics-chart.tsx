@@ -27,9 +27,13 @@ const CustomToolTip = ({
   if (active && payload && payload.length) {
     return (
       <div className="flex flex-col gap-1 rounded-md border-2 border-border bg-background p-4">
-        <p className="text-sm font-semibold text-secondary-foreground">{`Month ${label}`}</p>
         <p className="text-sm text-secondary-foreground">
-          Score: {`${payload[0].value}`}
+          <span className="font-semibold">Month: </span>
+          <span>{label}</span>
+        </p>
+        <p className="text-sm text-secondary-foreground">
+          <span className="font-semibold">Score: </span>
+          <span>{payload[0].value}</span>
         </p>
       </div>
     );
@@ -61,22 +65,23 @@ export const StatisticsChart = ({
         {/* Grid */}
         <CartesianGrid vertical={false} strokeDasharray="8" />
 
-        {/* X Axis */}
-        <XAxis fontSize={12} dataKey="month" tickLine={false} axisLine={true} />
-
-        {/* Y Axis */}
-        <YAxis
-          fontSize={12}
-          tickLine={true}
-          axisLine={true}
-          tickFormatter={(value) => `${value}`}
-        />
-
         {/* Tooltip */}
         <Tooltip content={<CustomToolTip />} cursor={<CustomCursor />} />
 
         {/* Bars */}
         <Bar dataKey="score" className="fill-primary" radius={[4, 4, 0, 0]} />
+
+        {/* X Axis */}
+        <XAxis fontSize={12} dataKey="month" tickLine={false} axisLine={true} />
+
+        {/* Y Axis */}
+        <YAxis
+          allowDecimals={false}
+          fontSize={12}
+          tickLine={true}
+          axisLine={true}
+          tickFormatter={(value) => `${value}`}
+        />
       </BarChart>
     </ResponsiveContainer>
   );

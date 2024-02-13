@@ -1,7 +1,7 @@
 import { user } from "@/db/schema";
 import { db } from "@/lib/drizzle";
 import { UserDetailData } from "@/types/data";
-import { eq, sql } from "drizzle-orm";
+import { ilike } from "drizzle-orm";
 import "server-only";
 
 // Get user data for user detail page from user's username (CASE INSENSITIVE)
@@ -17,7 +17,7 @@ export const getUserDetailData = async (
       createdAt: user.createdAt,
     })
     .from(user)
-    .where(eq(sql`LOWER(${user.username})`, username.toLowerCase()));
+    .where(ilike(user.username, username)); // Case insensitive search
 
   if (userData.length === 0) {
     return null;
