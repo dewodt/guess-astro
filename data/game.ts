@@ -27,10 +27,7 @@ export const getGameData = async (mode: ModesType): Promise<GameData> => {
     .orderBy(asc(astronomicalObject.name));
 
   // Paralel query to reduce wait time
-  const [[question], options] = await Promise.all([
-    questionQuery,
-    optionsQuery,
-  ]);
+  const [[question], options] = await db.batch([questionQuery, optionsQuery]);
 
   return { question, options };
 };

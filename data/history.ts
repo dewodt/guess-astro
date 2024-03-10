@@ -5,7 +5,7 @@ import { dataTableSearchParamsSchema } from "@/lib/zod";
 import { ModesType } from "@/types/constants";
 import type { SearchParams } from "@/types/data-table";
 import { addDays } from "date-fns";
-import { and, asc, desc, eq, gte, inArray, lte, or, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, gte, inArray, lte, or } from "drizzle-orm";
 import { getServerSession, type Session } from "next-auth";
 import "server-only";
 
@@ -96,7 +96,7 @@ export async function getHistoryData(
   // Get total length of all history (filtered)
   const totalHistoryQuery = db
     .select({
-      total: sql<number>`count(${match.id})`,
+      total: count(match.id).as("total"),
     })
     .from(match)
     .where(
@@ -127,7 +127,7 @@ export async function getHistoryData(
       )
     );
 
-  const [allHistory, [{ total }]] = await Promise.all([
+  const [allHistory, [{ total }]] = await db.batch([
     allHistoryQuery,
     totalHistoryQuery,
   ]);

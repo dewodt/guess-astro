@@ -9,7 +9,7 @@ import {
   getZodParseErrorDescription,
 } from "@/lib/utils";
 import { registerOrUpdateUserSchema } from "@/lib/zod";
-import { eq, ne, and, sql } from "drizzle-orm";
+import { eq, ne, and, ilike } from "drizzle-orm";
 import { getServerSession } from "next-auth";
 
 export const UserAction = async (formData: FormData) => {
@@ -53,7 +53,7 @@ export const UserAction = async (formData: FormData) => {
   const data = await db.query.user.findFirst({
     where: and(
       ne(user.id, session.id),
-      eq(sql`LOWER(${user.username})`, userFormData.username.toLowerCase())
+      ilike(user.username, userFormData.username)
     ),
   });
 

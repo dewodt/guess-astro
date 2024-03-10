@@ -5,7 +5,7 @@ import { getShortMonth } from "@/lib/utils";
 import { ModesType } from "@/types/constants";
 import { StatisticsData } from "@/types/data";
 import { subDays, subMonths } from "date-fns";
-import { and, desc, eq, gte, isNotNull, sql } from "drizzle-orm";
+import { and, count, desc, eq, gte, isNotNull, max, sql } from "drizzle-orm";
 import { type Session, getServerSession } from "next-auth";
 import "server-only";
 
@@ -17,10 +17,10 @@ const getScoreAndRank = async (userId: string, mode: ModesType) => {
     .select({
       id: user.id,
       username: user.username,
-      score: sql<string>`count(${match.id})`.as("score"),
-      rank: sql<string>`rank() over (order by count(${match.id}) desc, ${user.username} asc)`.as(
-        "rank"
-      ),
+      score: count(match.id).as("score"),
+      rank: sql`rank() over (order by count(${match.id}) desc, ${user.username} asc)`
+        .mapWith(Number)
+        .as("rank"),
     })
     .from(user)
     .where(isNotNull(user.username))
@@ -55,9 +55,9 @@ const getHighestAndCurrentStreak = async (userId: string, mode: ModesType) => {
     .select({
       createdAt: userMatchesMode.createdAt,
       result: userMatchesMode.result,
-      grp: sql<string>`ROW_NUMBER() OVER (ORDER BY ${userMatchesMode.createdAt}) - ROW_NUMBER() OVER (PARTITION BY ${userMatchesMode.result} ORDER BY ${userMatchesMode.createdAt})`.as(
-        "grp"
-      ),
+      grp: sql`ROW_NUMBER() OVER (ORDER BY ${userMatchesMode.createdAt}) - ROW_NUMBER() OVER (PARTITION BY ${userMatchesMode.result} ORDER BY ${userMatchesMode.createdAt})`
+        .mapWith(Number)
+        .as("grp"),
     })
     .from(userMatchesMode)
     .as("sq");
@@ -65,10 +65,10 @@ const getHighestAndCurrentStreak = async (userId: string, mode: ModesType) => {
   // Get streak count
   const streaks = db
     .select({
-      id: sql<string>`ROW_NUMBER() OVER (ORDER BY MIN(${sq.createdAt}))`.as(
-        "id"
-      ),
-      count: sql<string>`COUNT(*)`.as("count"),
+      id: sql`ROW_NUMBER() OVER (ORDER BY MIN(${sq.createdAt}))`
+        .mapWith(Number)
+        .as("id"),
+      count: count().as("count"),
       result: sq.result,
     })
     .from(sq)
@@ -79,19 +79,21 @@ const getHighestAndCurrentStreak = async (userId: string, mode: ModesType) => {
   // Get highest streak query
   const highestStreakPromise = db
     .select({
-      highestStreak: sql<string>`MAX(${streaks.count})`.as("highestStreak"),
+      highestStreak: max(streaks.count).as("highestStreak"),
     })
     .from(streaks);
 
   // Get current streak query
   const currentStreakPromise = db
     .select({
-      currentStreak: sql<string>`
+      currentStreak: sql`
         CASE
           WHEN ${streaks.result} = 'correct' THEN ${streaks.count}
           ELSE 0
         END
-    `.as("currentStreak"),
+      `
+        .mapWith(Number)
+        .as("currentStreak"),
     })
     .from(streaks)
     .orderBy(desc(sql`id`))
@@ -112,7 +114,7 @@ const getChartData = async (userId: string, mode: ModesType) => {
   const chartPromise = db
     .select({
       month: sql<string>`to_char(${match.createdAt}, 'Mon')`.as("month"),
-      score: sql<string>`count(${match.id})`.as("score"),
+      score: count(match.id).as("score"),
     })
     .from(match)
     .where(
@@ -131,7 +133,7 @@ const getChartData = async (userId: string, mode: ModesType) => {
 const getMatchPlayed = async (userId: string, mode: ModesType) => {
   const matchPlayedPromise = db
     .select({
-      matchPlayed: sql<string>`count(${match.id})`.as("matchPlayed"),
+      matchPlayed: count(match.id).as("matchPlayed"),
     })
     .from(match)
     .where(and(eq(match.userId, userId), eq(match.mode, mode)));
@@ -161,11 +163,11 @@ export const getStatisticsData = async (
   ]);
 
   // Get score and rank
-  const score = parseInt(tempScoreRank.score);
-  const rank = parseInt(tempScoreRank.rank);
+  const score = tempScoreRank.score;
+  const rank = tempScoreRank.rank;
 
   // Get match played
-  const matchPlayed = parseInt(tempMatchPlayed.matchPlayed);
+  const matchPlayed = tempMatchPlayed.matchPlayed;
 
   // Get highest and current streak
   const highestStreak = tempHighestStreak.highestStreak ?? 0;
@@ -191,7 +193,7 @@ export const getStatisticsData = async (
     }
     return {
       month: monthString,
-      score: parseInt(monthData.score),
+      score: monthData.score,
     };
   });
 

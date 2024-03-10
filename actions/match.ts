@@ -9,7 +9,8 @@ import {
   getZodParseErrorDescription,
 } from "@/lib/utils";
 import { MatchAnswerSchema } from "@/lib/zod";
-import { eq } from "drizzle-orm";
+import { type MatchResultsType } from "@/types/constants";
+import { eq, sql } from "drizzle-orm";
 import { getServerSession } from "next-auth";
 
 export const MatchAction = async (formData: FormData) => {
@@ -47,33 +48,42 @@ export const MatchAction = async (formData: FormData) => {
   }
 
   // If parsing success
-  const answer = zodParseResult.data;
+  const userAnswer = zodParseResult.data;
 
-  // Get the correct answer data
-  const [data] = await db
+  const correctAnswer = db
     .select({
-      id: astronomicalObject.id,
       name: astronomicalObject.name,
       imageAnswerUrl: astronomicalObject.imageAnswerUrl,
+      mode: astronomicalObject.mode,
+      result:
+        sql<MatchResultsType>`CASE WHEN ${astronomicalObject.name} = ${userAnswer.answer} THEN 'correct'::result ELSE 'incorrect'::result END`.as(
+          "result"
+        ),
     })
     .from(astronomicalObject)
-    .where(eq(astronomicalObject.id, answer.id));
+    .where(eq(astronomicalObject.id, userAnswer.id));
+
+  const withCorrectAnswer = db.$with("correct_answer").as(correctAnswer);
+
+  const [[{ name, imageAnswerUrl, result, mode }]] = await db.batch([
+    correctAnswer,
+    db
+      .with(withCorrectAnswer)
+      .insert(match)
+      .values({
+        userId: session.id,
+        astronomicalObjectId: userAnswer.id,
+        mode: userAnswer.mode,
+        result: sql`(select result from ${withCorrectAnswer})`,
+      }),
+  ]);
 
   // Check if answer is correct
-  const isCorrect = data.name === answer.answer;
-  const result = isCorrect ? "correct" : "incorrect";
+  const isCorrect = result === "correct";
   const title = isCorrect ? "Correct!" : "Incorrect!";
   const description = isCorrect
     ? "Click next question or quit to the main menu!"
-    : `Correct answer is ${data.name}. Click next question or quit to the main menu!`;
-
-  // Update score and match data
-  await db.insert(match).values({
-    userId: session.id,
-    astronomicalObjectId: answer.id,
-    mode: answer.mode,
-    result: result,
-  });
+    : `Correct answer is ${name}. Click next question or quit to the main menu!`;
 
   // Initialize posthog client
   const posthogClient = PostHogClient();
@@ -83,7 +93,7 @@ export const MatchAction = async (formData: FormData) => {
     distinctId: session.id,
     event: "match answered",
     properties: {
-      mode: answer.mode,
+      mode: mode,
       result: result,
     },
   });
@@ -93,6 +103,6 @@ export const MatchAction = async (formData: FormData) => {
     title: title,
     description: description,
     isCorrect: isCorrect,
-    correctAnswerImageUrl: data.imageAnswerUrl,
+    correctAnswerImageUrl: imageAnswerUrl,
   };
 };

@@ -2,7 +2,7 @@ import { match, user } from "@/db/schema";
 import { db } from "@/lib/drizzle";
 import { ModesType } from "@/types/constants";
 import { LeaderboardData } from "@/types/data";
-import { and, desc, eq, isNotNull, sql } from "drizzle-orm";
+import { and, count, desc, eq, isNotNull, sql } from "drizzle-orm";
 import "server-only";
 
 // Get leaderboard data
@@ -17,7 +17,7 @@ export const getLeaderboardData = async (
     .select({
       id: user.id,
       username: user.username,
-      score: sql<number>`count(${match.id})`.as("score"),
+      score: count(match.id).as("score"),
     })
     .from(user)
     .where(isNotNull(user.username))
