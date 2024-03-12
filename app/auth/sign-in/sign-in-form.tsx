@@ -1,6 +1,7 @@
 "use client";
 
 import Discord from "@/components/icons/discord";
+import GitHub from "@/components/icons/github";
 import Google from "@/components/icons/google";
 import { Button } from "@/components/ui/button";
 import {
@@ -142,6 +143,25 @@ const SignInForm = () => {
       >
         <Google size={20} />
         Continue with Google
+      </Button>
+
+      {/* GitHub */}
+      <Button
+        data-cy="sign-in-github-button"
+        variant="secondary"
+        type="button"
+        size="lg"
+        className="flex w-full flex-row items-center gap-3"
+        disabled={isSubmitting}
+        onClick={() =>
+          signIn("github", {
+            redirect: true,
+            callbackUrl: "/?phState=identify",
+          })
+        }
+      >
+        <GitHub size={20} />
+        Continue with GitHub
       </Button>
 
       {/* Discord */}

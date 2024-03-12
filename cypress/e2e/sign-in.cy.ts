@@ -21,6 +21,10 @@ describe("Sign In Page", () => {
       .should("be.visible")
       .and("have.text", "Continue with Google");
 
+    cy.get('[data-cy="sign-in-github-button"]')
+      .should("be.visible")
+      .and("have.text", "Continue with GitHub");
+
     cy.get('[data-cy="sign-in-discord-button"]')
       .should("be.visible")
       .and("have.text", "Continue with Discord");
@@ -75,6 +79,7 @@ describe("Sign In Page", () => {
       .and("have.text", "Loading...");
     cy.get('[data-cy="sign-in-email-button"]').should("be.disabled");
     cy.get('[data-cy="sign-in-google-button"]').should("be.disabled");
+    cy.get('[data-cy="sign-in-github-button"]').should("be.disabled");
     cy.get('[data-cy="sign-in-discord-button"]').should("be.disabled");
 
     // Success

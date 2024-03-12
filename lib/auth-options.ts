@@ -9,6 +9,7 @@ import { eq } from "drizzle-orm";
 import { type AuthOptions } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import EmailProvider from "next-auth/providers/email";
+import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import "server-only";
 
@@ -40,6 +41,16 @@ export const authOptions: AuthOptions = {
           prompt: "select_account",
           scope:
             "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
+        },
+      },
+    }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+      allowDangerousEmailAccountLinking: true,
+      authorization: {
+        params: {
+          scope: "user:email",
         },
       },
     }),
