@@ -79,7 +79,7 @@
     "@types/uuid": "^9.0.7",
     "cypress": "^13.6.1",
     "cypress-v10-preserve-cookie": "^1.2.1",
-    "drizzle-kit": "^0.19.13",
+    "drizzle-kit": "^0.20.14",
     "encoding": "^0.1.13",
     "env-cmd": "^10.1.0",
     "eslint-plugin-cypress": "^2.15.1",
