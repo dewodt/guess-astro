@@ -7,6 +7,7 @@ import { type Metadata } from "next";
 
 // Force dynamic page
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 // Generate dynamic metadata
 export const generateMetadata = ({

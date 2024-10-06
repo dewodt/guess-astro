@@ -34,6 +34,7 @@ export const generateMetadata = async ({
 
 // Force dynamic page
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 const UserDetailPage = async ({
   params: { username },

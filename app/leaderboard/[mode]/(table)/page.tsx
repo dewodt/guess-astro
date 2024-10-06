@@ -38,6 +38,7 @@ export const generateMetadata = ({
 
 // Force dynamic page
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 const LeaderboardPage = async ({
   params: { mode },
