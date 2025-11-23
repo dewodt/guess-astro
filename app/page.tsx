@@ -81,13 +81,13 @@ const Home = () => {
           <div className="flex flex-col items-start gap-3 lg:gap-6">
             <h1
               data-cy="hero-title"
-              className="text-4xl font-bold lg:text-6xl gradient-text animate-in fade-in slide-in-from-bottom-4 duration-700"
+              className="gradient-text text-4xl font-bold duration-700 animate-in fade-in slide-in-from-bottom-4 lg:text-6xl"
             >
               Memorize Astronomical Object Easily.
             </h1>
             <p
               data-cy="hero-description"
-              className="text-base font-normal text-muted-foreground lg:text-xl animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150"
+              className="text-base font-normal text-muted-foreground delay-150 duration-700 animate-in fade-in slide-in-from-bottom-4 lg:text-xl"
             >
               Here at Guess Astro we help you memorize astronomical objects to
               prepare for Astronomy National/International Science Olympiad!
@@ -95,7 +95,7 @@ const Home = () => {
             <Link
               data-cy="hero-link"
               href="/play"
-              className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300"
+              className="delay-300 duration-700 animate-in fade-in slide-in-from-bottom-4"
             >
               <Button
                 tabIndex={-1}
@@ -111,14 +111,14 @@ const Home = () => {
           </div>
 
           {/* Hero Image */}
-          <div className="animate-in fade-in zoom-in-50 duration-1000 delay-200">
+          <div className="delay-200 duration-1000 animate-in fade-in zoom-in-50">
             <Image
               src="/orion.svg"
               alt="Image"
               data-cy="hero-image"
               width={400}
               height={400}
-              className="w-[200px] lg:w-[420px] transition-transform hover:scale-105 duration-500"
+              className="w-[200px] transition-transform duration-500 hover:scale-105 lg:w-[420px]"
               style={{ animation: "float 6s ease-in-out infinite" }}
               priority
             />
@@ -136,7 +136,7 @@ const Home = () => {
         <div className="flex max-w-6xl flex-col gap-7 lg:gap-9">
           <h2
             data-cy="features-title"
-            className="text-center text-3xl font-bold lg:text-5xl gradient-text"
+            className="gradient-text text-center text-3xl font-bold lg:text-5xl"
           >
             Epic Features.
           </h2>
@@ -147,13 +147,15 @@ const Home = () => {
             {features.map((feature, index) => (
               <Card
                 key={index}
-                className="group flex w-full flex-row gap-5 p-5 shadow-lg sm:w-[calc(50%-12px)] lg:w-[calc(50%-16px)] transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 border-2 hover:border-primary/50"
+                className="group flex w-full flex-row gap-5 border-2 p-5 shadow-lg transition-all duration-300 hover:scale-105 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 sm:w-[calc(50%-12px)] lg:w-[calc(50%-16px)]"
               >
                 <CardContent className="flex items-center p-0 transition-transform duration-300 group-hover:scale-110">
                   {feature.icon}
                 </CardContent>
                 <CardHeader className="justify-center p-0">
-                  <CardTitle className="transition-colors group-hover:text-primary">{feature.title}</CardTitle>
+                  <CardTitle className="transition-colors group-hover:text-primary">
+                    {feature.title}
+                  </CardTitle>
                   <CardDescription>{feature.description}</CardDescription>
                 </CardHeader>
               </Card>

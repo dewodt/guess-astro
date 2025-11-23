@@ -80,9 +80,14 @@ const NavBar = ({
   }, [setNavBarExpanded]);
 
   return (
-    <header className="sticky left-0 right-0 top-0 z-40 flex h-[90px] w-full flex-row items-center justify-between border-b border-b-border/50 bg-background/80 backdrop-blur-md px-8 lg:px-16 transition-all duration-300">
+    <header className="sticky left-0 right-0 top-0 z-40 flex h-[90px] w-full flex-row items-center justify-between border-b border-b-border/50 bg-background/80 px-8 backdrop-blur-md transition-all duration-300 lg:px-16">
       {/* Logo Icon */}
-      <Link tabIndex={1} data-cy="navbar-logo" href="/" className="transition-transform hover:scale-110 duration-300">
+      <Link
+        tabIndex={1}
+        data-cy="navbar-logo"
+        href="/"
+        className="transition-transform duration-300 hover:scale-110"
+      >
         <Image
           width={40}
           height={40}
@@ -105,7 +110,7 @@ const NavBar = ({
 
       <div
         data-cy="navbar-expanded"
-        className={`fixed right-0 top-0 z-10 flex h-full w-[230px] flex-col gap-6 border-l border-l-border/50 bg-background/95 backdrop-blur-xl p-5 font-inter text-base duration-300 ease-in-out lg:static lg:h-auto lg:w-auto lg:translate-x-0 lg:flex-row-reverse lg:items-center lg:gap-12 lg:border-none lg:bg-transparent lg:backdrop-blur-none lg:p-0 lg:dark:bg-transparent xl:text-lg ${
+        className={`fixed right-0 top-0 z-10 flex h-full w-[230px] flex-col gap-6 border-l border-l-border/50 bg-background/95 p-5 font-inter text-base backdrop-blur-xl duration-300 ease-in-out lg:static lg:h-auto lg:w-auto lg:translate-x-0 lg:flex-row-reverse lg:items-center lg:gap-12 lg:border-none lg:bg-transparent lg:p-0 lg:backdrop-blur-none lg:dark:bg-transparent xl:text-lg ${
           navBarExpanded ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -237,7 +242,7 @@ const NavBar = ({
                       pathname.startsWith(path.url)
                         ? "font-semibold text-foreground"
                         : "font-medium text-muted-foreground lg:hover:text-foreground"
-                    } transition-all duration-300 hover:scale-105 inline-block relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full`}
+                    } relative inline-block transition-all duration-300 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all after:duration-300 hover:scale-105 hover:after:w-full`}
                   >
                     {path.name}
                   </Link>
